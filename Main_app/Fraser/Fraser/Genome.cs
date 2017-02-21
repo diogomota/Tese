@@ -15,21 +15,23 @@ namespace Fraser
         //[numero,x,y,z]
         public double[,] bars;
         //[numero,pt1,pt2,secçao,activo]
-
+        private int pt_cnt;
 
         //methods
         //constructor
-        public Genome(double Largura,int Altura, double horiz_div,double subdiv, int N_cabos)
+        public Genome(double Largura,int Altura, double horiz_div,double subdiv, int N_cabos, int[] h_cabos,double[] dist_centro)
         {
             // init matrix dim
-            pt_cloud = new double[4, (int)(4 + (4 * subdiv) * (horiz_div - 1))];
+            pt_cloud = new double[4, (int)(17*N_cabos + 4 + (4 * subdiv) * (horiz_div - 1))]; // 17*cabos para os pts dos braços
             arm_cld = new double[4, 17 * N_cabos];
             //bars = new double[...]
-            pt_cloud_add(ref pt_cloud, Largura, Altura,horiz_div,subdiv);
+            pt_add_tower(ref pt_cloud, Largura, Altura,horiz_div,subdiv,ref pt_cnt);
+            pt_add_arms(ref pt_cloud, Largura, Altura, horiz_div, subdiv, N_cabos, h_cabos, dist_centro, ref pt_cnt);
             //
             
         }
-        private void pt_cloud_add(ref double[,] pt, double Largura, int Altura, double horiz_div, double subdiv)
+
+        private void pt_add_tower(ref double[,] pt, double Largura, int Altura, double horiz_div, double subdiv,ref int _pt_cnt)
         {
 
             //tower pts
@@ -112,8 +114,151 @@ namespace Fraser
 
                 reverse = false;
             }
+            _pt_cnt = pt_num; // para começar a numerar correctamente os pts dos braços
+
+        }
+        
+        private void pt_add_arms(ref double[,] pt, double Largura, int Altura, double horiz_div, double subdiv, int N_cabos, int[] h_cabos, double[] dist_centro, ref int _pt_cnt) {
+
+            double ring_z_step = (Altura) / horiz_div; // ok
+
+            double tilt;
+            tilt = (Largura * 0.5) / (Altura) * ring_z_step; //ok
+
+            ///////////////////////////
+            //#######################//
+            //######## Arms #########//
+            //#######################//
+            ///////////////////////////
+
+            List<Int32> con_ring_set = new List<Int32>();
+
+            for (int n = 0; n < (N_cabos / 2); n++)
+            {   //for each set of cables
+
+                int init_h = find_nearest(h_cabos[n], horiz_div, ring_z_step); //encontrar os horiz ring + perto
+                con_ring_set.Add(init_h);
+                double arm_lenght = Math.Abs(dist_centro[n] - (Largura * 0.5 - init_h * tilt));
+
+                //lower arm angle
+                double XY_m = (Largura * 0.5 - init_h * tilt) / arm_lenght; //inclinação da reta Y=mx em XY
+                double XZ_m = (h_cabos[n] - init_h * ring_z_step) / arm_lenght; //inclinação da reta Z=mx em XZ
+
+                //upper arm angle
+                double XY_m_upp = (Largura * 0.5 - (init_h + 1) * tilt) / arm_lenght;
+                double XZ_m_upp = (h_cabos[n] - (init_h + 1) * ring_z_step) / arm_lenght;
 
 
+                //############//
+                //#Right arm#//
+                //###########//
+
+                //1st lower arm
+                for (int _subdiv = 1; _subdiv <= 5; _subdiv++)
+                { // criar variavel se necessario controlo sobre o refinamento do braço
+
+                    double _x = (Largura - init_h * tilt) + (arm_lenght / 5) * _subdiv;
+
+                    if (_subdiv == 5)
+                    {
+                        addPt(ref pt, pt_cnt, _x, Largura * 0.5, h_cabos[n]);
+                        pt_cnt++;
+                        break;
+                    }
+                    addPt(ref pt, pt_cnt, _x, init_h * tilt + XY_m * (_x - (Largura - init_h * tilt)), init_h * ring_z_step + XZ_m * (_x - (Largura - init_h * tilt))); // 1st lower arm
+                    pt_cnt++;
+                }
+
+                //2nd lower arm
+                for (int _subdiv = 1; _subdiv < 5; _subdiv++)
+                { // nao "<=" para nao criar 2 pts de convergencia
+                    double _x = (Largura - init_h * tilt) + (arm_lenght / 5) * _subdiv;
+                    addPt(ref pt, pt_cnt, _x, Largura - init_h * tilt - XY_m * (_x - (Largura - init_h * tilt)), init_h * ring_z_step + XZ_m * (_x - (Largura - init_h * tilt)));
+                    pt_cnt++;
+                }
+
+                //1st upper arm
+                for (int _subdiv = 1; _subdiv < 5; _subdiv++)
+                { // criar variavel se necessario controlo sobre o refinamento do braço
+                    double _x = (Largura - init_h * tilt) + (arm_lenght / 5) * _subdiv;
+
+                    addPt(ref pt, pt_cnt, _x, (init_h + 1) * tilt + XY_m_upp * (_x - (Largura - init_h * tilt)), (init_h + 1) * ring_z_step + XZ_m_upp * (_x - (Largura - init_h * tilt)));
+                    pt_cnt++;
+                }
+                //2nd upper arm
+                for (int _subdiv = 1; _subdiv < 5; _subdiv++)
+                { // nao "<=" para nao criar 2 pts de convergencia
+                    double _x = (Largura - init_h * tilt) + (arm_lenght / 5) * _subdiv;
+
+                    addPt(ref pt, pt_cnt, _x, Largura - (init_h + 1) * tilt - XY_m_upp * (_x - (Largura - init_h * tilt)), (init_h + 1) * ring_z_step + XZ_m_upp * (_x - (Largura - init_h * tilt)));
+                    pt_cnt++;
+                }
+
+                //############//
+                //##Left arm##//
+                //############//
+
+                //left
+                //1st lower arm
+                for (int _subdiv = 1; _subdiv <= 5; _subdiv++)
+                { // criar variavel se necessario controlo sobre o refinamento do braço
+
+                    double _x = (init_h * tilt) - (arm_lenght / 5) * _subdiv;
+
+                    if (_subdiv == 5)
+                    {
+                        addPt(ref pt, pt_cnt, _x, Largura * 0.5, h_cabos[n]);
+                        pt_cnt++;
+                        break;
+                    }
+
+                    addPt(ref pt, pt_cnt, _x, init_h * tilt - XY_m * (_x - init_h * tilt), init_h * ring_z_step - XZ_m * (_x - init_h * tilt));//1st lower arm
+                    pt_cnt++;
+                }
+
+                //2nd lower arm
+                for (int _subdiv = 1; _subdiv < 5; _subdiv++)
+                { // nao "<=" para nao criar 2 pts de convergencia
+                    double _x = (init_h * tilt) - (arm_lenght / 5) * _subdiv;
+
+                    addPt(ref pt, pt_cnt, _x, Largura - init_h * tilt + XY_m * (_x - init_h * tilt), init_h * ring_z_step - XZ_m * (_x - init_h * tilt));
+                    pt_cnt++;
+                }
+
+                //1st upper arm
+                for (int _subdiv = 1; _subdiv < 5; _subdiv++)
+                { // criar variavel se necessario controlo sobre o refinamento do braço
+                    double _x = (init_h * tilt) - (arm_lenght / 5) * _subdiv;
+
+                    addPt(ref pt, pt_cnt, _x, (init_h + 1) * tilt - XY_m_upp * (_x - init_h * tilt), (init_h + 1) * ring_z_step - XZ_m_upp * (_x - init_h * tilt));
+                    pt_cnt++;
+                }
+                //2nd upper arm
+                for (int _subdiv = 1; _subdiv < 5; _subdiv++)
+                { // nao "<=" para nao criar 2 pts de convergencia
+                    double _x = (init_h * tilt) - (arm_lenght / 5) * _subdiv;
+
+                    addPt(ref pt, pt_cnt, _x, Largura - (init_h + 1) * tilt + XY_m_upp * (_x - init_h * tilt), (init_h + 1) * ring_z_step - XZ_m_upp * (_x - init_h * tilt));
+                    pt_cnt++;
+                }
+            }
+        }
+
+        private int find_nearest(int altura, double horiz_div, double ring_z_step)
+        {
+            int nearest = -1;
+            double dist = 10000;
+
+            for (int h = 1; h <= horiz_div - 2; h++)
+            {
+                if (dist > Math.Abs(altura - h * ring_z_step))
+                {
+                    dist = Math.Abs(altura - h * ring_z_step);
+                    nearest = h;
+                }
+            }
+
+            return nearest;
         }
         //for fast pt add
         private void addPt (ref double[,] matrix ,int pt_number, double x, double y, double z){
