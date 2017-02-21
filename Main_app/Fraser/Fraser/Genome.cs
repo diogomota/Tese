@@ -15,7 +15,7 @@ namespace Fraser
         //[numero,x,y,z]
         public double[,] bars;
         //[numero,pt1,pt2,secçao,activo]
-        private int pt_cnt;
+        public int pt_cnt;
 
         //methods
         //constructor
