@@ -16,5 +16,30 @@ namespace Fraser
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void subdiv_int_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void numericUpDown5_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void geom_tab_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
