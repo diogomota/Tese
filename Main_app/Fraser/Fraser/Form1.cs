@@ -32,14 +32,15 @@ namespace Fraser
 
         }
 
-        private void numericUpDown5_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void geom_tab_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Start_geom_Click(object sender, EventArgs e)
+        {
+            Genome geometry = new Fraser.Genome((double)Largura_ap_int.Value,(int)Altura_int.Value,(double)h_div_int.Value,(double)subdiv_int.Value,(int)n_cabos_int.Value);
         }
     }
 }
