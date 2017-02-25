@@ -42,7 +42,7 @@ namespace Fraser
 
         private void Start_geom_Click(object sender, EventArgs e)
         {
-            IRobotApplication robApp; robApp = new RobotApplication();
+           IRobotApplication robApp; robApp = new RobotApplication();
             if (robApp.Visible == 0) { robApp.Interactive = 1;robApp.Visible = 1; }
             
             //create []hcabos
@@ -55,11 +55,20 @@ namespace Fraser
 
             for (int i = 0; i < geometry.pt_cnt; i++)
             {
-                robApp.Project.Structure.Nodes.Create((int)geometry.pt_cloud[0, i+1]/*robot nao aceita 0*/, geometry.pt_cloud[1, i], geometry.pt_cloud[2, i], geometry.pt_cloud[3, i]);
+                robApp.Project.Structure.Nodes.Create((int)geometry.pt_cloud[0, i]+1/*robot nao aceita 0*/, geometry.pt_cloud[1, i], geometry.pt_cloud[2, i], geometry.pt_cloud[3, i]);
+            }
+            
+            for (int i =0;i< robApp.Project.Structure.Bars.FreeNumber; i++)
+            {
+                robApp.Project.Structure.Bars.Delete(i);
+            }
+
+            for (int i = 0; i < geometry.bar_cnt; i++)
+            {
+                robApp.Project.Structure.Bars.Create((int)geometry.bars[0, i]+1, (int)geometry.bars[1, i]+1, (int)geometry.bars[2, i]+1);
             }
             robApp.Project.ViewMngr.Refresh();
-
-
+           
             
         }
     }

@@ -17,6 +17,7 @@ namespace Fraser
         //[numero,pt1,pt2,secçao,activo]
         public int pt_cnt;
 
+        public int bar_cnt;
         //methods
         //constructor
         public Genome(double Largura,int Altura, double horiz_div,double subdiv, int N_cabos, int[] h_cabos,double[] dist_centro)
@@ -24,9 +25,12 @@ namespace Fraser
             // init matrix dim
             pt_cloud = new double[4, (int)(17*N_cabos + 4 + (4 * subdiv) * (horiz_div - 1))]; // 17*cabos para os pts dos braços
             arm_cld = new double[4, 17 * N_cabos];
+            bars = new double[4, (int)((4 * horiz_div - 8) * (subdiv * subdiv) + (12 * horiz_div - 12) * subdiv - 8 * horiz_div + 36 * N_cabos + 20)];
             //bars = new double[...]
+
             pt_add_tower(ref pt_cloud, Largura, Altura,horiz_div,subdiv,ref pt_cnt);
             pt_add_arms(ref pt_cloud, Largura, Altura, horiz_div, subdiv, N_cabos, h_cabos, dist_centro, ref pt_cnt);
+           bar_cnt= connect_bars(ref pt_cloud, ref bars,(int)subdiv);
             //
             
         }
@@ -244,6 +248,58 @@ namespace Fraser
             }
         }
 
+        private int connect_bars(ref double[,] pt, ref double[,] bars,int subdiv)
+        {
+            int bar_num = 0;
+            //Support pts
+            for (int i = 0; i <= 4; i++)
+            {
+
+                if (i == 0)
+                {
+                    for (int j = 4; j <= 4 + subdiv; j++)
+                    {
+                        addBar(ref bars, bar_num, 0, j);
+                        bar_num++;
+                    }
+                    for (int j = 8 + 4 * (subdiv - 1) - 1; j >= 8 + 4 * (subdiv - 1) - subdiv; j--)
+                    {
+                        addBar(ref bars, bar_num, 0, j);
+                        bar_num++;
+                    }
+
+                }
+                if (i == 1)
+                {
+                    for (int j = 4; j <= 4 + 2 * subdiv; j++)
+                    {
+                        addBar(ref bars, bar_num, 1, j);
+                        bar_num++;
+                    }
+                }
+                if (i == 2)
+                {
+                    for (int j = 4 + subdiv; j <= 4 + 3 * subdiv; j++)
+                    {
+                        addBar(ref bars, bar_num, 2, j);
+                        bar_num++;
+                    }
+                }
+                if (i == 3)
+                {
+                    for (int j = 4 + subdiv * 2; j <= 4 + 4 * subdiv - 1; j++)
+                    {
+                        addBar(ref bars, bar_num, 3, j);
+                        bar_num++;
+                    }
+                    addBar(ref bars, bar_num, 3, 4);
+                    bar_num++;
+                }
+            }
+
+
+            return bar_num;
+        }
         private int find_nearest(int altura, double horiz_div, double ring_z_step)
         {
             int nearest = -1;
@@ -270,7 +326,14 @@ namespace Fraser
 
 
         }
-
+        private void addBar(ref double[,] bar, int numb,int start,int end)
+        {
+            bar[0, numb] = numb;
+            bar[1, numb] = start;
+            bar[2, numb] = end;
+            //add here more options as needed (active,section,Lcr etc etc)
+            bar[3, numb] = 0;
+        }
     }
 
     
