@@ -11,26 +11,25 @@ namespace Fraser
         //vars
         public double[,] pt_cloud;
         //[numero,x,y,z]
-        public double[,] arm_cld;
-        //[numero,x,y,z]
         public double[,] bars;
         //[numero,pt1,pt2,secçao,activo]
         public int pt_cnt;
-
         public int bar_cnt;
+        private List<Int32> connection_rings;
+
         //methods
         //constructor
         public Genome(double Largura,int Altura, double horiz_div,double subdiv, int N_cabos, int[] h_cabos,double[] dist_centro)
         {
             // init matrix dim
             pt_cloud = new double[4, (int)(17*N_cabos + 4 + (4 * subdiv) * (horiz_div - 1))]; // 17*cabos para os pts dos braços
-            arm_cld = new double[4, 17 * N_cabos];
             bars = new double[4, (int)((4 * horiz_div - 8) * (subdiv * subdiv) + (12 * horiz_div - 12) * subdiv - 8 * horiz_div + 36 * N_cabos + 20)];
             //bars = new double[...]
 
             pt_add_tower(ref pt_cloud, Largura, Altura,horiz_div,subdiv,ref pt_cnt);
-            pt_add_arms(ref pt_cloud, Largura, Altura, horiz_div, subdiv, N_cabos, h_cabos, dist_centro, ref pt_cnt);
-           bar_cnt= connect_bars(ref pt_cloud, ref bars,(int)subdiv,(int)horiz_div);
+            pt_add_arms(ref pt_cloud, Largura, Altura, horiz_div, subdiv, N_cabos, h_cabos, dist_centro, ref pt_cnt, ref connection_rings);
+            bar_cnt= connect_bars(ref bars,(int)subdiv,(int)horiz_div);
+            add_arm_bars(ref bars, ref bar_cnt, connection_rings, (int)subdiv, N_cabos,(int)horiz_div);
             //
             
         }
@@ -122,7 +121,7 @@ namespace Fraser
 
         }
         
-        private void pt_add_arms(ref double[,] pt, double Largura, int Altura, double horiz_div, double subdiv, int N_cabos, int[] h_cabos, double[] dist_centro, ref int _pt_cnt) {
+        private void pt_add_arms(ref double[,] pt, double Largura, int Altura, double horiz_div, double subdiv, int N_cabos, int[] h_cabos, double[] dist_centro, ref int _pt_cnt, ref List<Int32> connection_rings) {
 
             double ring_z_step = (Altura) / horiz_div; // ok
 
@@ -246,9 +245,10 @@ namespace Fraser
                     pt_cnt++;
                 }
             }
+            connection_rings = con_ring_set;
         }
 
-        private int connect_bars(ref double[,] pt, ref double[,] bars,int subdiv, int horiz_div)
+        private int connect_bars(ref double[,] bars,int subdiv, int horiz_div)
         {
             int bar_num = 0;
             //Support pts
@@ -460,6 +460,60 @@ namespace Fraser
             }
             return bar_num;
         }
+        private void add_arm_bars(ref double[,] bars, ref int bar_num, List<Int32> connection_rings, int subdiv, int n_cabos, int horiz_div)
+        {
+            int last_tower_pt = 4+(4*subdiv)*(horiz_div-1);
+            //a*34 é o incremento para mudar de conjunto de braços
+            for (int a = 0; a < n_cabos / 2; a++)
+            {
+                for (int i = 0; i <= 2; i++)
+                {
+                    if (i == 0)
+                    {
+                        // connect w/ tower
+
+                        //Lower right
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a] - 1) + subdiv, last_tower_pt + i + a * 34);
+                        bar_num++;
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a] - 1)+2 * subdiv, last_tower_pt + 5 + a * 34);
+                        bar_num++;
+                        //Upper right
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a]) + subdiv, last_tower_pt + 9 + a * 34);
+                        bar_num++;
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a]) + 2 * subdiv, last_tower_pt + i + 13 + a * 34);
+                        bar_num++;
+
+                        //Lower left
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a] - 1), last_tower_pt + i + 17 + a * 34);
+                        bar_num++;
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a] - 1) + 3 * subdiv, last_tower_pt + i + 22 + a * 34);
+                        bar_num++;
+                        //Upper left
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a]), last_tower_pt + i + 26 + a * 34);
+                        bar_num++;
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a]) + 3 * subdiv, last_tower_pt + i + 30 + a * 34);
+                        bar_num++;
+
+
+                        //Diagonals
+                        //1st plane right
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a] - 1) + subdiv, last_tower_pt + 9 + a * 34);
+                        bar_num++;
+                        //1st plane left
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a] - 1), last_tower_pt + 26 + a * 34);
+                        bar_num++;
+
+                        //2nd plane right
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a] - 1) + 2 * subdiv, last_tower_pt + 13 + a * 34);
+                        bar_num++;
+                        //2nd plane left
+                        addBar(ref bars, bar_num, 4 + (4 + (subdiv - 1) * 4) * (connection_rings[0 + a] - 1) + 3 * subdiv, last_tower_pt + 30 + a * 34);
+                        bar_num++;
+
+                    }
+                }
+            }
+        }
         private int find_nearest(int altura, double horiz_div, double ring_z_step)
         {
             int nearest = -1;
@@ -494,6 +548,7 @@ namespace Fraser
             //add here more options as needed (active,section,Lcr etc etc)
             bar[3, numb] = 0;
         }
+
     }
 
     
