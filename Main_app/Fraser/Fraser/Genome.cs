@@ -511,6 +511,110 @@ namespace Fraser
                         bar_num++;
 
                     }
+
+                    //diagonals 1st plane right
+                    addBar(ref bars, bar_num, last_tower_pt+i+a*34, last_tower_pt + 10+i + a * 34);
+                    bar_num++;
+                    addBar(ref bars, bar_num, last_tower_pt + i + a * 34, last_tower_pt + 9 + i + a * 34);
+                    bar_num++;
+                    //diagonals 1st plane left
+                    addBar(ref bars, bar_num, last_tower_pt + 17 + i + a * 34, last_tower_pt + 27 + i + a * 34);
+                    bar_num++;
+                    addBar(ref bars, bar_num, last_tower_pt + 17 + i + a * 34, last_tower_pt + 26 + i + a * 34);
+                    bar_num++;
+
+                    //diagonals 2nd plane right
+                    addBar(ref bars, bar_num, last_tower_pt + 5 + i + a * 34, last_tower_pt + 14 + i + a * 34);
+                    bar_num++;
+                    addBar(ref bars, bar_num, last_tower_pt + 5 + i + a * 34, last_tower_pt + 13 + i + a * 34);
+                    bar_num++;
+
+                    //diagonals 2nd plane left
+                    addBar(ref bars, bar_num, last_tower_pt + 22 + i + a * 34, last_tower_pt + 31 + i + a * 34);
+                    bar_num++;
+                    addBar(ref bars, bar_num, last_tower_pt + 22 + i + a * 34, last_tower_pt + 30 + i + a * 34);
+                    bar_num++;
+
+                    //1st lower chord
+                    //right
+                    addBar(ref bars, bar_num, last_tower_pt + i + a * 34, last_tower_pt + 1 + i + a * 34);
+                    bar_num++;
+                    //left
+                    addBar(ref bars, bar_num, last_tower_pt + 17 + i + a * 34, last_tower_pt + 18 + i + a * 34);
+                    bar_num++;
+
+                    //2nd lower chord
+                    //right
+                    addBar(ref bars, bar_num, last_tower_pt + 5 + i + a * 34, last_tower_pt + 6 + i + a * 34);
+                    bar_num++;
+                    //left
+                    addBar(ref bars, bar_num, last_tower_pt + 22 + i + a * 34, last_tower_pt + 23 + i + a * 34);
+                    bar_num++;
+
+                    //1st upper chord
+                    //right
+                    addBar(ref bars, bar_num, last_tower_pt + 9 + i + a * 34, last_tower_pt + 10 + i + a * 34);
+                    bar_num++;
+                    //left
+                    addBar(ref bars, bar_num, last_tower_pt + 26 + i + a * 34, last_tower_pt + 27 + i + a * 34);
+                    bar_num++;
+
+                    //2nd upper chord
+
+                    addBar(ref bars, bar_num, last_tower_pt + 13 + i + a * 34, last_tower_pt + 14 + i + a * 34);
+                    bar_num++;
+                    addBar(ref bars, bar_num, last_tower_pt + 30 + i + a * 34, last_tower_pt + 31 + i + a * 34);
+                    bar_num++;
+
+                    //end lines
+                    if (i == 2)
+                    {
+                        //1nd lower chord
+                        //right
+                        addBar(ref bars, bar_num, last_tower_pt + 1 + i + a * 34, last_tower_pt + 2 + i + a * 34);
+                        bar_num++;
+                        //left
+                        addBar(ref bars, bar_num, last_tower_pt + 18 + i + a * 34, last_tower_pt + 19 + i + a * 34);
+                        bar_num++;
+
+                        //2nd lower chord
+                        //right
+                        addBar(ref bars, bar_num, last_tower_pt + 6 + i + a * 34, last_tower_pt + 4 + a * 34);
+                        bar_num++;
+                        //left
+                        addBar(ref bars, bar_num, last_tower_pt + 23 + i + a * 34, last_tower_pt + 21 + a * 34);
+                        bar_num++;
+
+                        //1st upper chord
+                        //right
+                        addBar(ref bars, bar_num, last_tower_pt + 10 + i + a * 34, last_tower_pt + 4 + a * 34);
+                        bar_num++;
+                        //left
+                        addBar(ref bars, bar_num, last_tower_pt + 27 + i + a * 34, last_tower_pt + 21 + a * 34);
+                        bar_num++;
+
+                        //2nd upper chord
+                        //right
+                        addBar(ref bars, bar_num, last_tower_pt + 14 + i + a * 34, last_tower_pt + 4 + a * 34);
+                        bar_num++;
+                        //left
+                        addBar(ref bars, bar_num, last_tower_pt + 31 + i + a * 34, last_tower_pt + 21 + a * 34);
+                        bar_num++;
+
+                        //Diagonals
+                        //1st plane right
+                        addBar(ref bars, bar_num, last_tower_pt + 1 + i + a * 34, last_tower_pt + 10 + i + a * 34);
+                        bar_num++;
+                        //1st plane left
+                        addBar(ref bars, bar_num, last_tower_pt + 18 + i + a * 34, last_tower_pt + 27 + i + a * 34);
+                        bar_num++;
+                        //2nd plane right
+                        addBar(ref bars, bar_num, last_tower_pt + 6 + i + a * 34, last_tower_pt + 14 + i + a * 34);
+                        bar_num++;
+                        //2nd plane left
+                        addBar(ref bars, bar_num, last_tower_pt + 23 + i + a * 34, last_tower_pt + 31 + i + a * 34);
+                        bar_num++;
+                    }
                 }
             }
         }
