@@ -13,6 +13,11 @@ namespace Fraser
 {
     public partial class Form1 : Form
     {
+        static private Population CurrentPop;
+        private Population LastPop;
+        private Genome BaseDNA;
+        private int _individual = 0;
+
         public Form1()
         {
             InitializeComponent();
@@ -42,34 +47,32 @@ namespace Fraser
 
         private void Start_geom_Click(object sender, EventArgs e)
         {
-           IRobotApplication robApp; robApp = new RobotApplication();
-            if (robApp.Visible == 0) { robApp.Interactive = 1;robApp.Visible = 1; }
+           //robApp = new RobotApplication();
+           // if (robApp.Visible == 0) { robApp.Interactive = 1;robApp.Visible = 1; }
             
             //create []hcabos
             int[] h_cabos = new int[3] {(int)h_cabo1_int.Value, (int)h_cabo2_int.Value, (int)h_cabo3_int.Value };
             //create []dist_centro
             double[] dist_centro = new double[3] { (double)w_cabo1_int.Value, (double)w_cabo2_int.Value, (double)w_cabo3_int.Value };
 
-
-            Genome geometry = new Fraser.Genome((double)Largura_ap_int.Value,(int)Altura_int.Value,(double)h_div_int.Value,(double)subdiv_int.Value,(int)n_cabos_int.Value,h_cabos,dist_centro);
-
-            for (int i = 0; i < geometry.pt_cnt; i++)
-            {
-                robApp.Project.Structure.Nodes.Create((int)geometry.pt_cloud[0, i]+1/*robot nao aceita 0*/, geometry.pt_cloud[1, i], geometry.pt_cloud[2, i], geometry.pt_cloud[3, i]);
-            }
             
-            for (int i =0;i< robApp.Project.Structure.Bars.FreeNumber; i++)
-            {
-                robApp.Project.Structure.Bars.Delete(i);
-            }
-
-            for (int i = 0; i < geometry.bar_cnt; i++)
-            {
-                robApp.Project.Structure.Bars.Create((int)geometry.bars[0, i]+1, (int)geometry.bars[1, i]+1, (int)geometry.bars[2, i]+1);
-            }
-            robApp.Project.ViewMngr.Refresh();
+            BaseDNA = new Fraser.Genome((double)Largura_ap_int.Value,(int)Altura_int.Value,(double)h_div_int.Value,(double)subdiv_int.Value,(int)n_cabos_int.Value,h_cabos,dist_centro);
+            CurrentPop = new Population((int)Population_cnt.Value, BaseDNA);
+            
+          /* robApp.Project.ViewMngr.Refresh();
+            */
            
             
+        }
+
+        private void draw_Click(object sender, EventArgs e)
+        {
+            //Console.Write(CurrentPop.ind[_individual]._DNA.pt_cloud[1, 6]);
+               Robot_call.update_pts(CurrentPop.ind[_individual]._DNA);
+               Robot_call.update_bars(CurrentPop.ind[_individual]._DNA);
+               Robot_call.Refresh();
+            
+            _individual++;
         }
     }
 }

@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Fraser
 {
-    class Genome
+     public class Genome
     {
         //vars
         public double[,] pt_cloud;
         //[numero,x,y,z]
         public double[,] bars;
         //[numero,pt1,pt2,secçao,activo]
-        public int pt_cnt;
-        public int bar_cnt;
-        private List<Int32> connection_rings;
+        static public int pt_cnt;
+        static public int bar_cnt;
+        static private List<Int32> connection_rings;
 
         //methods
         //constructor
@@ -32,6 +32,12 @@ namespace Fraser
             add_arm_bars(ref bars, ref bar_cnt, connection_rings, (int)subdiv, N_cabos,(int)horiz_div);
             //
             
+        }
+        public Genome()
+        {
+            pt_cloud = new double[4, pt_cnt];
+            bars = new double[4, bar_cnt];
+
         }
 
         private void pt_add_tower(ref double[,] pt, double Largura, int Altura, double horiz_div, double subdiv,ref int _pt_cnt)

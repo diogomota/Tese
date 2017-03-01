@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.GroupBox Cabos;
-            this.tabs = new System.Windows.Forms.TabControl();
-            this.geom_tab = new System.Windows.Forms.TabPage();
-            this.Start_geom = new System.Windows.Forms.Button();
             this.w_cabo2_int = new System.Windows.Forms.NumericUpDown();
             this.w_cabo3_int = new System.Windows.Forms.NumericUpDown();
             this.h_cabo2_int = new System.Windows.Forms.NumericUpDown();
@@ -44,6 +41,9 @@
             this.h_cabo2 = new System.Windows.Forms.Label();
             this.w_cabo1 = new System.Windows.Forms.Label();
             this.h_cabo1 = new System.Windows.Forms.Label();
+            this.tabs = new System.Windows.Forms.TabControl();
+            this.geom_tab = new System.Windows.Forms.TabPage();
+            this.Start_geom = new System.Windows.Forms.Button();
             this.grp_box_geom_geral = new System.Windows.Forms.GroupBox();
             this.N_cabos = new System.Windows.Forms.Label();
             this.Altura_int = new System.Windows.Forms.NumericUpDown();
@@ -56,9 +56,11 @@
             this.subdiv = new System.Windows.Forms.Label();
             this.subdiv_int = new System.Windows.Forms.NumericUpDown();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.Population_cnt = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.draw = new System.Windows.Forms.Button();
             Cabos = new System.Windows.Forms.GroupBox();
-            this.tabs.SuspendLayout();
-            this.geom_tab.SuspendLayout();
             Cabos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.w_cabo2_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.w_cabo3_int)).BeginInit();
@@ -66,47 +68,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.h_cabo3_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.w_cabo1_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_cabo1_int)).BeginInit();
+            this.tabs.SuspendLayout();
+            this.geom_tab.SuspendLayout();
             this.grp_box_geom_geral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Altura_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Largura_ap_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.n_cabos_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_div_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.subdiv_int)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Population_cnt)).BeginInit();
             this.SuspendLayout();
-            // 
-            // tabs
-            // 
-            this.tabs.Controls.Add(this.geom_tab);
-            this.tabs.Controls.Add(this.tabPage2);
-            this.tabs.Location = new System.Drawing.Point(12, 12);
-            this.tabs.Name = "tabs";
-            this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(519, 327);
-            this.tabs.TabIndex = 0;
-            // 
-            // geom_tab
-            // 
-            this.geom_tab.Controls.Add(this.Start_geom);
-            this.geom_tab.Controls.Add(Cabos);
-            this.geom_tab.Controls.Add(this.grp_box_geom_geral);
-            this.geom_tab.Location = new System.Drawing.Point(4, 22);
-            this.geom_tab.Name = "geom_tab";
-            this.geom_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.geom_tab.Size = new System.Drawing.Size(511, 301);
-            this.geom_tab.TabIndex = 0;
-            this.geom_tab.Text = "Geometry";
-            this.geom_tab.UseVisualStyleBackColor = true;
-            this.geom_tab.Click += new System.EventHandler(this.geom_tab_Click);
-            // 
-            // Start_geom
-            // 
-            this.Start_geom.Location = new System.Drawing.Point(397, 264);
-            this.Start_geom.Name = "Start_geom";
-            this.Start_geom.Size = new System.Drawing.Size(93, 31);
-            this.Start_geom.TabIndex = 12;
-            this.Start_geom.Text = "Gerar";
-            this.Start_geom.UseVisualStyleBackColor = true;
-            this.Start_geom.Click += new System.EventHandler(this.Start_geom_Click);
             // 
             // Cabos
             // 
@@ -312,6 +284,40 @@
             this.h_cabo1.TabIndex = 0;
             this.h_cabo1.Text = "Altura cabos 1/2 :";
             // 
+            // tabs
+            // 
+            this.tabs.Controls.Add(this.geom_tab);
+            this.tabs.Controls.Add(this.tabPage2);
+            this.tabs.Location = new System.Drawing.Point(12, 12);
+            this.tabs.Name = "tabs";
+            this.tabs.SelectedIndex = 0;
+            this.tabs.Size = new System.Drawing.Size(519, 327);
+            this.tabs.TabIndex = 0;
+            // 
+            // geom_tab
+            // 
+            this.geom_tab.Controls.Add(this.Start_geom);
+            this.geom_tab.Controls.Add(Cabos);
+            this.geom_tab.Controls.Add(this.grp_box_geom_geral);
+            this.geom_tab.Location = new System.Drawing.Point(4, 22);
+            this.geom_tab.Name = "geom_tab";
+            this.geom_tab.Padding = new System.Windows.Forms.Padding(3);
+            this.geom_tab.Size = new System.Drawing.Size(511, 301);
+            this.geom_tab.TabIndex = 0;
+            this.geom_tab.Text = "Geometry";
+            this.geom_tab.UseVisualStyleBackColor = true;
+            this.geom_tab.Click += new System.EventHandler(this.geom_tab_Click);
+            // 
+            // Start_geom
+            // 
+            this.Start_geom.Location = new System.Drawing.Point(397, 264);
+            this.Start_geom.Name = "Start_geom";
+            this.Start_geom.Size = new System.Drawing.Size(93, 31);
+            this.Start_geom.TabIndex = 12;
+            this.Start_geom.Text = "Gerar";
+            this.Start_geom.UseVisualStyleBackColor = true;
+            this.Start_geom.Click += new System.EventHandler(this.Start_geom_Click);
+            // 
             // grp_box_geom_geral
             // 
             this.grp_box_geom_geral.Controls.Add(this.N_cabos);
@@ -506,13 +512,67 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.draw);
+            this.tabPage2.Controls.Add(this.Population_cnt);
+            this.tabPage2.Controls.Add(this.label2);
+            this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(511, 301);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Evolution Settings";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // Population_cnt
+            // 
+            this.Population_cnt.Location = new System.Drawing.Point(90, 21);
+            this.Population_cnt.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.Population_cnt.Minimum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.Population_cnt.Name = "Population_cnt";
+            this.Population_cnt.Size = new System.Drawing.Size(57, 20);
+            this.Population_cnt.TabIndex = 2;
+            this.Population_cnt.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(27, 108);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(90, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Max Generations:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(24, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Population:";
+            // 
+            // draw
+            // 
+            this.draw.Location = new System.Drawing.Point(278, 210);
+            this.draw.Name = "draw";
+            this.draw.Size = new System.Drawing.Size(136, 52);
+            this.draw.TabIndex = 3;
+            this.draw.Text = "DRAW";
+            this.draw.UseVisualStyleBackColor = true;
+            this.draw.Click += new System.EventHandler(this.draw_Click);
             // 
             // Form1
             // 
@@ -523,8 +583,6 @@
             this.Name = "Form1";
             this.Text = "Fraser";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.tabs.ResumeLayout(false);
-            this.geom_tab.ResumeLayout(false);
             Cabos.ResumeLayout(false);
             Cabos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.w_cabo2_int)).EndInit();
@@ -533,6 +591,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.h_cabo3_int)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.w_cabo1_int)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_cabo1_int)).EndInit();
+            this.tabs.ResumeLayout(false);
+            this.geom_tab.ResumeLayout(false);
             this.grp_box_geom_geral.ResumeLayout(false);
             this.grp_box_geom_geral.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Altura_int)).EndInit();
@@ -540,6 +600,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.n_cabos_int)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_div_int)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.subdiv_int)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Population_cnt)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -573,6 +636,10 @@
         private System.Windows.Forms.NumericUpDown w_cabo2_int;
         private System.Windows.Forms.NumericUpDown w_cabo3_int;
         private System.Windows.Forms.Button Start_geom;
+        private System.Windows.Forms.NumericUpDown Population_cnt;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button draw;
     }
 }
 
