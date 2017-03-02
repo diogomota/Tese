@@ -70,6 +70,7 @@ namespace Fraser
             //Console.Write(CurrentPop.ind[_individual]._DNA.pt_cloud[1, 6]);
                Robot_call.update_pts(CurrentPop.ind[_individual]._DNA);
                Robot_call.update_bars(CurrentPop.ind[_individual]._DNA);
+                 Robot_call.Addsupports();
                Robot_call.Refresh();
             
             _individual++;

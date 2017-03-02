@@ -10,6 +10,9 @@ namespace Fraser
     static class Robot_call
     {
         static IRobotApplication robApp;
+
+        static IRobotLabel Support_type; //will adopt the support named "support" in robot
+
         static int instances = 0;
 
         static Robot_call()
@@ -34,7 +37,7 @@ namespace Fraser
         }
         public static void update_pts(Genome geometry)
         {
-            
+            Console.Write(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_SUPPORT).Get(2).ToString());
             Console.Write(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Get(2).ToString());
             for (int i = 0; i < Genome.pt_cnt; i++)
             {
@@ -56,6 +59,15 @@ namespace Fraser
         public static void Refresh()
         {
             robApp.Project.ViewMngr.Refresh();
+        }
+        public static void Addsupports()
+        {
+            
+            for (int i = 1; i <= 4; i++)
+            {
+                robApp.Project.Structure.Nodes.Get(i).SetLabel(IRobotLabelType.I_LT_SUPPORT, "Fixed");
+            }
+
         }
         /*static double[,] Run_analysis()
         {
