@@ -56,10 +56,10 @@
             this.subdiv = new System.Windows.Forms.Label();
             this.subdiv_int = new System.Windows.Forms.NumericUpDown();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.draw = new System.Windows.Forms.Button();
             this.Population_cnt = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.draw = new System.Windows.Forms.Button();
             Cabos = new System.Windows.Forms.GroupBox();
             Cabos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.w_cabo2_int)).BeginInit();
@@ -201,7 +201,7 @@
             this.w_cabo1_int.Size = new System.Drawing.Size(54, 20);
             this.w_cabo1_int.TabIndex = 14;
             this.w_cabo1_int.Value = new decimal(new int[] {
-            10,
+            30,
             0,
             0,
             0});
@@ -234,7 +234,7 @@
             this.h_cabo1_int.Size = new System.Drawing.Size(54, 20);
             this.h_cabo1_int.TabIndex = 13;
             this.h_cabo1_int.Value = new decimal(new int[] {
-            4,
+            200,
             0,
             0,
             0});
@@ -367,7 +367,7 @@
             this.Altura_int.Size = new System.Drawing.Size(54, 20);
             this.Altura_int.TabIndex = 9;
             this.Altura_int.Value = new decimal(new int[] {
-            4,
+            220,
             0,
             0,
             0});
@@ -400,7 +400,7 @@
             this.Largura_ap_int.Size = new System.Drawing.Size(54, 20);
             this.Largura_ap_int.TabIndex = 8;
             this.Largura_ap_int.Value = new decimal(new int[] {
-            4,
+            20,
             0,
             0,
             0});
@@ -471,7 +471,7 @@
             this.h_div_int.Size = new System.Drawing.Size(54, 20);
             this.h_div_int.TabIndex = 6;
             this.h_div_int.Value = new decimal(new int[] {
-            3,
+            15,
             0,
             0,
             0});
@@ -524,6 +524,16 @@
             this.tabPage2.Text = "Evolution Settings";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // draw
+            // 
+            this.draw.Location = new System.Drawing.Point(278, 210);
+            this.draw.Name = "draw";
+            this.draw.Size = new System.Drawing.Size(136, 52);
+            this.draw.TabIndex = 3;
+            this.draw.Text = "DRAW";
+            this.draw.UseVisualStyleBackColor = true;
+            this.draw.Click += new System.EventHandler(this.draw_Click);
+            // 
             // Population_cnt
             // 
             this.Population_cnt.Location = new System.Drawing.Point(90, 21);
@@ -563,16 +573,6 @@
             this.label1.Size = new System.Drawing.Size(60, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Population:";
-            // 
-            // draw
-            // 
-            this.draw.Location = new System.Drawing.Point(278, 210);
-            this.draw.Name = "draw";
-            this.draw.Size = new System.Drawing.Size(136, 52);
-            this.draw.TabIndex = 3;
-            this.draw.Text = "DRAW";
-            this.draw.UseVisualStyleBackColor = true;
-            this.draw.Click += new System.EventHandler(this.draw_Click);
             // 
             // Form1
             // 

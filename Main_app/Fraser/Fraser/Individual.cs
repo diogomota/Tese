@@ -23,12 +23,12 @@ namespace Fraser
             _DNA.pt_cloud = (double[,])_baseDNA.pt_cloud.Clone(); // copy by value the pt cloud[]
             _DNA.bars = (double[,])_baseDNA.bars.Clone(); //copy by value the bars[]
 
-           for (int i = 4; i < Genome.pt_cnt; i++)
+           for (int i = 4; i < Genome.pt_cnt; i++) // start at 4 to fix supports
             {
                //this._DNA.pt_cloud[0, i] = _baseDNA.pt_cloud[0, i];
-               this._DNA.pt_cloud[1, i] +=  rndm.Next(-1, 1) * rndm.NextDouble();
-               this._DNA.pt_cloud[2, i] +=  rndm.Next(-1, 1) * rndm.NextDouble();
-               this._DNA.pt_cloud[3, i] +=  rndm.Next(-1, 1) * rndm.NextDouble();
+               this._DNA.pt_cloud[1, i] +=  rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4,i];//X
+               this._DNA.pt_cloud[2, i] +=  rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Y
+               this._DNA.pt_cloud[3, i] +=  rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Z
             }
 
             fitness = rndm.Next(-1, 1) * rndm.NextDouble();//Ok (tambem dentro do for)

@@ -11,6 +11,7 @@ namespace Fraser
     {
         static IRobotApplication robApp;
         static int instances = 0;
+
         static Robot_call()
         {
             if (robApp == null)
@@ -20,11 +21,21 @@ namespace Fraser
                 if (robApp.Visible == 0) { robApp.Interactive = 1; robApp.Visible = 1; }
                 instances = 1;
             }
+            
         }
-
+        public static void Start()
+        {
+            // define section Db
+            robApp.Project.Preferences.SetCurrentDatabase(IRobotDatabaseType.I_DT_SECTIONS, "DIN");
+            //define materials Db
+            robApp.Project.Preferences.Materials.Load("Eurocode");
+            //set default material S235
+            robApp.Project.Preferences.Materials.SetDefault(IRobotMaterialType.I_MT_STEEL, "S 235");
+        }
         public static void update_pts(Genome geometry)
         {
-           
+            
+            Console.Write(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Get(2).ToString());
             for (int i = 0; i < Genome.pt_cnt; i++)
             {
                 robApp.Project.Structure.Nodes.Create((int)geometry.pt_cloud[0, i] + 1, geometry.pt_cloud[1, i], geometry.pt_cloud[2, i], geometry.pt_cloud[3, i]);

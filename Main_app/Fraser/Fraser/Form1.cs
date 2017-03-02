@@ -21,7 +21,7 @@ namespace Fraser
         public Form1()
         {
             InitializeComponent();
-            
+            Robot_call.Start();
         }
 
         private void Form1_Load(object sender, EventArgs e)
