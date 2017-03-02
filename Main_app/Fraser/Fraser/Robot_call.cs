@@ -11,7 +11,7 @@ namespace Fraser
     {
         static IRobotApplication robApp;
 
-        static IRobotLabel Support_type; //will adopt the support named "support" in robot
+        static List<String> section_names = new List<String>();
 
         static int instances = 0;
 
@@ -37,8 +37,8 @@ namespace Fraser
         }
         public static void update_pts(Genome geometry)
         {
-            Console.Write(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_SUPPORT).Get(2).ToString());
-            Console.Write(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Get(2).ToString());
+            //Console.Write(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_SUPPORT).Get(2).ToString());
+            //Console.Write(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Get(2).ToString());
             for (int i = 0; i < Genome.pt_cnt; i++)
             {
                 robApp.Project.Structure.Nodes.Create((int)geometry.pt_cloud[0, i] + 1, geometry.pt_cloud[1, i], geometry.pt_cloud[2, i], geometry.pt_cloud[3, i]);
@@ -68,6 +68,13 @@ namespace Fraser
                 robApp.Project.Structure.Nodes.Get(i).SetLabel(IRobotLabelType.I_LT_SUPPORT, "Fixed");
             }
 
+        }
+        public static void Get_sections()
+        {
+           for (int i = 1;i<= robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Count; i++)
+            {
+                section_names.Add(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Get(i).ToString());
+            }
         }
         /*static double[,] Run_analysis()
         {
