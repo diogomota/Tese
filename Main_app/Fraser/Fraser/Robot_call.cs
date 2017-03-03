@@ -54,6 +54,8 @@ namespace Fraser
             for (int i = 0; i < Genome.bar_cnt; i++)
             {
                 robApp.Project.Structure.Bars.Create((int)geometry.bars[0, i] + 1, (int)geometry.bars[1, i] + 1, (int)geometry.bars[2, i] + 1);
+                robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, section_names[0]);
+                robApp.Project.Structure.Bars.Get((int)geometry.bars[0,i]+1).SetLabel(IRobotLabelType.I_LT_MATERIAL, "AÇO");
             }
         }
         public static void Refresh()
