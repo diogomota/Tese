@@ -67,14 +67,14 @@ namespace Fraser
 
         private void draw_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
             //Console.Write(CurrentPop.ind[_individual]._DNA.pt_cloud[1, 6]);
             Robot_call.Get_sections();
             Robot_call.update_pts(CurrentPop.ind[_individual]._DNA);
             Robot_call.update_bars(CurrentPop.ind[_individual]._DNA);
             Robot_call.Addsupports();
-            sw.Stop();
-            Console.Write(sw.ElapsedMilliseconds);
+
+            Robot_call.Run_analysis();
+
             Robot_call.Refresh();
             
             _individual++;

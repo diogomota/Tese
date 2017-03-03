@@ -78,9 +78,9 @@ namespace Fraser
                 section_names.Add(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Get(i).ToString());
             }
         }
-        /*static double[,] Run_analysis()
+        public static void Run_analysis()
         {
-            return;
-        }*/
+            robApp.Project.CalcEngine.Calculate();
+        }
     }
 }
