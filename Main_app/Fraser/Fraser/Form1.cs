@@ -83,5 +83,16 @@ namespace Fraser
 
             _individual++;
         }
+
+        private void btn_get_sec_Click(object sender, EventArgs e)
+        {
+            Robot_call.Get_sections();
+            Sec_list.DataSource = Robot_call.section_names;
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

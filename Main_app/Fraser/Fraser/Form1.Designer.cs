@@ -56,6 +56,9 @@
             this.subdiv = new System.Windows.Forms.Label();
             this.subdiv_int = new System.Windows.Forms.NumericUpDown();
             this.Evol_tab = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btn_get_sec = new System.Windows.Forms.Button();
+            this.Sec_list = new System.Windows.Forms.ListBox();
             this.draw = new System.Windows.Forms.Button();
             this.Population_cnt = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
@@ -512,6 +515,9 @@
             // 
             // Evol_tab
             // 
+            this.Evol_tab.Controls.Add(this.label3);
+            this.Evol_tab.Controls.Add(this.btn_get_sec);
+            this.Evol_tab.Controls.Add(this.Sec_list);
             this.Evol_tab.Controls.Add(this.draw);
             this.Evol_tab.Controls.Add(this.Population_cnt);
             this.Evol_tab.Controls.Add(this.label2);
@@ -523,6 +529,36 @@
             this.Evol_tab.TabIndex = 1;
             this.Evol_tab.Text = "Evolution Settings";
             this.Evol_tab.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 19);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(83, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Sections to use:";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
+            // btn_get_sec
+            // 
+            this.btn_get_sec.Location = new System.Drawing.Point(6, 123);
+            this.btn_get_sec.Name = "btn_get_sec";
+            this.btn_get_sec.Size = new System.Drawing.Size(120, 23);
+            this.btn_get_sec.TabIndex = 5;
+            this.btn_get_sec.Text = "Get Sections";
+            this.btn_get_sec.UseVisualStyleBackColor = true;
+            this.btn_get_sec.Click += new System.EventHandler(this.btn_get_sec_Click);
+            // 
+            // Sec_list
+            // 
+            this.Sec_list.Cursor = System.Windows.Forms.Cursors.Default;
+            this.Sec_list.FormattingEnabled = true;
+            this.Sec_list.Location = new System.Drawing.Point(6, 35);
+            this.Sec_list.Name = "Sec_list";
+            this.Sec_list.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.Sec_list.Size = new System.Drawing.Size(120, 82);
+            this.Sec_list.TabIndex = 4;
             // 
             // draw
             // 
@@ -536,7 +572,7 @@
             // 
             // Population_cnt
             // 
-            this.Population_cnt.Location = new System.Drawing.Point(90, 21);
+            this.Population_cnt.Location = new System.Drawing.Point(72, 186);
             this.Population_cnt.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -559,7 +595,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(27, 108);
+            this.label2.Location = new System.Drawing.Point(6, 230);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 13);
             this.label2.TabIndex = 1;
@@ -568,7 +604,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(24, 23);
+            this.label1.Location = new System.Drawing.Point(6, 188);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 13);
             this.label1.TabIndex = 0;
@@ -640,6 +676,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button draw;
+        private System.Windows.Forms.Button btn_get_sec;
+        private System.Windows.Forms.ListBox Sec_list;
+        private System.Windows.Forms.Label label3;
     }
 }
 

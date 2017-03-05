@@ -11,7 +11,7 @@ namespace Fraser
     {
         static IRobotApplication robApp;
 
-        static List<String> section_names = new List<String>();
+        public static List<String> section_names = new List<String>();
 
         static IRobotBarForceServer results;
 
