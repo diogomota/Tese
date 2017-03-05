@@ -55,28 +55,32 @@ namespace Fraser
             //create []dist_centro
             double[] dist_centro = new double[3] { (double)w_cabo1_int.Value, (double)w_cabo2_int.Value, (double)w_cabo3_int.Value };
 
-            
+            if( BaseDNA != null || CurrentPop != null) { BaseDNA = null; CurrentPop = null; }
             BaseDNA = new Fraser.Genome((double)Largura_ap_int.Value,(int)Altura_int.Value,(double)h_div_int.Value,(double)subdiv_int.Value,(int)n_cabos_int.Value,h_cabos,dist_centro);
             CurrentPop = new Population((int)Population_cnt.Value, BaseDNA);
-            
-          /* robApp.Project.ViewMngr.Refresh();
-            */
-           
+
+            Robot_call.Start_pts(BaseDNA);
+            Robot_call.Start_bars(BaseDNA);
+            Robot_call.Refresh();
             
         }
 
         private void draw_Click(object sender, EventArgs e)
         {
-            //Console.Write(CurrentPop.ind[_individual]._DNA.pt_cloud[1, 6]);
+            Robot_call.Robot_interactive(false);
+
             Robot_call.Get_sections();
-            Robot_call.update_pts(CurrentPop.ind[_individual]._DNA);
-            Robot_call.update_bars(CurrentPop.ind[_individual]._DNA);
+            Robot_call.Update_pts(CurrentPop.ind[_individual]._DNA);
+
+            if (_individual == 0)
+            {
+                Robot_call.Update_bars(CurrentPop.ind[_individual]._DNA);
+            }
             Robot_call.Addsupports();
-
             Robot_call.Run_analysis();
-
             Robot_call.Refresh();
-            
+            Robot_call.Robot_interactive(true);
+
             _individual++;
         }
     }

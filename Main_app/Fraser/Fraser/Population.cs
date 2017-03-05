@@ -10,7 +10,7 @@ namespace Fraser
     {
        // public Individual[] ind;
         public List<Individual> ind;
-        static public Random rand= new Random(0);
+        static public Random rand = new Random(0); //o random seeder so se inicia uma vez para a população
 
         public Population (int max_pop, Genome _baseDNA){
             //this.ind = new Individual[max_pop];
@@ -19,8 +19,7 @@ namespace Fraser
             {
                 
                 ind.Add(new Individual(_baseDNA, ref rand));
-                //this.ind[i] =  new Individual(_baseDNA, ref rand);
-                //KO
+
             }
         }
     }

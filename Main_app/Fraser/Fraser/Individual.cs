@@ -9,16 +9,15 @@ namespace Fraser
     public class Individual
     {
         public Genome _DNA;
-        double fitness;
+        public double fitness;
 
         public Individual(Genome _baseDNA,ref Random rndm)
         {
-            //o _baseDNA tambe esta a ser mudado... o constructor tem de fixar o base dna e depois outro metodo faz a mutaçao inicial
-            //que sera chamada da population 
             this.fitness = 0.0;
 
             _DNA = new Genome(); // create new Genome
-            //if the following is not done the same matrix is allways changing (need to create copies)
+
+            //if the following is not done the same matrix is always changing (need to create copies):
 
             _DNA.pt_cloud = (double[,])_baseDNA.pt_cloud.Clone(); // copy by value the pt cloud[]
             _DNA.bars = (double[,])_baseDNA.bars.Clone(); //copy by value the bars[]
@@ -29,15 +28,15 @@ namespace Fraser
                this._DNA.pt_cloud[1, i] +=  rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4,i];//X
                this._DNA.pt_cloud[2, i] +=  rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Y
                this._DNA.pt_cloud[3, i] +=  rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Z
-            }
-
-            fitness = rndm.Next(-1, 1) * rndm.NextDouble();//Ok (tambem dentro do for)
+            } 
         }
         
 
         public void Evaluate()
         {
-
+            //call robot_call.GetWeight() get tons
+            //get matrix with N V MY Mz for each bar
+            //plug that matrix in the EC3 check
         }
     }
 }

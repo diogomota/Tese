@@ -55,7 +55,7 @@
             this.h_div_int = new System.Windows.Forms.NumericUpDown();
             this.subdiv = new System.Windows.Forms.Label();
             this.subdiv_int = new System.Windows.Forms.NumericUpDown();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.Evol_tab = new System.Windows.Forms.TabPage();
             this.draw = new System.Windows.Forms.Button();
             this.Population_cnt = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
@@ -76,7 +76,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.n_cabos_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_div_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.subdiv_int)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.Evol_tab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Population_cnt)).BeginInit();
             this.SuspendLayout();
             // 
@@ -287,7 +287,7 @@
             // tabs
             // 
             this.tabs.Controls.Add(this.geom_tab);
-            this.tabs.Controls.Add(this.tabPage2);
+            this.tabs.Controls.Add(this.Evol_tab);
             this.tabs.Location = new System.Drawing.Point(12, 12);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
@@ -510,19 +510,19 @@
             0});
             this.subdiv_int.ValueChanged += new System.EventHandler(this.subdiv_int_ValueChanged);
             // 
-            // tabPage2
+            // Evol_tab
             // 
-            this.tabPage2.Controls.Add(this.draw);
-            this.tabPage2.Controls.Add(this.Population_cnt);
-            this.tabPage2.Controls.Add(this.label2);
-            this.tabPage2.Controls.Add(this.label1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(511, 301);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Evolution Settings";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.Evol_tab.Controls.Add(this.draw);
+            this.Evol_tab.Controls.Add(this.Population_cnt);
+            this.Evol_tab.Controls.Add(this.label2);
+            this.Evol_tab.Controls.Add(this.label1);
+            this.Evol_tab.Location = new System.Drawing.Point(4, 22);
+            this.Evol_tab.Name = "Evol_tab";
+            this.Evol_tab.Padding = new System.Windows.Forms.Padding(3);
+            this.Evol_tab.Size = new System.Drawing.Size(511, 301);
+            this.Evol_tab.TabIndex = 1;
+            this.Evol_tab.Text = "Evolution Settings";
+            this.Evol_tab.UseVisualStyleBackColor = true;
             // 
             // draw
             // 
@@ -600,8 +600,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.n_cabos_int)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_div_int)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.subdiv_int)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.Evol_tab.ResumeLayout(false);
+            this.Evol_tab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Population_cnt)).EndInit();
             this.ResumeLayout(false);
 
@@ -617,7 +617,7 @@
         private System.Windows.Forms.Label horiz_div;
         private System.Windows.Forms.Label Altura;
         private System.Windows.Forms.Label Largura_ap;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage Evol_tab;
         private System.Windows.Forms.GroupBox grp_box_geom_geral;
         private System.Windows.Forms.NumericUpDown Altura_int;
         private System.Windows.Forms.NumericUpDown Largura_ap_int;

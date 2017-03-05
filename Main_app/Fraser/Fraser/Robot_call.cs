@@ -13,6 +13,8 @@ namespace Fraser
 
         static List<String> section_names = new List<String>();
 
+        static IRobotBarForceServer results;
+
         static int instances = 0;
 
         static Robot_call()
@@ -26,6 +28,14 @@ namespace Fraser
             }
             
         }
+        public static void Robot_interactive(bool a)
+        {
+            if (a) {
+                robApp.Interactive = 1;
+            } else {
+                robApp.Interactive = 0;
+            }
+        }
         public static void Start()
         {
             // define section Db
@@ -34,29 +44,56 @@ namespace Fraser
             robApp.Project.Preferences.Materials.Load("Eurocode");
             //set default material S235
             robApp.Project.Preferences.Materials.SetDefault(IRobotMaterialType.I_MT_STEEL, "S 235");
+           
         }
-        public static void update_pts(Genome geometry)
+        public static void Start_pts(Genome geometry)
         {
-            //Console.Write(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_SUPPORT).Get(2).ToString());
-            //Console.Write(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Get(2).ToString());
+            if (robApp.Project.Structure.Nodes.GetAll().Count != 0) // delete any existing pts
+            { 
+                for (int i = robApp.Project.Structure.Nodes.GetAll().Count; i > 0; i--)
+                {
+                    robApp.Project.Structure.Nodes.Delete(i);
+                }
+            }
+           
             for (int i = 0; i < Genome.pt_cnt; i++)
             {
                 robApp.Project.Structure.Nodes.Create((int)geometry.pt_cloud[0, i] + 1, geometry.pt_cloud[1, i], geometry.pt_cloud[2, i], geometry.pt_cloud[3, i]);
-            }//+1 porque robot nao aceita barra 0 e pt 0
+            }//+1 porque robot nao aceita pt 0
+               
         }
-        public static void update_bars(Genome geometry)
+
+        public static void Start_bars(Genome geometry)
         {
             for (int i = 0; i < robApp.Project.Structure.Bars.FreeNumber; i++)
             {
                 robApp.Project.Structure.Bars.Delete(i);
             }
-
             for (int i = 0; i < Genome.bar_cnt; i++)
             {
                 robApp.Project.Structure.Bars.Create((int)geometry.bars[0, i] + 1, (int)geometry.bars[1, i] + 1, (int)geometry.bars[2, i] + 1);
+            }
+        }
+
+        public static void Update_pts(Genome geometry)
+        {
+            //Console.Write(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_SUPPORT).Get(2).ToString());
+            //Console.Write(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Get(2).ToString());
+
+            for (int i = 0; i < Genome.pt_cnt; i++)
+            {
+                robApp.Project.Structure.Nodes.Create((int)geometry.pt_cloud[0, i] + 1, geometry.pt_cloud[1, i], geometry.pt_cloud[2, i], geometry.pt_cloud[3, i]);
+            }//+1 porque robot nao aceita barra 0 e pt 0
+
+        }
+        public static void Update_bars(Genome geometry)
+        {
+            for (int i = 0; i < Genome.bar_cnt; i++)
+            {
                 robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, section_names[0]);
                 robApp.Project.Structure.Bars.Get((int)geometry.bars[0,i]+1).SetLabel(IRobotLabelType.I_LT_MATERIAL, "AÇO");
             }
+            // robApp.Project.Structure.Bars.SetInactive("3"); funciona
         }
         public static void Refresh()
         {
@@ -81,6 +118,8 @@ namespace Fraser
         public static void Run_analysis()
         {
             robApp.Project.CalcEngine.Calculate();
+            results = robApp.Project.Structure.Results.Bars.Forces;
+           Console.Write( results.Value(3, 1, 0).FX);
         }
     }
 }
