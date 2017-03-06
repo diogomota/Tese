@@ -300,6 +300,7 @@
             // geom_tab
             // 
             this.geom_tab.Controls.Add(this.Start_geom);
+            this.geom_tab.Controls.Add(this.btn_get_sec);
             this.geom_tab.Controls.Add(Cabos);
             this.geom_tab.Controls.Add(this.grp_box_geom_geral);
             this.geom_tab.Location = new System.Drawing.Point(4, 22);
@@ -516,7 +517,6 @@
             // Evol_tab
             // 
             this.Evol_tab.Controls.Add(this.label3);
-            this.Evol_tab.Controls.Add(this.btn_get_sec);
             this.Evol_tab.Controls.Add(this.Sec_list);
             this.Evol_tab.Controls.Add(this.draw);
             this.Evol_tab.Controls.Add(this.Population_cnt);
@@ -542,7 +542,7 @@
             // 
             // btn_get_sec
             // 
-            this.btn_get_sec.Location = new System.Drawing.Point(6, 123);
+            this.btn_get_sec.Location = new System.Drawing.Point(271, 268);
             this.btn_get_sec.Name = "btn_get_sec";
             this.btn_get_sec.Size = new System.Drawing.Size(120, 23);
             this.btn_get_sec.TabIndex = 5;

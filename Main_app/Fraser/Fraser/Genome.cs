@@ -15,6 +15,7 @@ namespace Fraser
         //[numero,pt1,pt2,secçao,activo]
         static public int pt_cnt;
         static public int bar_cnt;
+        static public int towerBar_cnt;
         static private List<Int32> connection_rings;
 
         //Constants
@@ -39,12 +40,12 @@ namespace Fraser
             bar_cnt = connect_bars(ref bars,(int)subdiv,(int)horiz_div);
             add_arm_bars(ref bars, ref bar_cnt, connection_rings, (int)subdiv, N_cabos,(int)horiz_div);
             //
-            
+            towerBar_cnt = bar_cnt - 36 * N_cabos;
         }
         //2nd constructor, to use when creating a new individual
         public Genome()
         {
-            pt_cloud = new double[4, pt_cnt];
+            pt_cloud = new double[5, pt_cnt];
             bars = new double[4, bar_cnt];
 
         }

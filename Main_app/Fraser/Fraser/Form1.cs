@@ -57,11 +57,15 @@ namespace Fraser
 
             if( BaseDNA != null || CurrentPop != null) { BaseDNA = null; CurrentPop = null; }
             BaseDNA = new Fraser.Genome((double)Largura_ap_int.Value,(int)Altura_int.Value,(double)h_div_int.Value,(double)subdiv_int.Value,(int)n_cabos_int.Value,h_cabos,dist_centro);
-            CurrentPop = new Population((int)Population_cnt.Value, BaseDNA);
 
             Robot_call.Start_pts(BaseDNA);
             Robot_call.Start_bars(BaseDNA);
             Robot_call.Refresh();
+
+
+            CurrentPop = new Population((int)Population_cnt.Value, BaseDNA);
+
+            
             
         }
 
@@ -76,17 +80,20 @@ namespace Fraser
             {
                 Robot_call.Update_bars(CurrentPop.ind[_individual]._DNA);
             }
+
             Robot_call.Addsupports();
-            Robot_call.Run_analysis();
+            CurrentPop.ind[_individual].results=Robot_call.Run_analysis();
             Robot_call.Refresh();
             Robot_call.Robot_interactive(true);
-
+            Console.Write(CurrentPop.ind[_individual].results[1, 5]);
             _individual++;
+
         }
 
         private void btn_get_sec_Click(object sender, EventArgs e)
         {
             Robot_call.Get_sections();
+            // add to the matrix the area of each section in the get_sections
             Sec_list.DataSource = Robot_call.section_names;
         }
 

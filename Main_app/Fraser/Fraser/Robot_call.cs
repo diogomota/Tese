@@ -26,7 +26,7 @@ namespace Fraser
                 if (robApp.Visible == 0) { robApp.Interactive = 1; robApp.Visible = 1; }
                 instances = 1;
             }
-            
+
         }
         public static void Robot_interactive(bool a)
         {
@@ -44,23 +44,23 @@ namespace Fraser
             robApp.Project.Preferences.Materials.Load("Eurocode");
             //set default material S235
             robApp.Project.Preferences.Materials.SetDefault(IRobotMaterialType.I_MT_STEEL, "S 235");
-           
+
         }
         public static void Start_pts(Genome geometry)
         {
             if (robApp.Project.Structure.Nodes.GetAll().Count != 0) // delete any existing pts
-            { 
+            {
                 for (int i = robApp.Project.Structure.Nodes.GetAll().Count; i > 0; i--)
                 {
                     robApp.Project.Structure.Nodes.Delete(i);
                 }
             }
-           
+
             for (int i = 0; i < Genome.pt_cnt; i++)
             {
                 robApp.Project.Structure.Nodes.Create((int)geometry.pt_cloud[0, i] + 1, geometry.pt_cloud[1, i], geometry.pt_cloud[2, i], geometry.pt_cloud[3, i]);
             }//+1 porque robot nao aceita pt 0
-               
+
         }
 
         public static void Start_bars(Genome geometry)
@@ -72,6 +72,8 @@ namespace Fraser
             for (int i = 0; i < Genome.bar_cnt; i++)
             {
                 robApp.Project.Structure.Bars.Create((int)geometry.bars[0, i] + 1, (int)geometry.bars[1, i] + 1, (int)geometry.bars[2, i] + 1);
+                robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, section_names[0]);
+                robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_MATERIAL, "AÇO");
             }
         }
 
@@ -88,20 +90,21 @@ namespace Fraser
         }
         public static void Update_bars(Genome geometry)
         {
-            for (int i = 0; i < Genome.bar_cnt; i++)
+            for (int i = 0; i < Genome.towerBar_cnt; i++)
             {
                 robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, section_names[0]);
-                robApp.Project.Structure.Bars.Get((int)geometry.bars[0,i]+1).SetLabel(IRobotLabelType.I_LT_MATERIAL, "AÇO");
+                robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_MATERIAL, "AÇO");
             }
             // robApp.Project.Structure.Bars.SetInactive("3"); funciona
         }
+
         public static void Refresh()
         {
             robApp.Project.ViewMngr.Refresh();
         }
         public static void Addsupports()
         {
-            
+
             for (int i = 1; i <= 4; i++)
             {
                 robApp.Project.Structure.Nodes.Get(i).SetLabel(IRobotLabelType.I_LT_SUPPORT, "Fixed");
@@ -110,16 +113,36 @@ namespace Fraser
         }
         public static void Get_sections()
         {
-           for (int i = 1;i<= robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Count; i++)
+            for (int i = 1; i <= robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Count; i++)
             {
                 section_names.Add(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Get(i).ToString());
             }
         }
-        public static void Run_analysis()
+
+        public static double[,] Run_analysis()
         {
             robApp.Project.CalcEngine.Calculate();
             results = robApp.Project.Structure.Results.Bars.Forces;
-           Console.Write( results.Value(3, 1, 0).FX);
+            double[,] a = new double[6, Genome.towerBar_cnt];
+            for (int i = 0; i < Genome.towerBar_cnt; i++)
+            {
+                IRobotBar current_bar = (IRobotBar)robApp.Project.Structure.Bars.Get(i + 1);
+                a[0, i] = i + 1;
+                a[1, i] = current_bar.Length;
+                a[2, i] = Max(results.Value(i + 1, 1, 0).FX, results.Value(i + 1, 1, 0.5).FX, results.Value(i + 1, 1, 1).FX);
+                a[3, i] = Max(results.Value(i + 1, 1, 0).MY, results.Value(i + 1, 1, 0.5).MY, results.Value(i + 1, 1, 1).MY);
+                a[4, i] = Max(results.Value(i + 1, 1, 0).MZ, results.Value(i + 1, 1, 0.5).MZ, results.Value(i + 1, 1, 1).MZ);
+                a[5, i] = 1; //decide how to efficiently select the worst V (Vy ou Vz)
+            }
+
+            return a;
         }
+        private static double Max(double start, double middle, double end){
+
+            if (Math.Abs(start) >= Math.Abs(middle) && Math.Abs(start) >= Math.Abs(end)) { return start; }
+            if (Math.Abs(middle) >= Math.Abs(start) && Math.Abs(middle) >= Math.Abs(end)) { return middle; }
+            if (Math.Abs(end) >= Math.Abs(start) && Math.Abs(end) >= Math.Abs(middle)) { return end; }
+            return -1;
+       }
     }
 }
