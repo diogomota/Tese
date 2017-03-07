@@ -76,16 +76,14 @@ namespace Fraser
             Robot_call.Get_sections();
             Robot_call.Update_pts(CurrentPop.ind[_individual]._DNA);
 
-            if (_individual == 0)
-            {
+
                 Robot_call.Update_bars(CurrentPop.ind[_individual]._DNA);
-            }
 
             Robot_call.Addsupports();
             CurrentPop.ind[_individual].results=Robot_call.Run_analysis();
             Robot_call.Refresh();
             Robot_call.Robot_interactive(true);
-            Console.Write(CurrentPop.ind[_individual].results[1, 5]);
+           // Console.Write(CurrentPop.ind[_individual].results[1, 5]);
             _individual++;
 
         }

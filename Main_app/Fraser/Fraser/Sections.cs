@@ -12,7 +12,7 @@ namespace Fraser
         public List<double> Area;
         public List<double> Ix;
         public List<double> Iy;
-
+        public static int count;
         public Sections(List<string> name, List<double> A, List<double> x, List<double> y)
         {
             section_names = new List<String>();
@@ -23,6 +23,7 @@ namespace Fraser
             Ix = x;
             Iy = new List<double>();
             Iy = y;
+            count = section_names.Count;
         }
     }
 }

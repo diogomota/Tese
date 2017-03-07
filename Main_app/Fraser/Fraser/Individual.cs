@@ -30,6 +30,13 @@ namespace Fraser
                this._DNA.pt_cloud[2, i] +=  rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Y
                this._DNA.pt_cloud[3, i] +=  rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Z
             }
+            for (int i = 1; i < Genome.towerBar_cnt; i++)
+            {
+                if (this._DNA.bars[3, i] == 1) //if can be deactivated
+                {
+                    this._DNA.bars[4, i] = rndm.Next(0, Sections.count-1);
+                }else { this._DNA.bars[4, i] = rndm.Next(1, Sections.count - 1);}
+            }
             bb++;
            // Console.Write(bb);
 

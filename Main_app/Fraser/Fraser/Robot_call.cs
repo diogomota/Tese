@@ -92,8 +92,15 @@ namespace Fraser
         {
             for (int i = 0; i < Genome.towerBar_cnt; i++)
             {
-                robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, sec_prop.section_names[0]);
-                robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_MATERIAL, "AÇO");
+                if (geometry.bars[4, i] == 0 && geometry.bars[3,i] ==1)
+                {
+                    robApp.Project.Structure.Bars.SetInactive((i + 1).ToString());
+                }
+                else{
+                    robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, sec_prop.section_names[(int)geometry.bars[4, i]]);
+                    robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_MATERIAL, "AÇO");
+                }
+               // if ((int)geometry.bars[3, i] == 1) { robApp.Project.Structure.Bars.SetInactive((i + 1).ToString()); }
             }
             // robApp.Project.Structure.Bars.SetInactive("3"); funciona
         }
