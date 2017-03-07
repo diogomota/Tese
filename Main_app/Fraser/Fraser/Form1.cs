@@ -94,7 +94,7 @@ namespace Fraser
         {
             Robot_call.Get_sections();
             // add to the matrix the area of each section in the get_sections
-            Sec_list.DataSource = Robot_call.section_names;
+            Sec_list.DataSource = Robot_call.sec_prop.section_names;
         }
 
         private void label3_Click(object sender, EventArgs e)

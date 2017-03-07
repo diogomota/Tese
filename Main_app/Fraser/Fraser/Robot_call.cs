@@ -11,7 +11,7 @@ namespace Fraser
     {
         static IRobotApplication robApp;
 
-        public static List<String> section_names = new List<String>();
+        public static Sections sec_prop;
 
         static IRobotBarForceServer results;
 
@@ -72,7 +72,7 @@ namespace Fraser
             for (int i = 0; i < Genome.bar_cnt; i++)
             {
                 robApp.Project.Structure.Bars.Create((int)geometry.bars[0, i] + 1, (int)geometry.bars[1, i] + 1, (int)geometry.bars[2, i] + 1);
-                robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, section_names[0]);
+                robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, sec_prop.section_names[0]);
                 robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_MATERIAL, "AÇO");
             }
         }
@@ -92,7 +92,7 @@ namespace Fraser
         {
             for (int i = 0; i < Genome.towerBar_cnt; i++)
             {
-                robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, section_names[0]);
+                robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, sec_prop.section_names[0]);
                 robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_MATERIAL, "AÇO");
             }
             // robApp.Project.Structure.Bars.SetInactive("3"); funciona
@@ -113,10 +113,33 @@ namespace Fraser
         }
         public static void Get_sections()
         {
+            List<String> _section_names = new List<String>();
+            List<double> _Area = new List<double>();
+            List<double> _Ix = new List<double>();
+            List<double> _Iy = new List<double>();
+
             for (int i = 1; i <= robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Count; i++)
             {
-                section_names.Add(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Get(i).ToString());
+                
+                _section_names.Add(robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Get(i).ToString());
+
+                // API needs to copy labels from robot at runtime for the properties to be accessible without being assigned to any bar
+                RobotLabel label = robApp.Project.Structure.Labels.Get(RobotOM.IRobotLabelType.I_LT_BAR_SECTION, _section_names[i-1]) as RobotOM.RobotLabel;
+                bool available = robApp.Project.Structure.Labels.IsAvailable(RobotOM.IRobotLabelType.I_LT_BAR_SECTION, _section_names[i-1]);
+
+                if (label == null && available)
+                {
+                    label = robApp.Project.Structure.Labels.CreateLike(RobotOM.IRobotLabelType.I_LT_BAR_SECTION, _section_names[i - 1], _section_names[i - 1]) as RobotOM.RobotLabel;
+                }
+                
+                IRobotBarSectionData dt = (IRobotBarSectionData)robApp.Project.Structure.Labels.Get(IRobotLabelType.I_LT_BAR_SECTION,_section_names[i-1]).Data;
+                Console.Write(dt.GetValue(IRobotBarSectionDataValue.I_BSDV_AX));
+
+                _Area.Add(dt.GetValue(IRobotBarSectionDataValue.I_BSDV_AX));
+                _Ix.Add(dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IX));
+                _Iy.Add(dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IY));
             }
+            sec_prop = new Sections(_section_names, _Area, _Ix, _Iy);
         }
 
         public static double[,] Run_analysis()
