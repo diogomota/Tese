@@ -362,14 +362,15 @@ namespace Fraser
                  //lados
                     if (i == 4 + ring_pt * h)
                     {//cantos
-                        for (int j = 4 + ring_pt * (h + 1); j < subdiv + 4 + ring_pt * (h + 1) - 1; j++)
+                        for (int j = 4 + ring_pt * (h + 1); j <= subdiv + 4 + ring_pt * (h + 1) - 1; j++)
                         { //-1 para nao conectar a diagonal oposta
-                            addBar(ref bars, bar_num, i, j, 0, 0); // barras dos cantos nao podem ser desactivadas
-                            bar_num++;
-
-                            if (j + 1 == subdiv + 4 + ring_pt * (h + 1) - 1)
+                            if (j  == 4 + ring_pt * (h + 1))
                             {
-                                addBar(ref bars, bar_num, i, j + 1, 1, 0);
+                                addBar(ref bars, bar_num, i, j, 0, 0); // barras dos cantos nao podem ser desactivadas
+                                bar_num++;
+                            }else
+                            {
+                                addBar(ref bars, bar_num, i, j, 1, 0); 
                                 bar_num++;
                             }
                         }
@@ -401,14 +402,15 @@ namespace Fraser
                     //lados
                     if (i == 4 + subdiv + ring_pt * h)
                     {//cantos
-                        for (int j = 4 + subdiv + ring_pt * (h + 1); j < 2 * subdiv + 4 + ring_pt * (h + 1) - 1; j++)
+                        for (int j = 4 + subdiv + ring_pt * (h + 1); j <= 2 * subdiv + 4 + ring_pt * (h + 1) - 1; j++)
                         {
-                            addBar(ref bars, bar_num, i, j,0,0); // barras de canto nao podem ser desactivadas
-                            bar_num++;
-
-                            if (j + 1 == 2 * subdiv + 4 + ring_pt * (h + 1) - 1)
+                            if (j == subdiv + 4 + ring_pt * (h + 1))
                             {
-                                addBar(ref bars, bar_num, i, j + 1, 1, 0);
+                                addBar(ref bars, bar_num, i, j, 0, 0);// barras de canto nao podem ser desactivadas
+                                bar_num++;
+                            }else
+                            {
+                                addBar(ref bars, bar_num, i, j, 1, 0); 
                                 bar_num++;
                             }
                         }
@@ -441,13 +443,16 @@ namespace Fraser
                  //lados
                     if (i == 4 + 2 * subdiv + ring_pt * h)
                     {//cantos
-                        for (int j = 4 + 2 * subdiv + ring_pt * (h + 1); j < 3 * subdiv + 4 + ring_pt * (h + 1) - 1; j++)
+                        for (int j = 4 + 2 * subdiv + ring_pt * (h + 1); j <= 3 * subdiv + 4 + ring_pt * (h + 1) - 1; j++)
                         {
-                            addBar(ref bars, bar_num, i, j,0,0); // barras de canto nao podem ser desactivadas
-                            bar_num++;
-                            if (j + 1 == 3 * subdiv + 4 + ring_pt * (h + 1) - 1)
+                            if (j == 2*subdiv + 4 + ring_pt * (h + 1))
                             {
-                                addBar(ref bars, bar_num, i, j + 1, 1, 0);
+                                addBar(ref bars, bar_num, i, j, 0, 0);// barras de canto nao podem ser desactivadas
+                                bar_num++;
+                            }
+                            else
+                            {
+                                addBar(ref bars, bar_num, i, j, 1, 0);
                                 bar_num++;
                             }
                         }
@@ -479,20 +484,22 @@ namespace Fraser
                  //lados
                     if (i == 4 + 3 * subdiv + ring_pt * h)
                     {//cantos
-                        for (int j = 4 + 3 * subdiv + ring_pt * (h + 1); j < 4 * subdiv + 4 + ring_pt * (h + 1) - 1; j++)
+                        for (int j = 4 + 3 * subdiv + ring_pt * (h + 1); j <= 4 * subdiv + 4 + ring_pt * (h + 1) - 1; j++)
                         {
-                            addBar(ref bars, bar_num, i, j,0,1); // cantos nao sao desactivados
-                            bar_num++;
-
-                            if (j + 1 == 4 * subdiv + 4 + ring_pt * (h + 1) - 1)
+                            if (j == 3*subdiv + 4 + ring_pt * (h + 1))
                             {
-                                addBar(ref bars, bar_num, i, j + 1, 1, 0);
-                                bar_num++;    
+                                addBar(ref bars, bar_num, i, j, 0, 0);// barras de canto nao podem ser desactivadas
+                                bar_num++;
+                            }
+                            else
+                            {
+                                addBar(ref bars, bar_num, i, j, 1, 0);
+                                bar_num++;
                             }
 
-                            if (j != 4 + 3 * subdiv + ring_pt * (h + 1)+1)
+                            if (j != 4 + 3 * subdiv + ring_pt * (h + 1))
                             { //exceto lado oposto
-                                addBar(ref bars, bar_num, 4+ring_pt*h, j+1,1,0);
+                                addBar(ref bars, bar_num, 4+ring_pt*h, j,1,0);
                                 bar_num++;
                             } //conect first corner w/ side -YY
 
