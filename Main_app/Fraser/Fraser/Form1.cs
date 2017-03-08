@@ -100,5 +100,10 @@ namespace Fraser
         {
 
         }
+
+        private void sort_Click(object sender, EventArgs e)
+        {
+            Array.Sort(CurrentPop.ind); // works
+        }
     }
 }

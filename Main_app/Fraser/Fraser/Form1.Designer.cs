@@ -44,6 +44,7 @@
             this.tabs = new System.Windows.Forms.TabControl();
             this.geom_tab = new System.Windows.Forms.TabPage();
             this.Start_geom = new System.Windows.Forms.Button();
+            this.btn_get_sec = new System.Windows.Forms.Button();
             this.grp_box_geom_geral = new System.Windows.Forms.GroupBox();
             this.N_cabos = new System.Windows.Forms.Label();
             this.Altura_int = new System.Windows.Forms.NumericUpDown();
@@ -57,12 +58,12 @@
             this.subdiv_int = new System.Windows.Forms.NumericUpDown();
             this.Evol_tab = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
-            this.btn_get_sec = new System.Windows.Forms.Button();
             this.Sec_list = new System.Windows.Forms.ListBox();
             this.draw = new System.Windows.Forms.Button();
             this.Population_cnt = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.sort = new System.Windows.Forms.Button();
             Cabos = new System.Windows.Forms.GroupBox();
             Cabos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.w_cabo2_int)).BeginInit();
@@ -322,6 +323,16 @@
             this.Start_geom.UseVisualStyleBackColor = true;
             this.Start_geom.Click += new System.EventHandler(this.Start_geom_Click);
             // 
+            // btn_get_sec
+            // 
+            this.btn_get_sec.Location = new System.Drawing.Point(271, 268);
+            this.btn_get_sec.Name = "btn_get_sec";
+            this.btn_get_sec.Size = new System.Drawing.Size(120, 23);
+            this.btn_get_sec.TabIndex = 5;
+            this.btn_get_sec.Text = "Get Sections";
+            this.btn_get_sec.UseVisualStyleBackColor = true;
+            this.btn_get_sec.Click += new System.EventHandler(this.btn_get_sec_Click);
+            // 
             // grp_box_geom_geral
             // 
             this.grp_box_geom_geral.Controls.Add(this.N_cabos);
@@ -516,6 +527,7 @@
             // 
             // Evol_tab
             // 
+            this.Evol_tab.Controls.Add(this.sort);
             this.Evol_tab.Controls.Add(this.label3);
             this.Evol_tab.Controls.Add(this.Sec_list);
             this.Evol_tab.Controls.Add(this.draw);
@@ -539,16 +551,6 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "Sections to use:";
             this.label3.Click += new System.EventHandler(this.label3_Click);
-            // 
-            // btn_get_sec
-            // 
-            this.btn_get_sec.Location = new System.Drawing.Point(271, 268);
-            this.btn_get_sec.Name = "btn_get_sec";
-            this.btn_get_sec.Size = new System.Drawing.Size(120, 23);
-            this.btn_get_sec.TabIndex = 5;
-            this.btn_get_sec.Text = "Get Sections";
-            this.btn_get_sec.UseVisualStyleBackColor = true;
-            this.btn_get_sec.Click += new System.EventHandler(this.btn_get_sec_Click);
             // 
             // Sec_list
             // 
@@ -609,6 +611,16 @@
             this.label1.Size = new System.Drawing.Size(60, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Population:";
+            // 
+            // sort
+            // 
+            this.sort.Location = new System.Drawing.Point(367, 93);
+            this.sort.Name = "sort";
+            this.sort.Size = new System.Drawing.Size(75, 23);
+            this.sort.TabIndex = 7;
+            this.sort.Text = "sort";
+            this.sort.UseVisualStyleBackColor = true;
+            this.sort.Click += new System.EventHandler(this.sort_Click);
             // 
             // Form1
             // 
@@ -679,6 +691,7 @@
         private System.Windows.Forms.Button btn_get_sec;
         private System.Windows.Forms.ListBox Sec_list;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button sort;
     }
 }
 

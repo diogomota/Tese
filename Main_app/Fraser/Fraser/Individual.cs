@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fraser
 {
-    public class Individual
+    public class Individual : IComparable<Individual>
     {
         public Genome _DNA;
         public double fitness;
@@ -72,6 +72,21 @@ namespace Fraser
                     this.ton = this.ton + results[1, i] * Robot_call.sec_prop.Area[(int)this._DNA.bars[4, i]]*7.849; //7.849 = ton / m3 steel
                 }
             }
+            this.fitness = this.ton;
+        }
+
+        int IComparable<Individual>.CompareTo(Individual other)
+        {
+            Individual iToCompare = (Individual)other;
+            if(fitness < iToCompare.fitness)
+            {
+                return -1;
+            }
+            else if(fitness > iToCompare.fitness)
+            {
+                return 1;
+            }
+            return 0;
         }
     }
 }
