@@ -10,6 +10,7 @@ namespace Fraser
     {
         public Genome _DNA;
         public double fitness;
+        public double ton;
         public double[,] results;
         static int bb = 0;
         public Individual(Genome _baseDNA,ref Random rndm)
@@ -51,9 +52,7 @@ namespace Fraser
             Robot_call.Get_sections();
             Robot_call.Update_pts(this._DNA);
 
-
             Robot_call.Update_bars(this._DNA);
-
 
             Robot_call.Addsupports();
             this.results = Robot_call.Run_analysis();
@@ -62,6 +61,17 @@ namespace Fraser
             //call GetWeight() get tons
             //get matrix with N V MY Mz for each bar
             //plug that matrix in the EC3 check
+        }
+        public void get_ton()
+        {
+            this.ton = new double();
+            for(int i = 0;i< Genome.towerBar_cnt; i++)
+            {
+                if (this._DNA.bars[4, i] != 0) // contar so as activas
+                {
+                    this.ton = this.ton + results[1, i] * Robot_call.sec_prop.Area[(int)this._DNA.bars[4, i]]*7.849; //7.849 = ton / m3 steel
+                }
+            }
         }
     }
 }

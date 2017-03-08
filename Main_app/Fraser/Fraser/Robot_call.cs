@@ -90,11 +90,15 @@ namespace Fraser
         }
         public static void Update_bars(Genome geometry)
         {
-            for (int i = 0; i < Genome.towerBar_cnt; i++)
+            for (int i = 0; i < Genome.towerBar_cnt; i++) //apenas para as barras da torre
             {
-                if (geometry.bars[4, i] == 0 && geometry.bars[3,i] ==1)
+                if(robApp.Project.Structure.Bars.IsInactive(i+1) && geometry.bars[4,i]!= 0)
                 {
-                    robApp.Project.Structure.Bars.SetInactive((i + 1).ToString());
+                    robApp.Project.Structure.Bars.SetInactive((i + 1).ToString(), false); // activar se estiver desactivado da outra iteração
+                }
+                if (geometry.bars[4, i] == 0 && geometry.bars[3,i] ==1) // se é para desactivar e pode ser desactivado
+                {
+                    robApp.Project.Structure.Bars.SetInactive((i + 1).ToString()); // desactivar
                 }
                 else{
                     robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, sec_prop.section_names[(int)geometry.bars[4, i]]);
@@ -165,7 +169,7 @@ namespace Fraser
                 a[5, i] = 1; //decide how to efficiently select the worst V (Vy ou Vz)
             }
 
-            return a;
+            return a; //[rbt_bar_num,Lenght,Fx,My,Mz]
         }
         private static double Max(double start, double middle, double end){
 

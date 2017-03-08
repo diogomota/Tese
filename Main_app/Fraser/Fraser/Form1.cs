@@ -83,6 +83,7 @@ namespace Fraser
             CurrentPop.ind[_individual].results=Robot_call.Run_analysis();
             Robot_call.Refresh();
             Robot_call.Robot_interactive(true);
+            CurrentPop.ind[_individual].get_ton();
            // Console.Write(CurrentPop.ind[_individual].results[1, 5]);
             _individual++;
 
