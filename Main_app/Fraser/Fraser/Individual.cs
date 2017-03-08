@@ -75,16 +75,16 @@ namespace Fraser
             this.fitness = this.ton;
         }
 
-        int IComparable<Individual>.CompareTo(Individual other)
+        int IComparable<Individual>.CompareTo(Individual other) // sorting algorithm
         {
             Individual iToCompare = (Individual)other;
             if(fitness < iToCompare.fitness)
             {
-                return -1;
+                return 1;
             }
             else if(fitness > iToCompare.fitness)
             {
-                return 1;
+                return -1;
             }
             return 0;
         }
