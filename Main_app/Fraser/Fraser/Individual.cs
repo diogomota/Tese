@@ -13,6 +13,10 @@ namespace Fraser
         public double ton;
         public double[,] results;
         static int bb = 0;
+        public Individual()
+        {
+
+        }
         public Individual(Genome _baseDNA,ref Random rndm)
         {
             this.fitness = 0.0;

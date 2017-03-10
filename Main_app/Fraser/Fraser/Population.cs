@@ -13,6 +13,7 @@ namespace Fraser
         static public Random rand = new Random(0); //o random seeder so se inicia uma vez para a população
         static int Pop_size=0;
 
+        // constructor for first population
         public Population (int max_pop, Genome _baseDNA){
             if (Pop_size == 0) { Pop_size = max_pop; }
 
@@ -26,8 +27,14 @@ namespace Fraser
 
             }
         }
+        //constructor for iterative process /Evolve()
+        public Population(Individual[] new_pop)
+        {
+            this.ind = new Individual[new_pop.Length];
+            this.ind = new_pop;
+        }
 
-       public static int Select(Individual[] pop)
+        public static Individual Select(Individual[] pop)
         {
             int i=-1;
             double total_fitness = new double();
@@ -41,7 +48,7 @@ namespace Fraser
             double Sel = rand.NextDouble();
             double previous_fit = 0.0;
             double current_fit = 0.0;
-
+            //the selection
             for (int b=0; b< Pop_size; b++)
             {
                 current_fit += pop[b].fitness;
@@ -54,9 +61,32 @@ namespace Fraser
 
             }
 
-            //return pop[i];
-            return i;
+            return pop[i];
         }
 
+        public static /*Population*/ Individual[] Evolve(Individual[] pop)
+        {
+            //Population Temp_pop = new Population();
+            Individual[] _ind = new Individual[Pop_size];
+            for(int i =0; i < Pop_size; i++)
+            {
+                _ind[i] = Breed(Select(pop),Select(pop));
+            }
+            return _ind;
+        }
+
+        public static Individual Breed(Individual a, Individual b) {
+            Individual x = new Individual();
+
+            x._DNA = a._DNA;
+
+            for(int i = 0; i<a._DNA.pt_cloud.Length/5; i++)
+            {
+                x._DNA.pt_cloud[1, i] = (a._DNA.pt_cloud[1, i] + b._DNA.pt_cloud[1, i]) / 2;
+                x._DNA.pt_cloud[2, i] = (a._DNA.pt_cloud[2, i] + b._DNA.pt_cloud[2, i]) / 2;
+                x._DNA.pt_cloud[3, i] = (a._DNA.pt_cloud[3, i] + b._DNA.pt_cloud[3, i]) / 2;
+            }
+                return x;//
+        }
     }
 }
