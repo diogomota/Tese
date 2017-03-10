@@ -26,6 +26,7 @@ namespace Fraser
                 if (robApp.Visible == 0) { robApp.Interactive = 1; robApp.Visible = 1; }
                 instances = 1;
             }
+            
 
         }
         public static void Robot_interactive(bool a)
