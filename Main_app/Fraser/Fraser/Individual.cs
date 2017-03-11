@@ -13,10 +13,12 @@ namespace Fraser
         public double ton;
         public double[,] results;
         static int bb = 0;
+         
         public Individual()
         {
 
         }
+
         public Individual(Genome _baseDNA,ref Random rndm)
         {
             this.fitness = 0.0;
@@ -55,16 +57,46 @@ namespace Fraser
 
             Robot_call.Get_sections();
             Robot_call.Update_pts(this._DNA);
-
             Robot_call.Update_bars(this._DNA);
 
             Robot_call.Addsupports();
+
+           // Robot_call.Robot_interactive(true);
+            //Robot_call.Refresh();
+
             this.results = Robot_call.Run_analysis();
+            this.fitness = calc_fitess();
+            // calc fitness based on results here (new function)
             Robot_call.Refresh();
-            Robot_call.Robot_interactive(true);
+            //Robot_call.Robot_interactive(true);
+
             //call GetWeight() get tons
             //get matrix with N V MY Mz for each bar
             //plug that matrix in the EC3 check
+        }
+        public double calc_fitess()
+        {
+            double sum = new double();
+            int cnt = 0;
+            for (int i = 0; i < Genome.towerBar_cnt; i++)
+            {
+                if (this._DNA.bars[4, i] != 0)
+                {
+                    if (this.results[2, i ] / 90000 < 1.0)
+                    {
+                        sum += this.results[2,i] / 90000;
+                        cnt += 1;
+                        Console.WriteLine(" force" + this.results[2, i] + "Count:" + cnt);
+                    }
+                    else
+                    {
+                        sum -= 0.05; //penalty
+                        cnt += 1;
+                    }
+                }
+            }
+            Console.WriteLine(" Fitness:" + sum / cnt + "; ");
+            return sum/cnt;
         }
         public void get_ton()
         {

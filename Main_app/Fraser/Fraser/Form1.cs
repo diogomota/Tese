@@ -13,8 +13,9 @@ namespace Fraser
 {
     public partial class Form1 : Form
     {
-        static private Population CurrentPop;
         private Population LastPop;
+        static private Population CurrentPop;
+        private Population NextPop;
         private Genome BaseDNA;
         private int _individual = 0;
 
@@ -63,15 +64,15 @@ namespace Fraser
             Robot_call.Refresh();
 
 
-            CurrentPop = new Population((int)Population_cnt.Value, BaseDNA);
+            //CurrentPop = new Population((int)Population_cnt.Value, BaseDNA);
+            NextPop = new Population((int)Population_cnt.Value, BaseDNA);
 
-            
-            
+
         }
 
         private void draw_Click(object sender, EventArgs e)
         {
-            Robot_call.Robot_interactive(false);
+            /*Robot_call.Robot_interactive(false);
 
             Robot_call.Get_sections();
             Robot_call.Update_pts(CurrentPop.ind[_individual]._DNA);
@@ -86,7 +87,32 @@ namespace Fraser
             CurrentPop.ind[_individual].get_ton();
            // Console.Write(CurrentPop.ind[_individual].results[1, 5]);
             _individual++;
+            */
+            int c = 0;
+            this.Chart.Series.Clear();
+            this.Chart.Titles.Add("Fitness");
+            System.Windows.Forms.DataVisualization.Charting.Series series = this.Chart.Series.Add("fitness");
+            series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
 
+
+            for (int i=0; i<8; i++)
+            {
+                Generation.Text = i.ToString();
+                CurrentPop = new Population(NextPop.ind);
+                for(int a = 0; a < Population.Pop_size; a++)
+                {
+                    CurrentPop.ind[a].Evaluate();
+                    c++;
+                    series.Points.AddXY(c, CurrentPop.ind[a].fitness);
+
+                }
+
+                Array.Sort(CurrentPop.ind);
+                LastPop = new Population(CurrentPop.ind);
+                NextPop = new Population(Population.Evolve(CurrentPop.ind));
+                
+            }
+            Robot_call.Robot_interactive(true);
         }
 
         private void btn_get_sec_Click(object sender, EventArgs e)

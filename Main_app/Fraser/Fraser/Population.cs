@@ -11,7 +11,7 @@ namespace Fraser
         public Individual[] ind;
         //public List<Individual> ind;
         static public Random rand = new Random(0); //o random seeder so se inicia uma vez para a população
-        static int Pop_size=0;
+        public static int Pop_size=0;
 
         // constructor for first population
         public Population (int max_pop, Genome _baseDNA){
@@ -79,14 +79,24 @@ namespace Fraser
             Individual x = new Individual();
 
             x._DNA = a._DNA;
-
-            for(int i = 0; i<a._DNA.pt_cloud.Length/5; i++)
+            if (a.fitness >= b.fitness)
             {
-                x._DNA.pt_cloud[1, i] = (a._DNA.pt_cloud[1, i] + b._DNA.pt_cloud[1, i]) / 2;
-                x._DNA.pt_cloud[2, i] = (a._DNA.pt_cloud[2, i] + b._DNA.pt_cloud[2, i]) / 2;
-                x._DNA.pt_cloud[3, i] = (a._DNA.pt_cloud[3, i] + b._DNA.pt_cloud[3, i]) / 2;
+                for (int i = 0; i < a._DNA.pt_cloud.Length / 5; i++)
+                {
+                    x._DNA.pt_cloud[1, i] = rand.NextDouble()*0.3+(7*a._DNA.pt_cloud[1, i] + 3*b._DNA.pt_cloud[1,i]) / 10;//0.7*(a._DNA.pt_cloud[1, i] + 0.3*b._DNA.pt_cloud[1, i]) + 0.01 * rand.NextDouble();
+                    x._DNA.pt_cloud[2, i] = rand.NextDouble() * 0.3+(7*a._DNA.pt_cloud[2, i] + 3*b._DNA.pt_cloud[2, i]) / 10;//0.7*(a._DNA.pt_cloud[2, i] + 0.3*b._DNA.pt_cloud[2, i]) + 0.01 * rand.NextDouble();
+                    x._DNA.pt_cloud[3, i] = rand.NextDouble() * 0.3+(7*a._DNA.pt_cloud[3, i] + 3*b._DNA.pt_cloud[3, i]) / 10;//0.7*(a._DNA.pt_cloud[3, i] + 0.3*b._DNA.pt_cloud[3, i]) + 0.01 * rand.NextDouble();
+                }
+            }else {
+                for (int i = 0; i < a._DNA.pt_cloud.Length / 5; i++)
+                {
+                    x._DNA.pt_cloud[1, i] = rand.NextDouble() * 0.3+(3*a._DNA.pt_cloud[1, i] + 7*b._DNA.pt_cloud[1, i]) / 10;//0.3 * (a._DNA.pt_cloud[1, i] + 0.7 * b._DNA.pt_cloud[1, i]) + 0.01 * rand.NextDouble();
+                    x._DNA.pt_cloud[2, i] = rand.NextDouble() * 0.3+(3*a._DNA.pt_cloud[2, i] + 7*b._DNA.pt_cloud[2, i]) / 10;//0.3 * (a._DNA.pt_cloud[2, i] + 0.7 * b._DNA.pt_cloud[2, i]) + 0.01 * rand.NextDouble();
+                    x._DNA.pt_cloud[3, i] = rand.NextDouble() * 0.3+(3*a._DNA.pt_cloud[3, i] + 7*b._DNA.pt_cloud[3, i]) / 10;//0.3 * (a._DNA.pt_cloud[3, i] + 0.7 * b._DNA.pt_cloud[3, i]) + 0.01 * rand.NextDouble();
+                }
+
             }
-                return x;//
+                return x;
         }
     }
 }
