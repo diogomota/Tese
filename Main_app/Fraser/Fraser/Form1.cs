@@ -77,7 +77,7 @@ namespace Fraser
             Robot_call.Update_pts(CurrentPop.ind[_individual]._DNA);
 
 
-                Robot_call.Update_bars(CurrentPop.ind[_individual]._DNA);
+            Robot_call.Update_bars(CurrentPop.ind[_individual]._DNA);
 
             Robot_call.Addsupports();
             CurrentPop.ind[_individual].results=Robot_call.Run_analysis();
