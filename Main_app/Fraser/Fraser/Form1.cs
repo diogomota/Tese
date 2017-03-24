@@ -71,8 +71,8 @@ namespace Fraser
         }
 
         private void draw_Click(object sender, EventArgs e)
-        {
-            /*Robot_call.Robot_interactive(false);
+        {/*
+            Robot_call.Robot_interactive(false);
 
             Robot_call.Get_sections();
             Robot_call.Update_pts(CurrentPop.ind[_individual]._DNA);
@@ -95,7 +95,7 @@ namespace Fraser
             series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
 
 
-            for (int i=0; i<8; i++)
+            for (int i=0; i<4; i++)
             {
                 Generation.Text = i.ToString();
                 CurrentPop = new Population(NextPop.ind);
@@ -109,7 +109,7 @@ namespace Fraser
 
                 Array.Sort(CurrentPop.ind);
                 LastPop = new Population(CurrentPop.ind);
-                NextPop = new Population(Population.Evolve(CurrentPop.ind));
+                NextPop = new Population(Population.Evolve(CurrentPop.ind,i));
                 
             }
             Robot_call.Robot_interactive(true);

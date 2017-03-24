@@ -78,6 +78,7 @@ namespace Fraser
         {
             double sum = new double();
             int cnt = 0;
+            int totalPenalty = 0;
             for (int i = 0; i < Genome.towerBar_cnt; i++)
             {
                 if (this._DNA.bars[4, i] != 0)
@@ -90,8 +91,12 @@ namespace Fraser
                     }
                     else
                     {
-                        sum -= 0.05; //penalty
-                        cnt += 1;
+                        if (totalPenalty <= 5)
+                        {
+                            sum -= 0.05; //penalty
+                            totalPenalty++;
+                            cnt += 1;
+                        }
                     }
                 }
             }

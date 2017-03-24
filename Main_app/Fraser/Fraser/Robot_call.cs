@@ -22,7 +22,7 @@ namespace Fraser
             if (robApp == null)
             {
                 robApp = new RobotApplication();
-                robApp.Project.New(IRobotProjectType.I_PT_FRAME_3D);
+                robApp.Project.New(IRobotProjectType.I_PT_TRUSS_3D);
                 if (robApp.Visible == 0) { robApp.Interactive = 1; robApp.Visible = 1; }
                 instances = 1;
             }
@@ -99,7 +99,7 @@ namespace Fraser
                 }
                 if (geometry.bars[4, i] == 0 && geometry.bars[3,i] == 1) // se é para desactivar e pode ser desactivado
                 {
-                    //robApp.Project.Structure.Bars.SetInactive((i + 1).ToString()); // desactivar
+                   // robApp.Project.Structure.Bars.SetInactive((i + 1).ToString()); // desactivar
                 }
                 else{
                     robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, sec_prop.section_names[(int)geometry.bars[4, i]]);
