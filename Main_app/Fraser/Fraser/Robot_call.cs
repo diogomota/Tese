@@ -44,7 +44,7 @@ namespace Fraser
             //define materials Db
             robApp.Project.Preferences.Materials.Load("Eurocode");
             //set default material S235
-            robApp.Project.Preferences.Materials.SetDefault(IRobotMaterialType.I_MT_STEEL, "S 235");
+            robApp.Project.Preferences.Materials.SetDefault(IRobotMaterialType.I_MT_STEEL, "S 275");
 
         }
         public static void Start_pts(Genome geometry)
