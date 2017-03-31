@@ -12,12 +12,15 @@ namespace Fraser
         public double[,] pt_cloud;
         //[numero,x,y,z,mutation_constants]
         public double[,] bars;
-        //[numero,pt1,pt2,secçaopode ser desativado 0/1,secção]
+        //[numero,pt1,pt2,secçaopode ser desativado 0/1,secção,id]
 
         static public int pt_cnt;
         static public int bar_cnt;
         static public int towerBar_cnt;
         static private List<Int32> connection_rings;
+        //needed for calc_operations class:
+        public static double subd; 
+        public static double horizd;
 
         //Constants
         //for pt mutation
@@ -31,6 +34,8 @@ namespace Fraser
         //constructor
         public Genome(double Largura,int Altura, double horiz_div,double subdiv, int N_cabos, int[] h_cabos,double[] dist_centro)
         {
+            subd = subdiv;
+            horizd = horiz_div;
             // init matrix dim
             pt_cloud = new double[5, (int)(17*N_cabos + 4 + (4 * subdiv) * (horiz_div - 1))]; // 17*cabos para os pts dos braços
             bars = new double[6, (int)((4 * horiz_div - 8) * (subdiv * subdiv) + (12 * horiz_div - 12) * subdiv - 8 * horiz_div + 36 * N_cabos + 20)];

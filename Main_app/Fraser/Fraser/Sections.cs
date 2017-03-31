@@ -13,6 +13,7 @@ namespace Fraser
         public List<double> Ix;
         public List<double> Iy;
         public static int count;
+
         public Sections(List<string> name, List<double> A, List<double> x, List<double> y)
         {
             section_names = new List<String>();

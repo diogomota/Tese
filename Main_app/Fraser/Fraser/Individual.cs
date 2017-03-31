@@ -13,13 +13,17 @@ namespace Fraser
         public double ton;
         public double[,] results;
         static int bb = 0;
-         
+
+        private List<Calc_operations> Leg_ops = new List<Calc_operations>();
+        private List<Calc_operations> Bracing_ops;
+        private List<Calc_operations> Horiz_ops;
+
         public Individual()
         {
 
         }
 
-        public Individual(Genome _baseDNA,ref Random rndm)
+        public Individual(Genome _baseDNA, ref Random rndm)
         {
             this.fitness = 0.0;
 
@@ -30,26 +34,25 @@ namespace Fraser
             _DNA.pt_cloud = (double[,])_baseDNA.pt_cloud.Clone(); // copy by value the pt cloud[]
             _DNA.bars = (double[,])_baseDNA.bars.Clone(); //copy by value the bars[]
 
-           for (int i = 4; i < Genome.pt_cnt; i++) // start at 4 to fix supports
+            for (int i = 4; i < Genome.pt_cnt; i++) // start at 4 to fix supports
             {
-               //this._DNA.pt_cloud[0, i] = _baseDNA.pt_cloud[0, i];
-               this._DNA.pt_cloud[1, i] +=  rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//X
-               this._DNA.pt_cloud[2, i] +=  rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Y
-               this._DNA.pt_cloud[3, i] +=  rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Z
+                //this._DNA.pt_cloud[0, i] = _baseDNA.pt_cloud[0, i];
+                this._DNA.pt_cloud[1, i] += rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//X
+                this._DNA.pt_cloud[2, i] += rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Y
+                this._DNA.pt_cloud[3, i] += rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Z
             }
             for (int i = 0; i < Genome.towerBar_cnt; i++)
             {
                 if (this._DNA.bars[3, i] == 1) //if can be deactivated
                 {
-                    this._DNA.bars[4, i] = rndm.Next(0, Sections.count-1);
-                }else { this._DNA.bars[4, i] = rndm.Next(1, Sections.count - 1);}
+                    this._DNA.bars[4, i] = 1;//rndm.Next(0, Sections.count - 1);
+                } else { this._DNA.bars[4, i] = rndm.Next(1, Sections.count - 1); }
             }
             bb++;
-           // Console.Write(bb);
+            // Console.Write(bb);
 
-           // Evaluate();  //tirar este comentario quando for para automatizar a avaliação
         }
-        
+
 
         public void Evaluate()
         {
@@ -61,12 +64,17 @@ namespace Fraser
 
             Robot_call.Addsupports();
 
-           // Robot_call.Robot_interactive(true);
+            // create calculation lists //
+            Leg_calc_list();
+            /////////////////////////////
+
+            // Robot_call.Robot_interactive(true);
             //Robot_call.Refresh();
 
             this.results = Robot_call.Run_analysis();
+
             this.fitness = calc_fitess();
-            // calc fitness based on results here (new function)
+
             Robot_call.Refresh();
             //Robot_call.Robot_interactive(true);
 
@@ -74,6 +82,7 @@ namespace Fraser
             //get matrix with N V MY Mz for each bar
             //plug that matrix in the EC3 check
         }
+
         public double calc_fitess()
         {
             double sum = new double();
@@ -83,9 +92,9 @@ namespace Fraser
             {
                 if (this._DNA.bars[4, i] != 0)
                 {
-                    if (this.results[2, i ] / 90000 < 1.0)
+                    if (this.results[2, i] / 90000 < 1.0)
                     {
-                        sum += this.results[2,i] / 90000;
+                        sum += this.results[2, i] / 90000;
                         cnt += 1;
                         Console.WriteLine(" force" + this.results[2, i] + "Count:" + cnt);
                     }
@@ -101,21 +110,307 @@ namespace Fraser
                 }
             }
             Console.WriteLine(" Fitness:" + sum / cnt + "; ");
-            return sum/cnt;
+            return sum / cnt;
         }
         public void get_ton()
         {
             this.ton = new double();
-            for(int i = 0;i< Genome.towerBar_cnt; i++)
+            for (int i = 0; i < Genome.towerBar_cnt; i++)
             {
                 if (this._DNA.bars[4, i] != 0) // contar so as activas
                 {
-                    this.ton = this.ton + results[1, i] * Robot_call.sec_prop.Area[(int)this._DNA.bars[4, i]]*7.849; //7.849 = ton / m3 steel
+                    this.ton = this.ton + results[1, i] * Robot_call.sec_prop.Area[(int)this._DNA.bars[4, i]] * 7.849; //7.849 = ton / m3 steel
                 }
             }
             this.fitness = this.ton;
         }
 
+        private void Leg_calc_list()
+        {
+            //#########################//
+            //      Leg 1of4           //
+            //#########################//
+            List<Int32> temp = new List<Int32>();
+
+            for (int i = 0; i < Genome.horizd-1; i++)
+            {
+                if (i == 0) // barra inicial
+                {
+                    temp.Add(i + 1);
+                    //se tiver barras horiz ou bracing no no sup e/ou mudar a secção-> add to list jump to leg 2of4
+                    if (_braced(1, new List<Int32>() { 1, 2 })) {
+                        this.Leg_ops.Add(new Calc_operations(1, temp, (int)this._DNA.bars[4, 0], (int)this._DNA.bars[5, 0])); // se a 1 barra esta braced add logo ao calculo
+                        temp = new List<Int32>();
+                    } else if (this._DNA.bars[4, 0] != this._DNA.bars[4, (8 * (int)Genome.subd) + 4]) //se secção diferente "braced"
+                    {
+                        this.Leg_ops.Add(new Calc_operations(1, temp, (int)this._DNA.bars[4, 0], (int)this._DNA.bars[5, 0]));
+                        temp = new List<Int32>();
+                    }else
+                    {
+                        //nada ( passa para a outra barra )
+                    }
+
+                }
+
+                else {
+
+                    int bar_ind = 8 * (int)Genome.subd + 5 + (i - 1) * (4 * (int)Genome.subd * (int)Genome.subd + 8 * (int)Genome.subd - 8);
+                    if (_braced(bar_ind, new List<Int32>() { 1, 2 }))
+                    {
+                        if (temp != null) // se nao for null o start bar é o temp[0]
+                        {
+                            temp.Add(bar_ind); // add esta barra
+                            this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind-1], (int)this._DNA.bars[5, bar_ind-1]));
+                            temp = new List<Int32>();
+                        } else
+                        {
+                            temp.Add(bar_ind);
+                            this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind-1], (int)this._DNA.bars[5, bar_ind-1]));
+                            temp = new List<Int32>();
+                        }
+                    } else if (this._DNA.bars[4,bar_ind-1] != this._DNA.bars[4,bar_ind+ (4 * (int)Genome.subd * (int)Genome.subd - 8 * (int)Genome.subd - 8)-1]) //secção =/=
+                    {
+                        temp.Add(bar_ind);
+                        this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind - 1], (int)this._DNA.bars[5, bar_ind - 1]));
+                        temp = new List<Int32>();
+
+                    } else { temp.Add(bar_ind); } // se nao esta braced vai para a lista
+
+                }
+            }
+
+            temp = new List<Int32>(); // reset for next leg
+
+
+            //#########################//
+            //      Leg 2of4           //
+            //#########################//
+
+            for (int i = 0; i < Genome.horizd - 1; i++)
+            {
+                if (i == 0) // barra inicial
+                {
+                    temp.Add(3*(int)Genome.subd+2); // barra inicial funçao de subdiv
+
+                    //se tiver barras horiz ou bracing no no sup e/ou mudar a secção-> add to list jump to leg 2of4
+                    if (_braced(3 * (int)Genome.subd + 2, new List<Int32>() { 1, 2 }))
+                    {
+                        this.Leg_ops.Add(new Calc_operations(3 * (int)Genome.subd + 2, temp, (int)this._DNA.bars[4, 3 * (int)Genome.subd + 2-1], (int)this._DNA.bars[5, 3 * (int)Genome.subd + 2-1])); // se a 1 barra esta braced add logo ao calculo
+                        temp = new List<Int32>();
+                    }
+                    else if (this._DNA.bars[4, 3 * (int)Genome.subd + 2-1] != this._DNA.bars[4, (int)Genome.subd*(int)Genome.subd + 10*(int)Genome.subd+2]) //se secção seguinte diferente -> "braced"
+                    {
+                        this.Leg_ops.Add(new Calc_operations(3 * (int)Genome.subd + 2, temp, (int)this._DNA.bars[4, 3 * (int)Genome.subd + 2-1], (int)this._DNA.bars[5, 3 * (int)Genome.subd + 2-1]));
+                        temp = new List<Int32>();
+                    }
+                    else
+                    {
+                        //nada ( passa para a outra barra )
+                    }
+
+                }
+
+                else
+                {
+
+                    int bar_ind = (int)Genome.subd * (int)Genome.subd + 10 * (int)Genome.subd + 3   + (i - 1) * (4 * (int)Genome.subd * (int)Genome.subd + 8 * (int)Genome.subd - 8);
+                    if (_braced(bar_ind, new List<Int32>() { 1, 2 }))
+                    {
+                        if (temp != null) // se nao for null o start bar é o temp[0]
+                        {
+                            temp.Add(bar_ind); // add esta barra
+                            this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind - 1], (int)this._DNA.bars[5, bar_ind - 1]));
+                            temp = new List<Int32>();
+                        }
+                        else
+                        {
+                            temp.Add(bar_ind);
+                            this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind - 1], (int)this._DNA.bars[5, bar_ind - 1]));
+                            temp = new List<Int32>();
+                        }
+                    }
+                    else if (this._DNA.bars[4, bar_ind - 1] != this._DNA.bars[4, bar_ind + (4 * (int)Genome.subd * (int)Genome.subd - 8 * (int)Genome.subd - 8) - 1]) //secção =/=
+                    {
+                        temp.Add(bar_ind);
+                        this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind - 1], (int)this._DNA.bars[5, bar_ind - 1]));
+                        temp = new List<Int32>();
+
+                    }
+                    else { temp.Add(bar_ind); } // se nao esta braced vai para a lista
+
+                }
+            }
+
+            temp = new List<Int32>(); // reset for next leg
+
+            //#########################//
+            //      Leg 3of4           //
+            //#########################//
+
+            for (int i = 0; i < Genome.horizd - 1; i++)
+            {
+                if (i == 0) // barra inicial
+                {
+                    temp.Add(5 * (int)Genome.subd + 3); // barra inicial funçao de subdiv
+
+                    //se tiver barras horiz ou bracing no no sup e/ou mudar a secção-> add to list jump to leg 2of4
+                    if (_braced(5 * (int)Genome.subd + 3, new List<Int32>() { 1, 2 }))
+                    {
+                        this.Leg_ops.Add(new Calc_operations(5 * (int)Genome.subd + 3, temp, (int)this._DNA.bars[4, 5 * (int)Genome.subd + 3 - 1], (int)this._DNA.bars[5, 5 * (int)Genome.subd + 3 - 1])); // se a 1 barra esta braced add logo ao calculo
+                        temp = new List<Int32>();
+                    }
+                    else if (this._DNA.bars[4, 5 * (int)Genome.subd + 3 - 1] != this._DNA.bars[4, 2*(int)Genome.subd * (int)Genome.subd + 12 * (int)Genome.subd]) //se secção seguinte diferente -> "braced"
+                    {
+                        this.Leg_ops.Add(new Calc_operations(5 * (int)Genome.subd + 3, temp, (int)this._DNA.bars[4, 5 * (int)Genome.subd + 3 - 1], (int)this._DNA.bars[5, 5 * (int)Genome.subd + 3 - 1]));
+                        temp = new List<Int32>();
+                    }
+                    else
+                    {
+                        //nada ( passa para a outra barra )
+                    }
+
+                }
+
+                else
+                {
+
+                    int bar_ind = 2 * (int)Genome.subd * (int)Genome.subd + 12 * (int)Genome.subd + 1   + (i - 1) * (4 * (int)Genome.subd * (int)Genome.subd + 8 * (int)Genome.subd - 8);
+                    if (_braced(bar_ind, new List<Int32>() { 1, 2 }))
+                    {
+                        if (temp != null) // se nao for null o start bar é o temp[0]
+                        {
+                            temp.Add(bar_ind); // add esta barra
+                            this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind - 1], (int)this._DNA.bars[5, bar_ind - 1]));
+                            temp = new List<Int32>();
+                        }
+                        else
+                        {
+                            temp.Add(bar_ind);
+                            this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind - 1], (int)this._DNA.bars[5, bar_ind - 1]));
+                            temp = new List<Int32>();
+                        }
+                    }
+                    else if (this._DNA.bars[4, bar_ind - 1] != this._DNA.bars[4, bar_ind + (4 * (int)Genome.subd * (int)Genome.subd - 8 * (int)Genome.subd - 8) - 1]) //secção =/=
+                    {
+                        temp.Add(bar_ind);
+                        this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind - 1], (int)this._DNA.bars[5, bar_ind - 1]));
+                        temp = new List<Int32>();
+
+                    }
+                    else { temp.Add(bar_ind); } // se nao esta braced vai para a lista
+
+                }
+            }
+
+            temp = new List<Int32>(); // reset for next leg
+
+            //#########################//
+            //      Leg 4of4           //
+            //#########################//
+
+            for (int i = 0; i < Genome.horizd - 1; i++)
+            {
+                if (i == 0) // barra inicial
+                {
+                    temp.Add(7 * (int)Genome.subd + 4); // barra inicial funçao de subdiv
+
+                    //se tiver barras horiz ou bracing no no sup e/ou mudar a secção-> add to list jump to leg 2of4
+                    if (_braced(7 * (int)Genome.subd + 4, new List<Int32>() { 1, 2 }))
+                    {
+                        this.Leg_ops.Add(new Calc_operations(7 * (int)Genome.subd + 4, temp, (int)this._DNA.bars[4, 7 * (int)Genome.subd + 4 - 1], (int)this._DNA.bars[5, 7 * (int)Genome.subd + 4 - 1])); // se a 1 barra esta braced add logo ao calculo
+                        temp = new List<Int32>();
+                    }
+                    else if (this._DNA.bars[4, 7 * (int)Genome.subd + 4 - 1] != this._DNA.bars[4, 3 * (int)Genome.subd * (int)Genome.subd + 14 * (int)Genome.subd - 2]) //se secção seguinte diferente -> "braced"
+                    {
+                        this.Leg_ops.Add(new Calc_operations(7 * (int)Genome.subd + 4, temp, (int)this._DNA.bars[4, 7 * (int)Genome.subd + 4 - 1], (int)this._DNA.bars[5, 7 * (int)Genome.subd + 4 - 1]));
+                        temp = new List<Int32>();
+                    }
+                    else
+                    {
+                        //nada ( passa para a outra barra )
+                    }
+
+                }
+
+                else
+                {
+
+                    int bar_ind = 3 * (int)Genome.subd * (int)Genome.subd + 14 * (int)Genome.subd - 1 + (i - 1) * (4 * (int)Genome.subd * (int)Genome.subd + 8 * (int)Genome.subd - 8);
+                    if (_braced(bar_ind, new List<Int32>() { 1, 2 }))
+                    {
+                        if (temp != null) // se nao for null o start bar é o temp[0]
+                        {
+                            temp.Add(bar_ind); // add esta barra
+                            this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind - 1], (int)this._DNA.bars[5, bar_ind - 1]));
+                            temp = new List<Int32>();
+                        }
+                        else
+                        {
+                            temp.Add(bar_ind);
+                            this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind - 1], (int)this._DNA.bars[5, bar_ind - 1]));
+                            temp = new List<Int32>();
+                        }
+                    }
+                    else if (this._DNA.bars[4, bar_ind - 1] != this._DNA.bars[4, bar_ind + (4 * (int)Genome.subd * (int)Genome.subd - 8 * (int)Genome.subd - 8) - 1]) //secção =/=
+                    {
+                        temp.Add(bar_ind);
+                        this.Leg_ops.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, bar_ind - 1], (int)this._DNA.bars[5, bar_ind - 1]));
+                        temp = new List<Int32>();
+
+                    }
+                    else { temp.Add(bar_ind); } // se nao esta braced vai para a lista
+
+                }
+            }
+
+        }
+
+        private void Bracing_calc_list()
+        {
+            List<Calc_operations> x = new List<Calc_operations>();
+
+        }
+
+        private void HorizBar_calc_list()
+        {
+            List<Calc_operations> x = new List<Calc_operations>();
+
+        }
+
+        private bool _braced(int bar_num, List<Int32> tmp)
+        {
+            int h_bracing = 0;
+            int d_bracing = 0;
+
+            for (int i = 0; i<Genome.bar_cnt; i++) //procurar o indice da barra a analisar
+            {
+                
+
+                if ( this._DNA.bars[0,i] == bar_num - 1) // quando encontrar a barra a analisar na lista começar o loop que procura barras adjacentes com id que premita bracing
+                {
+                   
+                    for (int b=0; b < Genome.bar_cnt; b++) // loop em todas as barras
+                    {
+                        if(tmp.Contains((int)this._DNA.bars[5, b])) // verificar nas barras c/ id que podem ser bracing
+                        {
+                            if(this._DNA.bars[4,b] != 0) //se nao esta desactivada
+                            {
+                                // se partilha nós com a barra em analise
+                                if(this._DNA.bars[1,b]==this._DNA.bars[2,i] || this._DNA.bars[2, b] == this._DNA.bars[2, i])
+                                {
+                                    if (this._DNA.bars[5, b] == 2) { h_bracing++; }
+                                    if (this._DNA.bars[5, b] == 1) { d_bracing++; }
+                                }
+                            }
+                        }
+                              
+                    }
+                   
+                }
+               
+            }
+            if (h_bracing >= 2 || d_bracing >= 2) { return true; } else { return false; }
+        }
         int IComparable<Individual>.CompareTo(Individual other) // sorting algorithm
         {
             Individual iToCompare = (Individual)other;
