@@ -68,6 +68,7 @@ namespace Fraser
             // create calculation lists //
             Leg_calc_list();
             HorizBar_calc_list();
+            Bracing_calc_list();
             /////////////////////////////
 
             // Robot_call.Robot_interactive(true);
@@ -371,9 +372,9 @@ namespace Fraser
         {
             List<Calc_operations> x = new List<Calc_operations>();
             for (int i = 0; i < Genome.towerBar_cnt; i++){
-                if (this._DNA.bars[5, i] == 1) //if bracing
+                if (this._DNA.bars[5, i] == 1 && this._DNA.bars[4,i] !=0) //if bracing && not deactivated
                 {
-                   // Bracing_ops.Add(new Calc_operations(i, new List<Int32>() { i }, (int)this._DNA.bars[4, i], (int)this._DNA.bars[5, i]));
+                   Bracing_ops.Add(new Calc_operations(i, new List<Int32>() { i }, (int)this._DNA.bars[4, i], (int)this._DNA.bars[5, i]));
                 }
             }
         }
