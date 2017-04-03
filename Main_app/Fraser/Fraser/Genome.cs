@@ -53,7 +53,7 @@ namespace Fraser
         public Genome()
         {
             pt_cloud = new double[5, pt_cnt];
-            bars = new double[4, bar_cnt];
+            bars = new double[6, bar_cnt];
 
         }
 
