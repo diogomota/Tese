@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.GroupBox Cabos;
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.w_cabo2_int = new System.Windows.Forms.NumericUpDown();
             this.w_cabo3_int = new System.Windows.Forms.NumericUpDown();
             this.h_cabo2_int = new System.Windows.Forms.NumericUpDown();
@@ -59,6 +59,7 @@
             this.subdiv = new System.Windows.Forms.Label();
             this.subdiv_int = new System.Windows.Forms.NumericUpDown();
             this.Evol_tab = new System.Windows.Forms.TabPage();
+            this.Chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.sort = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.Sec_list = new System.Windows.Forms.ListBox();
@@ -66,7 +67,6 @@
             this.Population_cnt = new System.Windows.Forms.NumericUpDown();
             this.Generation = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.Chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             Cabos = new System.Windows.Forms.GroupBox();
             Cabos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.w_cabo2_int)).BeginInit();
@@ -84,8 +84,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.h_div_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.subdiv_int)).BeginInit();
             this.Evol_tab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Population_cnt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Chart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Population_cnt)).BeginInit();
             this.SuspendLayout();
             // 
             // Cabos
@@ -547,6 +547,19 @@
             this.Evol_tab.Text = "Evolution Settings";
             this.Evol_tab.UseVisualStyleBackColor = true;
             // 
+            // Chart
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.Chart.ChartAreas.Add(chartArea1);
+            this.Chart.Location = new System.Drawing.Point(135, 19);
+            this.Chart.Name = "Chart";
+            series1.ChartArea = "ChartArea1";
+            series1.Name = "Series1";
+            this.Chart.Series.Add(series1);
+            this.Chart.Size = new System.Drawing.Size(370, 205);
+            this.Chart.TabIndex = 8;
+            this.Chart.Text = "chart1";
+            // 
             // sort
             // 
             this.sort.Location = new System.Drawing.Point(433, 243);
@@ -627,19 +640,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Population:";
             // 
-            // Chart
-            // 
-            chartArea2.Name = "ChartArea1";
-            this.Chart.ChartAreas.Add(chartArea2);
-            this.Chart.Location = new System.Drawing.Point(135, 19);
-            this.Chart.Name = "Chart";
-            series2.ChartArea = "ChartArea1";
-            series2.Name = "Series1";
-            this.Chart.Series.Add(series2);
-            this.Chart.Size = new System.Drawing.Size(370, 205);
-            this.Chart.TabIndex = 8;
-            this.Chart.Text = "chart1";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -668,8 +668,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.subdiv_int)).EndInit();
             this.Evol_tab.ResumeLayout(false);
             this.Evol_tab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Population_cnt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Chart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Population_cnt)).EndInit();
             this.ResumeLayout(false);
 
         }

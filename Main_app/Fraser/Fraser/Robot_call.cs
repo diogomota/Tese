@@ -130,6 +130,23 @@ namespace Fraser
             List<double> _Ix = new List<double>();
             List<double> _Iy = new List<double>();
 
+
+
+            IRobotLabel a = robApp.Project.Structure.Labels.Create(IRobotLabelType.I_LT_BAR_SECTION, "a");
+            // IRobotBarSectionData a= robApp.Project.Structure.Labels.Get(IRobotLabelType.I_LT_BAR_SECTION, "a").Data;
+            IRobotBarSectionData data = a.Data;
+            data.Type = IRobotBarSectionType.I_BST_STANDARD;
+            data.ShapeType = IRobotBarSectionShapeType.I_BSST_CAE;
+            data.SetValue(IRobotBarSectionDataValue.I_BSDV_AX, 0.01);
+            data.SetValue(IRobotBarSectionDataValue.I_BSDV_IZ, 0.01);
+            data.SetValue(IRobotBarSectionDataValue.I_BSDV_IY, 0.01);
+            robApp.Project.Structure.Labels.Store(a);
+            // a.SetValue(IRobotBarSectionDataValue.I_BSDV_AX, 0.0012);
+
+
+
+
+
             for (int i = 1; i <= robApp.Project.Structure.Labels.GetAvailableNames(IRobotLabelType.I_LT_BAR_SECTION).Count; i++)
             {
                 
@@ -152,14 +169,11 @@ namespace Fraser
                 _Iy.Add(dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IY));
                 Console.WriteLine("WX:" + dt.Name);
                 Console.WriteLine("Area:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_AX));
-                Console.WriteLine("Gamma:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_GAMMA));
-                Console.WriteLine("Omega:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IOMEGA));
+
+                Console.WriteLine(dt.ShapeType);
+
                 Console.WriteLine("WX:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_WX));
                 Console.WriteLine("tw:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_TW));
-                Console.WriteLine("dim1:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_DIM1));
-                Console.WriteLine("dim1:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_DIM2));
-                Console.WriteLine("dim1:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_DIM3));
-                Console.WriteLine("ix:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IX));
                 Console.WriteLine("iy:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IY));
                 Console.WriteLine("iz:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IZ));
 
