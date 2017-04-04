@@ -116,10 +116,13 @@ namespace Fraser
         }
 
         private void btn_get_sec_Click(object sender, EventArgs e)
-        {
-            Robot_call.Get_sections();
+        { 
+            new Sections(sec_name.Text, (double)sec_area.Value , (double)sec_iz.Value, (double)sec_iy.Value, (double)sec_iv.Value);
+            Robot_call.Set_sections(sec_name.Text,(double)sec_area.Value,(double)sec_iz.Value,(double)sec_iy.Value);
+
             // add to the matrix the area of each section in the get_sections
-            Sec_list.DataSource = Robot_call.sec_prop.section_names;
+            Sec_list.Items.Add(sec_name.Text);
+            Sec_list.Update();
         }
 
         private void label3_Click(object sender, EventArgs e)
@@ -131,6 +134,26 @@ namespace Fraser
         {
             Array.Sort(CurrentPop.ind); // works
             Console.Write(Population.Select(CurrentPop.ind));
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Sec_list_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

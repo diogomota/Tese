@@ -59,7 +59,7 @@ namespace Fraser
         {
             Robot_call.Robot_interactive(false);
 
-            Robot_call.Get_sections();
+           // Robot_call.Get_sections(); nao necessario com o novo metodo de definir sec
             Robot_call.Update_pts(this._DNA);
             Robot_call.Update_bars(this._DNA);
 
@@ -122,7 +122,7 @@ namespace Fraser
             {
                 if (this._DNA.bars[4, i] != 0) // contar so as activas
                 {
-                    this.ton = this.ton + results[1, i] * Robot_call.sec_prop.Area[(int)this._DNA.bars[4, i]] * 7.849; //7.849 = ton / m3 steel
+                    this.ton = this.ton + results[1, i] * Sections.Area[(int)this._DNA.bars[4, i]] * 7.849; //7.849 = ton / m3 steel
                 }
             }
             this.fitness = this.ton;
