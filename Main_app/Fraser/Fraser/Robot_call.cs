@@ -150,6 +150,20 @@ namespace Fraser
                 _Area.Add(dt.GetValue(IRobotBarSectionDataValue.I_BSDV_AX));
                 _Ix.Add(dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IX));
                 _Iy.Add(dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IY));
+                Console.WriteLine("WX:" + dt.Name);
+                Console.WriteLine("Area:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_AX));
+                Console.WriteLine("Gamma:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_GAMMA));
+                Console.WriteLine("Omega:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IOMEGA));
+                Console.WriteLine("WX:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_WX));
+                Console.WriteLine("tw:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_TW));
+                Console.WriteLine("dim1:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_DIM1));
+                Console.WriteLine("dim1:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_DIM2));
+                Console.WriteLine("dim1:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_DIM3));
+                Console.WriteLine("ix:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IX));
+                Console.WriteLine("iy:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IY));
+                Console.WriteLine("iz:" + dt.GetValue(IRobotBarSectionDataValue.I_BSDV_IZ));
+
+
             }
             sec_prop = new Sections(_section_names, _Area, _Ix, _Iy);
         }
