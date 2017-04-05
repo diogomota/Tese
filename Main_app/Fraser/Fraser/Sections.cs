@@ -13,6 +13,7 @@ namespace Fraser
         public static List<double> Iz= new List<double>();
         public static List<double> Iy= new List<double>();
         public static List<double> Iv = new List<double>();
+        public static List<double> ivv = new List<double>();
 
         public static int count=0;
 
@@ -23,6 +24,13 @@ namespace Fraser
             Iz.Add(z);
             Iy.Add(y);
             Iv.Add(v);
+
+            //////////////
+            // Calc ivv //
+            //////////////
+            ivv.Add(Math.Sqrt(v / A));
+
+
             count++;
 
         }

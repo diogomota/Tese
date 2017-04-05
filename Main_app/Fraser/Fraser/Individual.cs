@@ -14,9 +14,9 @@ namespace Fraser
         public double[,] results;
         static int bb = 0;
 
-        private List<Calc_operations> Leg_ops = new List<Calc_operations>();
-        private List<Calc_operations> Bracing_ops = new List<Calc_operations>();
-        private List<Calc_operations> Horiz_ops_plane_bracing = new List<Calc_operations>();
+        private List<Calc_operations> Leg_ops = new List<Calc_operations>(); // lista leg calcs
+        private List<Calc_operations> Bracing_ops = new List<Calc_operations>(); // list bracing calcs
+        private List<Calc_operations> Horiz_ops_plane_bracing = new List<Calc_operations>(); // list off plane bracing 
         private List<Calc_operations> Horiz_ops_Offplane_bracing;
 
         public Individual()
@@ -37,17 +37,31 @@ namespace Fraser
 
             for (int i = 4; i < Genome.pt_cnt; i++) // start at 4 to fix supports
             {
-                //this._DNA.pt_cloud[0, i] = _baseDNA.pt_cloud[0, i];
+                //mutate initial pt coord.
                 this._DNA.pt_cloud[1, i] += rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//X
                 this._DNA.pt_cloud[2, i] += rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Y
                 this._DNA.pt_cloud[3, i] += rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Z
             }
-            for (int i = 0; i < Genome.towerBar_cnt; i++)
+            //define init sections 
+            for (int i = 0; i < Genome.bar_cnt; i++)
             {
-                if (this._DNA.bars[3, i] == 1) //if can be deactivated
+                #region previous code
+
+                /*if (this._DNA.bars[3, i] == 1) //if can be deactivated
                 {
                     this._DNA.bars[4, i] = 1;//rndm.Next(0, Sections.count - 1);
-                } else { this._DNA.bars[4, i] = rndm.Next(1, Sections.count - 1); }
+                } else { this._DNA.bars[4, i] = rndm.Next(1, Sections.count - 1); }*/
+                #endregion
+
+                if (this._DNA.bars[4,i] == -1)
+                {
+                    this._DNA.bars[4, i] = 0; //a primeira secção a definir será a dos braçoss
+                    //secção de braços
+                }else
+                {
+                    this._DNA.bars[4, i] = Sections.count - 1; // começar com a secção maxima
+                }
+                
             }
             bb++;
             // Console.Write(bb);
@@ -59,7 +73,6 @@ namespace Fraser
         {
             Robot_call.Robot_interactive(false);
 
-           // Robot_call.Get_sections(); nao necessario com o novo metodo de definir sec
             Robot_call.Update_pts(this._DNA);
             Robot_call.Update_bars(this._DNA);
 
@@ -76,9 +89,17 @@ namespace Fraser
 
             this.results = Robot_call.Run_analysis();
 
+            // NOTA: definir a primeira geração com a secção maxima em todas as barras e meter uma rotina que para tudo se 
+            // mesmo com essa secção falhar
+
+            // analisar todas as calcOps
+            // com os resultados reparar as barras
+            //calc fitness  = peso
+
             this.fitness = calc_fitess();
 
-            Robot_call.Refresh();
+            Robot_call.Refresh(); // é mesmo necessario ?? (fica mais rapido sem)
+
             //Robot_call.Robot_interactive(true);
 
             //call GetWeight() get tons
@@ -127,6 +148,11 @@ namespace Fraser
             }
             this.fitness = this.ton;
         }
+
+
+        /////////////////////////////////////
+        //Define Calc Lists (Virtual Model)//
+        /////////////////////////////////////
 
         private void Leg_calc_list()
         {
@@ -367,7 +393,6 @@ namespace Fraser
             }
 
         }
-
         private void Bracing_calc_list()
         {
             List<Calc_operations> x = new List<Calc_operations>();
@@ -378,7 +403,6 @@ namespace Fraser
                 }
             }
         }
-
         private void HorizBar_calc_list()
         {
             List<Int32> temp = new List<Int32>();
@@ -425,6 +449,7 @@ namespace Fraser
 
         }
 
+        //Virtual Model auxiliary functions
         private bool v_braced(int bar_num, List<Int32> tmp)
         {
             int h_bracing = 0;
@@ -492,6 +517,7 @@ namespace Fraser
             }
             if (bracing>=1) { return true; } else { return false; }
         }
+
         int IComparable<Individual>.CompareTo(Individual other) // sorting algorithm
         {
             Individual iToCompare = (Individual)other;
@@ -505,5 +531,6 @@ namespace Fraser
             }
             return 0;
         }
+
     }
 }

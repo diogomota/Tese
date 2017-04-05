@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.GroupBox Cabos;
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.w_cabo2_int = new System.Windows.Forms.NumericUpDown();
             this.w_cabo3_int = new System.Windows.Forms.NumericUpDown();
             this.h_cabo2_int = new System.Windows.Forms.NumericUpDown();
@@ -57,7 +57,7 @@
             this.h_div_int = new System.Windows.Forms.NumericUpDown();
             this.subdiv = new System.Windows.Forms.Label();
             this.subdiv_int = new System.Windows.Forms.NumericUpDown();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.sec_def = new System.Windows.Forms.TabPage();
             this.sec_iv = new System.Windows.Forms.NumericUpDown();
             this.sec_iy = new System.Windows.Forms.NumericUpDown();
             this.sec_iz = new System.Windows.Forms.NumericUpDown();
@@ -94,7 +94,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.n_cabos_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_div_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.subdiv_int)).BeginInit();
-            this.tabPage1.SuspendLayout();
+            this.sec_def.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sec_iv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sec_iy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sec_iz)).BeginInit();
@@ -310,8 +310,8 @@
             // 
             // tabs
             // 
+            this.tabs.Controls.Add(this.sec_def);
             this.tabs.Controls.Add(this.geom_tab);
-            this.tabs.Controls.Add(this.tabPage1);
             this.tabs.Controls.Add(this.Evol_tab);
             this.tabs.Location = new System.Drawing.Point(12, 12);
             this.tabs.Name = "tabs";
@@ -536,32 +536,32 @@
             0});
             this.subdiv_int.ValueChanged += new System.EventHandler(this.subdiv_int_ValueChanged);
             // 
-            // tabPage1
+            // sec_def
             // 
-            this.tabPage1.Controls.Add(this.sec_iv);
-            this.tabPage1.Controls.Add(this.sec_iy);
-            this.tabPage1.Controls.Add(this.sec_iz);
-            this.tabPage1.Controls.Add(this.sec_area);
-            this.tabPage1.Controls.Add(this.Sec_list);
-            this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.btn_set_sec);
-            this.tabPage1.Controls.Add(this.sec_name);
-            this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.label5);
-            this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(511, 301);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "Section Definition";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.sec_def.Controls.Add(this.sec_iv);
+            this.sec_def.Controls.Add(this.sec_iy);
+            this.sec_def.Controls.Add(this.sec_iz);
+            this.sec_def.Controls.Add(this.sec_area);
+            this.sec_def.Controls.Add(this.Sec_list);
+            this.sec_def.Controls.Add(this.label3);
+            this.sec_def.Controls.Add(this.btn_set_sec);
+            this.sec_def.Controls.Add(this.sec_name);
+            this.sec_def.Controls.Add(this.label7);
+            this.sec_def.Controls.Add(this.label6);
+            this.sec_def.Controls.Add(this.label5);
+            this.sec_def.Controls.Add(this.label4);
+            this.sec_def.Controls.Add(this.label2);
+            this.sec_def.Location = new System.Drawing.Point(4, 22);
+            this.sec_def.Name = "sec_def";
+            this.sec_def.Padding = new System.Windows.Forms.Padding(3);
+            this.sec_def.Size = new System.Drawing.Size(511, 301);
+            this.sec_def.TabIndex = 2;
+            this.sec_def.Text = "Section Definition";
+            this.sec_def.UseVisualStyleBackColor = true;
             // 
             // sec_iv
             // 
-            this.sec_iv.DecimalPlaces = 7;
+            this.sec_iv.DecimalPlaces = 12;
             this.sec_iv.Increment = new decimal(new int[] {
             1,
             0,
@@ -575,7 +575,7 @@
             // 
             // sec_iy
             // 
-            this.sec_iy.DecimalPlaces = 7;
+            this.sec_iy.DecimalPlaces = 12;
             this.sec_iy.Increment = new decimal(new int[] {
             1,
             0,
@@ -589,7 +589,7 @@
             // 
             // sec_iz
             // 
-            this.sec_iz.DecimalPlaces = 7;
+            this.sec_iz.DecimalPlaces = 12;
             this.sec_iz.Increment = new decimal(new int[] {
             1,
             0,
@@ -642,7 +642,7 @@
             this.btn_set_sec.Name = "btn_set_sec";
             this.btn_set_sec.Size = new System.Drawing.Size(120, 23);
             this.btn_set_sec.TabIndex = 5;
-            this.btn_set_sec.Text = "Set Sections";
+            this.btn_set_sec.Text = "Add Section";
             this.btn_set_sec.UseVisualStyleBackColor = true;
             this.btn_set_sec.Click += new System.EventHandler(this.btn_get_sec_Click);
             // 
@@ -719,13 +719,13 @@
             // 
             // Chart
             // 
-            chartArea2.Name = "ChartArea1";
-            this.Chart.ChartAreas.Add(chartArea2);
+            chartArea1.Name = "ChartArea1";
+            this.Chart.ChartAreas.Add(chartArea1);
             this.Chart.Location = new System.Drawing.Point(135, 19);
             this.Chart.Name = "Chart";
-            series2.ChartArea = "ChartArea1";
-            series2.Name = "Series1";
-            this.Chart.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Name = "Series1";
+            this.Chart.Series.Add(series1);
             this.Chart.Size = new System.Drawing.Size(370, 205);
             this.Chart.TabIndex = 8;
             this.Chart.Text = "chart1";
@@ -816,8 +816,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.n_cabos_int)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_div_int)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.subdiv_int)).EndInit();
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.sec_def.ResumeLayout(false);
+            this.sec_def.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sec_iv)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sec_iy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sec_iz)).EndInit();
@@ -868,7 +868,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button sort;
         private System.Windows.Forms.DataVisualization.Charting.Chart Chart;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage sec_def;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;

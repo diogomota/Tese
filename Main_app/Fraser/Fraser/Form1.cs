@@ -57,14 +57,15 @@ namespace Fraser
             double[] dist_centro = new double[3] { (double)w_cabo1_int.Value, (double)w_cabo2_int.Value, (double)w_cabo3_int.Value };
 
             if( BaseDNA != null || CurrentPop != null) { BaseDNA = null; CurrentPop = null; }
-            BaseDNA = new Fraser.Genome((double)Largura_ap_int.Value,(int)Altura_int.Value,(double)h_div_int.Value,(double)subdiv_int.Value,(int)n_cabos_int.Value,h_cabos,dist_centro);
 
+            BaseDNA = new Fraser.Genome((double)Largura_ap_int.Value,(int)Altura_int.Value,(double)h_div_int.Value,(double)subdiv_int.Value,(int)n_cabos_int.Value,h_cabos,dist_centro);
+            
+             //display the init structure (for user comfirmation + add forces)
             Robot_call.Start_pts(BaseDNA);
             Robot_call.Start_bars(BaseDNA);
             Robot_call.Refresh();
 
-
-            //CurrentPop = new Population((int)Population_cnt.Value, BaseDNA);
+            // create initial population
             NextPop = new Population((int)Population_cnt.Value, BaseDNA);
 
 
@@ -99,11 +100,13 @@ namespace Fraser
             {
                 Generation.Text = i.ToString();
                 CurrentPop = new Population(NextPop.ind);
+
                 for(int a = 0; a < Population.Pop_size; a++)
                 {
                     CurrentPop.ind[a].Evaluate();
                     c++;
                     series.Points.AddXY(c, CurrentPop.ind[a].fitness);
+                    Robot_call.Robot_interactive(true);
 
                 }
 

@@ -27,6 +27,7 @@ namespace Fraser
 
             }
         }
+
         //constructor for iterative process /Evolve()
         public Population(Individual[] new_pop)
         {
@@ -65,7 +66,7 @@ namespace Fraser
             return pop[i];
         }
 
-        public static /*Population*/ Individual[] Evolve(Individual[] pop,int gen)
+        public static Individual[] Evolve(Individual[] pop,int gen)
         {
             //Population Temp_pop = new Population();
             Individual[] _ind = new Individual[Pop_size];
@@ -82,7 +83,7 @@ namespace Fraser
             x._DNA = a._DNA;
             if (a.fitness >= b.fitness)
             {
-                for (int i = 0; i < a._DNA.pt_cloud.Length / 5; i++)
+                for (int i = 0; i < a._DNA.pt_cloud.Length / 5; i++) // no final fazer 1º crossover de alguns genes (pts) e so depois mutação em alguns genes do novo Genome
                 {
                     x._DNA.pt_cloud[1, i] = (2/(gen+1))*rand.Next(-1, 1)*rand.NextDouble()*0.3+(7*a._DNA.pt_cloud[1, i] + 3*b._DNA.pt_cloud[1,i]) / 10;//0.7*(a._DNA.pt_cloud[1, i] + 0.3*b._DNA.pt_cloud[1, i]) + 0.01 * rand.NextDouble();
                     x._DNA.pt_cloud[2, i] = (2 / (gen + 1)) *rand.Next(-1, 1) * rand.NextDouble() * 0.3+(7*a._DNA.pt_cloud[2, i] + 3*b._DNA.pt_cloud[2, i]) / 10;//0.7*(a._DNA.pt_cloud[2, i] + 0.3*b._DNA.pt_cloud[2, i]) + 0.01 * rand.NextDouble();

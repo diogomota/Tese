@@ -99,7 +99,7 @@ namespace Fraser
                 }
                 if (geometry.bars[4, i] == 0 && geometry.bars[3,i] == 1) // se é para desactivar e pode ser desactivado
                 {
-                   // robApp.Project.Structure.Bars.SetInactive((i + 1).ToString()); // desactivar
+                   robApp.Project.Structure.Bars.SetInactive((i + 1).ToString()); // desactivar
                 }
                 else{
                     robApp.Project.Structure.Bars.Get((int)geometry.bars[0, i] + 1).SetLabel(IRobotLabelType.I_LT_BAR_SECTION, Sections.section_names[(int)geometry.bars[4, i]]);
