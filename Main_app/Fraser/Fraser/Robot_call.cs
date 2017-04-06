@@ -176,10 +176,10 @@ namespace Fraser
                 IRobotBar current_bar = (IRobotBar)robApp.Project.Structure.Bars.Get(i + 1);
                 a[0, i] = i + 1;
                 a[1, i] = current_bar.Length;
-                a[2, i] = Max(results.Value(i + 1, 1, 0).FX, results.Value(i + 1, 1, 0.5).FX, results.Value(i + 1, 1, 1).FX);
-                a[3, i] = Max(results.Value(i + 1, 1, 0).MY, results.Value(i + 1, 1, 0.5).MY, results.Value(i + 1, 1, 1).MY);
-                a[4, i] = Max(results.Value(i + 1, 1, 0).MZ, results.Value(i + 1, 1, 0.5).MZ, results.Value(i + 1, 1, 1).MZ);
-                a[5, i] = 1; //decide how to efficiently select the worst V (Vy ou Vz)
+                a[2, i] = Max(results.Value(i + 1, 1, 0).FX, results.Value(i + 1, 1, 0.5).FX, results.Value(i + 1, 1, 1).FX)/1000; //converter N para Kn
+                a[3, i] = Max(results.Value(i + 1, 1, 0).MY, results.Value(i + 1, 1, 0.5).MY, results.Value(i + 1, 1, 1).MY)/1000; //N/m -> kN/m
+                a[4, i] = Max(results.Value(i + 1, 1, 0).MZ, results.Value(i + 1, 1, 0.5).MZ, results.Value(i + 1, 1, 1).MZ)/1000;
+                a[5, i] = 1; //remover(era para o V)
             }
 
             return a; //[rbt_bar_num,Lenght,Fx,My,Mz]

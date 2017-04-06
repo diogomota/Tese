@@ -12,6 +12,7 @@ namespace Fraser
         public double fitness;
         public double ton;
         public double[,] results;
+        private List<double[]> Repair_instr = new List<double[]>(); // depois fazer list.add(new double[2] {1,2})
         static int bb = 0;
 
         private List<Calc_operations> Leg_ops = new List<Calc_operations>(); // lista leg calcs
@@ -89,22 +90,26 @@ namespace Fraser
 
             this.results = Robot_call.Run_analysis();
 
-            // NOTA: definir a primeira geração com a secção maxima em todas as barras e meter uma rotina que para tudo se 
-            // mesmo com essa secção falhar
+            Calc_operations.EC3_Checks(0, ref Repair_instr, Leg_ops,this.results);
+            Calc_operations.EC3_Checks(1, ref Repair_instr, Bracing_ops, this.results);
+            Calc_operations.EC3_Checks(2, ref Repair_instr, Horiz_ops_plane_bracing, this.results);
+            //Calc_operations.EC3_Checks(3, ref Repair_instr, Horiz_ops_Offplane_bracing);
+
+            // NOTA: definir a primeira geração com a secção maxima em todas as barras e meter uma rotina que pára tudo se 
+            // com essa secção falhar
 
             // analisar todas as calcOps
+            // na classe calc_ops
             // com os resultados reparar as barras
-            //calc fitness  = peso
+            // funçao repair é nesta classe
+            // calc fitness  = peso
 
             this.fitness = calc_fitess();
 
             Robot_call.Refresh(); // é mesmo necessario ?? (fica mais rapido sem)
 
-            //Robot_call.Robot_interactive(true);
-
             //call GetWeight() get tons
             //get matrix with N V MY Mz for each bar
-            //plug that matrix in the EC3 check
         }
 
         public double calc_fitess()
@@ -150,8 +155,8 @@ namespace Fraser
         }
 
 
-        /////////////////////////////////////
         //Define Calc Lists (Virtual Model)//
+        //#################################//
         /////////////////////////////////////
 
         private void Leg_calc_list()
