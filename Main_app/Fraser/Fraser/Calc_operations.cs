@@ -20,6 +20,7 @@ namespace Fraser
             this.section_id = s_id;
             this.bar_id = b_id;
         }
+
         ///EC3 CALCS///
         ///
         ///
@@ -53,7 +54,11 @@ namespace Fraser
                         double u_f = 0;
                         double Nu_rd = Sections.Area[calc_ops[i].section_id] * 275000; //Aeff * fy
                         u_f = Nsd / Nu_rd;
-                        repair_instructions.Add(new double[] { calc_ops[i].start_bar, u_f }); // add to repair list
+
+                        for (int y = 0; y < calc_ops[i].next_bars.Count; y++)
+                        {
+                            repair_instructions.Add(new double[] { calc_ops[i].next_bars[y], Math.Abs(u_f) }); // add to repair list (each individual bar)
+                        }
                     }
                     else { //compression
 
@@ -76,7 +81,10 @@ namespace Fraser
 
                         if (u_f < b_uf) { u_f = b_uf; }
 
-                        repair_instructions.Add(new double[] { calc_ops[i].start_bar, Math.Abs(u_f) }); // add to repair list
+                        for (int y = 0; y < calc_ops[i].next_bars.Count; y++)
+                        {
+                            repair_instructions.Add(new double[] { calc_ops[i].next_bars[y], Math.Abs(u_f) }); // add to repair list (each individual bar)
+                        }
                     }
                 }
            }
@@ -97,7 +105,10 @@ namespace Fraser
                         double u_f = 0;
                         double Nu_rd = Sections.Area[calc_ops[i].section_id] * 275000; //Aeff * fy
                         u_f = Nsd / Nu_rd;
-                        repair_instructions.Add(new double[] { calc_ops[i].start_bar, u_f }); // add to repair list
+                        for (int y = 0; y < calc_ops[i].next_bars.Count; y++)
+                        {
+                            repair_instructions.Add(new double[] { calc_ops[i].next_bars[y], Math.Abs(u_f) }); // add to repair list (each individual bar)
+                        }
                     }
                     else // compression
                     {
@@ -122,7 +133,10 @@ namespace Fraser
 
                         if (u_f < b_uf) { u_f = b_uf; }
 
-                        repair_instructions.Add(new double[] { calc_ops[i].start_bar, Math.Abs(u_f) }); // add to repair list
+                        for (int y = 0; y < calc_ops[i].next_bars.Count; y++)
+                        {
+                            repair_instructions.Add(new double[] { calc_ops[i].next_bars[y], Math.Abs(u_f) }); // add to repair list (each individual bar)
+                        }
 
                     }
                 }
@@ -155,7 +169,10 @@ namespace Fraser
                         double u_f = 0;
                         double Nu_rd = Sections.Area[calc_ops[i].section_id] * 275000; //Aeff * fy
                         u_f = Nsd / Nu_rd;
-                        repair_instructions.Add(new double[] { calc_ops[i].start_bar, u_f }); // add to repair list
+                        for (int y = 0; y < calc_ops[i].next_bars.Count; y++)
+                        {
+                            repair_instructions.Add(new double[] { calc_ops[i].next_bars[y], Math.Abs(u_f) }); // add to repair list (each individual bar)
+                        }
                     }
                     else
                     {
@@ -178,13 +195,16 @@ namespace Fraser
 
                         if (u_f < b_uf) { u_f = b_uf; }
 
-                        repair_instructions.Add(new double[] { calc_ops[i].start_bar, Math.Abs(u_f) }); // add to repair list
+                        for (int y = 0; y < calc_ops[i].next_bars.Count; y++)
+                        {
+                            repair_instructions.Add(new double[] { calc_ops[i].next_bars[y], Math.Abs(u_f) }); // add to repair list (each individual bar)
+                        }
 
                     }
                 }
-
-
             }
+
+
         }
 
     }

@@ -12,9 +12,17 @@ namespace Fraser
         public double fitness;
         public double ton;
         public double[,] results;
-        private List<double[]> Repair_instr = new List<double[]>(); // depois fazer list.add(new double[2] {1,2})
+        public List<double[]> Repair_instr = new List<double[]>(); // depois fazer list.add(new double[2] {1,2})
         static int bb = 0;
 
+        private List<double[]> over_designed = new List<double[]>();   // sections to reduce
+        private List<double[]> under_designed = new List<double[]>();  // sections do increase
+        private List<double[]> to_disable = new List<double[]>();      // sections to disable
+
+        const double super_low_u_f = 0.1; //0-0.1 remover
+        const double low_u_f = 0.7;       //0.1 - 0.7 reduzir
+        const double ok_u_f = 0.9;        //0.9- 0.7 nao fazer grande coisa
+                                          // 0.9+ aumentar secção
         private List<Calc_operations> Leg_ops = new List<Calc_operations>(); // lista leg calcs
         private List<Calc_operations> Bracing_ops = new List<Calc_operations>(); // list bracing calcs
         private List<Calc_operations> Horiz_ops_plane_bracing = new List<Calc_operations>(); // list off plane bracing 
@@ -95,8 +103,16 @@ namespace Fraser
             Calc_operations.EC3_Checks(2, ref Repair_instr, Horiz_ops_plane_bracing, this.results);
             //Calc_operations.EC3_Checks(3, ref Repair_instr, Horiz_ops_Offplane_bracing);
 
-            // NOTA: definir a primeira geração com a secção maxima em todas as barras e meter uma rotina que pára tudo se 
-            // com essa secção falhar
+            //sort and create various lists for repair function
+            Create_Repair_Function_Lists(Repair_instr, ref over_designed, ref under_designed, ref to_disable);
+
+            //Repair function aqui para cada lista; no disable verificar se podem ser disabled; no over designed ha limite de redução mas escolha e aleatoria
+            //(ou nao... ver se deve ser assim ou entao deve ser as primeiras 3 ou 4 da lista (remover da lista caso ja tenha sido alterada?) ou add a uma temp list os n que ja sairam
+            
+            //calc fitnes
+            
+            //programar corssover de pts e secções
+            // programar mutaçoes (so de pts) ? 
 
             // analisar todas as calcOps
             // na classe calc_ops
@@ -454,7 +470,9 @@ namespace Fraser
 
         }
 
-        //Virtual Model auxiliary functions
+
+        ///Virtual Model auxiliary functions
+        ///
         private bool v_braced(int bar_num, List<Int32> tmp)
         {
             int h_bracing = 0;
@@ -523,6 +541,47 @@ namespace Fraser
             if (bracing>=1) { return true; } else { return false; }
         }
 
+        private void Create_Repair_Function_Lists(List<double[]> list, ref List<double[]> ovr_dsgn, ref List<double[]> udr_dsgn, ref List<double[]> _dsbl)
+        {
+            //temp
+            double[] bar_number = new double[list.Count];
+            double[] u_f = new double[list.Count];
+
+            // store info in two vectors for sorting
+            for (int i = 0; i < list.Count; i++)
+            {
+                double[] temp = list[i];
+                bar_number[i] = temp[0];
+                u_f[i] = temp[1];
+            }
+            
+            Array.Sort(u_f, bar_number); // sort by u_f
+
+            for (int i =0; i < list.Count; i++)
+            {
+                //se baixo U/f lista de remover
+                if (u_f[i] <= super_low_u_f)
+                {
+                    _dsbl.Add(new double[] { bar_number[i], u_f[i] });
+                }
+                //se medio U/f lista de reduzir secção
+                if (u_f[i]>super_low_u_f && u_f[i] <= low_u_f)
+                {
+                    ovr_dsgn.Add(new double[] { bar_number[i], u_f[i] });
+                }
+                //se demasiado alto U/f lista de aumentar secção
+                if (u_f[i]>= ok_u_f)
+                {
+                    udr_dsgn.Add(new double[] { bar_number[i], u_f[i] });
+                }
+            }
+
+        }
+        /// END
+        ///
+
+
+
         int IComparable<Individual>.CompareTo(Individual other) // sorting algorithm
         {
             Individual iToCompare = (Individual)other;
@@ -536,6 +595,5 @@ namespace Fraser
             }
             return 0;
         }
-
     }
 }
