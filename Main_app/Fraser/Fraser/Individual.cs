@@ -23,6 +23,10 @@ namespace Fraser
         const double low_u_f = 0.7;       //0.1 - 0.7 reduzir
         const double ok_u_f = 0.9;        //0.9- 0.7 nao fazer grande coisa
                                           // 0.9+ aumentar secção
+
+        const int max_bars_to_reduce = 3; // max n bars to reduce section per population
+        const int max_bars_to_delete = 1; // max n bars to delete per population
+
         private List<Calc_operations> Leg_ops = new List<Calc_operations>(); // lista leg calcs
         private List<Calc_operations> Bracing_ops = new List<Calc_operations>(); // list bracing calcs
         private List<Calc_operations> Horiz_ops_plane_bracing = new List<Calc_operations>(); // list off plane bracing 
@@ -106,11 +110,13 @@ namespace Fraser
             //sort and create various lists for repair function
             Create_Repair_Function_Lists(Repair_instr, ref over_designed, ref under_designed, ref to_disable);
 
+            Repair(ref over_designed, ref under_designed, ref to_disable);
+
             //Repair function aqui para cada lista; no disable verificar se podem ser disabled; no over designed ha limite de redução mas escolha e aleatoria
             //(ou nao... ver se deve ser assim ou entao deve ser as primeiras 3 ou 4 da lista (remover da lista caso ja tenha sido alterada?) ou add a uma temp list os n que ja sairam
-            
-            //calc fitnes
-            
+
+            this.fitness = get_ton(); // get weight
+
             //programar corssover de pts e secções
             // programar mutaçoes (so de pts) ? 
 
@@ -119,8 +125,6 @@ namespace Fraser
             // com os resultados reparar as barras
             // funçao repair é nesta classe
             // calc fitness  = peso
-
-            this.fitness = calc_fitess();
 
             Robot_call.Refresh(); // é mesmo necessario ?? (fica mais rapido sem)
 
@@ -157,7 +161,7 @@ namespace Fraser
             Console.WriteLine(" Fitness:" + sum / cnt + "; ");
             return sum / cnt;
         }
-        public void get_ton()
+        public double get_ton()
         {
             this.ton = new double();
             for (int i = 0; i < Genome.towerBar_cnt; i++)
@@ -167,7 +171,7 @@ namespace Fraser
                     this.ton = this.ton + results[1, i] * Sections.Area[(int)this._DNA.bars[4, i]] * 7.849; //7.849 = ton / m3 steel
                 }
             }
-            this.fitness = this.ton;
+            return ton;
         }
 
 
@@ -562,7 +566,14 @@ namespace Fraser
                 //se baixo U/f lista de remover
                 if (u_f[i] <= super_low_u_f)
                 {
-                    _dsbl.Add(new double[] { bar_number[i], u_f[i] });
+                    if (this._DNA.bars[4, (int)bar_number[i] - 1] == 1 && this._DNA.bars[3, (int)bar_number[i] - 1] == 1) // se pode ser desactivada + nao tem sec minima
+                    {
+                        _dsbl.Add(new double[] { bar_number[i], u_f[i] });
+                    }else
+                    {
+                        ovr_dsgn.Add(new double[] { bar_number[i], u_f[i] }); // mandar para a lista da barras a reduzir
+                    }
+
                 }
                 //se medio U/f lista de reduzir secção
                 if (u_f[i]>super_low_u_f && u_f[i] <= low_u_f)
@@ -580,7 +591,71 @@ namespace Fraser
         /// END
         ///
 
+        ///Repair Functions
+        ///
+        private void Repair(ref List<double[]> ovr_dsgn, ref List<double[]> udr_dsgn, ref List<double[]> _dsbl)
+        {
+            int Section_count = Sections.count;
+            ///Over Designed
+            ///
+            int bars_to_correct = Population.rand.Next(0, max_bars_to_reduce);
+            List<int> a = new List<int>();
 
+            while (a.Count != bars_to_correct)
+            {
+                int temp = Population.rand.Next(0, over_designed.Count);
+                if (!a.Contains(temp)) { a.Add(temp); }
+            }
+            for(int i = 0; i < bars_to_correct; i++)
+            {
+                if (this._DNA.bars[4,a[i]-1] != 1) // se nao tem ja a menor secção possivel
+                {
+                    this._DNA.bars[4, a[i] - 1]--; //reduzir 1 
+                    Console.WriteLine("Reduziu Sec da barra" + a[i]);
+                }
+            }
+
+            ///Under Designed
+            ///
+            for (int i = 0; i < udr_dsgn.Count; i++)
+            {
+                double[] temp = udr_dsgn[i];
+                if (this._DNA.bars[4, (int)temp[0] - 1] != Section_count - 1) // se ainda nao estiver com a maior secção pode aumentar ( -1 porque o count começa no 0)
+                {
+                    this._DNA.bars[4, (int)temp[0] - 1]++; // corrigir
+                    Console.WriteLine("Aumentou Sec da barra" + a[i]);
+                }
+                else
+                {
+                    Console.WriteLine("---------------------------");
+                    Console.WriteLine("!!!NEEDS BIGGER SECTIONS!!!");
+                    Console.WriteLine("---------------------------");
+                }
+            }
+            ///Disable
+            ///
+            int bars_to_disable = Population.rand.Next(0, max_bars_to_delete);
+            List<int> b = new List<int>();
+
+            while (b.Count != bars_to_disable)
+            {
+                int temp = Population.rand.Next(0, _dsbl.Count);
+                if (!b.Contains(temp)) { b.Add(temp); }
+            }
+            for (int i = 0; i < bars_to_disable; i++)
+            {
+                if (this._DNA.bars[3, a[i] - 1] == 1) // se pode desactivar
+                {
+                    Console.WriteLine("Delete" + a[i]);
+                    this._DNA.bars[4, a[i] - 1]--; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
+                }
+            }
+
+        }
+
+
+        ///END
+        ///
 
         int IComparable<Individual>.CompareTo(Individual other) // sorting algorithm
         {

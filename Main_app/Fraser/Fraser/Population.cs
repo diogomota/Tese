@@ -46,15 +46,18 @@ namespace Fraser
                 total_fitness += pop[a].fitness;
             }
 
-            double Sel = rand.NextDouble();
+            double Sel = rand.NextDouble(); // it's a minimization problem!!
             double previous_fit = 0.0;
             double current_fit = 0.0;
+
+            // check to see if tournament selection is a better option for minimization problem!!!!!!!!!!!
+
             //the selection
-            for (int b=0; b< Pop_size; b++)
+            for (int b=Pop_size; b> 0; b--) // check to see if tournament selection is a better option for minimization problem
             {
                 current_fit += pop[b].fitness;
 
-                if ( Sel >=previous_fit/total_fitness && Sel <= current_fit / total_fitness) {
+                if ( Sel <=1-(previous_fit/total_fitness) && Sel >= 1-(current_fit / total_fitness)) {
                     i = b;  break;
                 }
                 else { 
