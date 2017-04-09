@@ -50,17 +50,19 @@ namespace Fraser
             double previous_fit = 0.0;
             double current_fit = 0.0;
 
-            // check to see if tournament selection is a better option for minimization problem!!!!!!!!!!!
+            // check to see if tournament selection is a better option for minimization problem!!!!!!!
 
             //the selection
-            for (int b=Pop_size; b> 0; b--) // check to see if tournament selection is a better option for minimization problem
-            {
-                current_fit += pop[b].fitness;
 
-                if ( Sel <=1-(previous_fit/total_fitness) && Sel >= 1-(current_fit / total_fitness)) {
+            for (int b=0; b<Pop_size; b++) // check to see if tournament selection is a better option for minimization problem
+            {
+                current_fit += pop[0].fitness-pop[b].fitness; // minimizar = aumentar distancia entre max fitness da geração e os outros individuos
+                
+
+                if ( Sel >=previous_fit/total_fitness && Sel <= current_fit / total_fitness) {
                     i = b;  break;
                 }
-                else { 
+                else {
                     previous_fit = current_fit;
                 }
 
