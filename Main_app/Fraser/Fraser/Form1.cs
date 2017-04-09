@@ -96,7 +96,7 @@ namespace Fraser
             series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
 
 
-            for (int i=0; i<4; i++)
+            for (int i=0; i<8; i++)
             {
                 Generation.Text = i.ToString();
                 CurrentPop = new Population(NextPop.ind);

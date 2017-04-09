@@ -25,7 +25,7 @@ namespace Fraser
                                           // 0.9+ aumentar secção
 
         const int max_bars_to_reduce = 3; // max n bars to reduce section per population
-        const int max_bars_to_delete = 1; // max n bars to delete per population
+        const int max_bars_to_delete = 2; // max n bars to delete per population
 
         private List<Calc_operations> Leg_ops = new List<Calc_operations>(); // lista leg calcs
         private List<Calc_operations> Bracing_ops = new List<Calc_operations>(); // list bracing calcs
@@ -116,7 +116,7 @@ namespace Fraser
             //(ou nao... ver se deve ser assim ou entao deve ser as primeiras 3 ou 4 da lista (remover da lista caso ja tenha sido alterada?) ou add a uma temp list os n que ja sairam
 
             this.fitness = get_ton(); // get weight
-
+            Console.WriteLine("Fitness: " + this.fitness);
             //programar corssover de pts e secções
             // programar mutaçoes (so de pts) ? 
 
@@ -126,7 +126,7 @@ namespace Fraser
             // funçao repair é nesta classe
             // calc fitness  = peso
 
-            Robot_call.Refresh(); // é mesmo necessario ?? (fica mais rapido sem)
+            //Robot_call.Refresh(); // é mesmo necessario ?? (fica mais rapido sem)
 
             //call GetWeight() get tons
             //get matrix with N V MY Mz for each bar
@@ -603,7 +603,7 @@ namespace Fraser
 
             while (a.Count != bars_to_correct)
             {
-                int temp = Population.rand.Next(0, over_designed.Count);
+                int temp = Population.rand.Next(1, over_designed.Count); // porque nunca chega ao 0 a barra
                 if (!a.Contains(temp)) { a.Add(temp); }
             }
             for(int i = 0; i < bars_to_correct; i++)
@@ -623,7 +623,7 @@ namespace Fraser
                 if (this._DNA.bars[4, (int)temp[0] - 1] != Section_count - 1) // se ainda nao estiver com a maior secção pode aumentar ( -1 porque o count começa no 0)
                 {
                     this._DNA.bars[4, (int)temp[0] - 1]++; // corrigir
-                    Console.WriteLine("Aumentou Sec da barra" + a[i]);
+                    Console.WriteLine("Aumentou Sec da barra" + temp[0]);
                 }
                 else
                 {
@@ -632,9 +632,11 @@ namespace Fraser
                     Console.WriteLine("---------------------------");
                 }
             }
-            ///Disable
+
+            
+            ///To Disable
             ///
-            int bars_to_disable = Population.rand.Next(0, max_bars_to_delete);
+            int bars_to_disable = Population.rand.Next(1, max_bars_to_delete);
             List<int> b = new List<int>();
 
             while (b.Count != bars_to_disable)
@@ -644,10 +646,10 @@ namespace Fraser
             }
             for (int i = 0; i < bars_to_disable; i++)
             {
-                if (this._DNA.bars[3, a[i] - 1] == 1) // se pode desactivar
+                if (b[i]!=0 && this._DNA.bars[3, b[i] - 1] == 1) // se pode desactivar
                 {
-                    Console.WriteLine("Delete" + a[i]);
-                    this._DNA.bars[4, a[i] - 1]--; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
+                    Console.WriteLine("Delete" + b[i]);
+                    this._DNA.bars[4, b[i] - 1]=0; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
                 }
             }
 
