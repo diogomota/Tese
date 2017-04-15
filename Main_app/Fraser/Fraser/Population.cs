@@ -10,7 +10,7 @@ namespace Fraser
     {
         public Individual[] ind;
         //public List<Individual> ind;
-        static public Random rand = new Random(0); //o random seeder so se inicia uma vez para a população
+        static public Random rand = new Random(System.DateTime.Now.Second*System.DateTime.Now.Millisecond); //o random seeder so se inicia uma vez para a população
         public static int Pop_size=0;
 
         const double pt_mutation_prob = 0.3;
@@ -125,9 +125,9 @@ namespace Fraser
                 double _rnd = Population.rand.NextDouble();
                 if (_rnd < pt_mutation_prob)
                 {
-                    x._DNA.pt_cloud[1, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble())*(1/(gen+1));
-                    x._DNA.pt_cloud[2, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble()) * (1 / (1+gen));
-                    x._DNA.pt_cloud[3, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble()) * (1 / (1+gen));
+                    x._DNA.pt_cloud[1, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble())*0.25;
+                    x._DNA.pt_cloud[2, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble())*0.25;
+                    x._DNA.pt_cloud[3, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble())*0.25;
                 }
             }
 

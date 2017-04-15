@@ -25,9 +25,9 @@ namespace Fraser
         //Constants
         //for pt mutation
         const double zero_mutation = 0;
-        const double min_mutation = 2.8;
-        const double med_mutation = 5.0;
-        const double max_mutation = 7.3;
+        const double min_mutation = 0.8;
+        const double med_mutation = 1.0;
+        const double max_mutation = 1.3;
         const double arm_mutation = 0.2;
 
         //methods

@@ -53,7 +53,7 @@ namespace Fraser
                 //mutate initial pt coord.
                 this._DNA.pt_cloud[1, i] += rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//X
                 this._DNA.pt_cloud[2, i] += rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Y
-                this._DNA.pt_cloud[3, i] += rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i];//Z
+                this._DNA.pt_cloud[3, i] += rndm.Next(-1, 1) * rndm.NextDouble() * this._DNA.pt_cloud[4, i]*0.2;//Z
             }
             //define init sections 
             for (int i = 0; i < Genome.bar_cnt; i++)
@@ -463,7 +463,10 @@ namespace Fraser
                         }else if (temp!= null) //se a barra anterior nao estava braced e saltou para esta que nao esta activa nao procurar add mais barras, adicionar a lista de calc
                             //provavelmente será aqui que se vao eliminar estas barras que a partida como nao esta braced ficam instaveis (ver 1º como o robot reage)
                         {
-                            this.Horiz_ops_plane_bracing.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, temp[0] - 1], (int)this._DNA.bars[5, temp[0] - 1]));
+                            if (temp.Count != 0)
+                            {
+                                this.Horiz_ops_plane_bracing.Add(new Calc_operations(temp[0], temp, (int)this._DNA.bars[4, temp[0] - 1], (int)this._DNA.bars[5, temp[0] - 1]));
+                            }
                         }
                     }
 
@@ -603,12 +606,17 @@ namespace Fraser
 
             while (a.Count != bars_to_correct)
             {
-                int temp = Population.rand.Next(1, over_designed.Count); // porque nunca chega ao 0 a barra
-                if (!a.Contains(temp)) { a.Add(temp); }
+                if (ovr_dsgn.Count != 0)
+                {
+                    int temp = Population.rand.Next(1, ovr_dsgn.Count); // porque nunca chega ao 0 a barra
+                    double[] temp_bar = ovr_dsgn[temp];
+                    if (!a.Contains((int)temp_bar[0])) { a.Add((int)temp_bar[0]); }
+                }
+
             }
             for(int i = 0; i < bars_to_correct; i++)
             {
-                if (this._DNA.bars[4,a[i]-1] != 1) // se nao tem ja a menor secção possivel
+                if (this._DNA.bars[4,a[i]-1] > 1) // se nao tem ja a menor secção possivel
                 {
                     this._DNA.bars[4, a[i] - 1]--; //reduzir 1 
                     Console.WriteLine("Reduziu Sec da barra" + a[i]);
@@ -641,15 +649,21 @@ namespace Fraser
 
             while (b.Count != bars_to_disable)
             {
-                int temp = Population.rand.Next(0, _dsbl.Count);
-                if (!b.Contains(temp)) { b.Add(temp); }
+                if (_dsbl.Count != 0)
+                {
+                    int temp = Population.rand.Next(1, _dsbl.Count)-1; // para começar no 0 do array
+                    double[] temp_bar = _dsbl[temp];
+                    if (!b.Contains((int)temp_bar[0])) { b.Add((int)temp_bar[0]); }
+                }
+                else { return; }
             }
+
             for (int i = 0; i < bars_to_disable; i++)
             {
                 if (b[i]!=0 && this._DNA.bars[3, b[i] - 1] == 1) // se pode desactivar
                 {
                     Console.WriteLine("Delete" + b[i]);
-                    this._DNA.bars[4, b[i] - 1]=0; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
+                    this._DNA.bars[4, b[i] - 1]--; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
                 }
             }
 
