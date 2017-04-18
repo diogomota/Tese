@@ -96,7 +96,7 @@ namespace Fraser
             series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
 
 
-            for (int i=0; i<8; i++)
+            for (int i=0; i<20; i++)
             {
                 Generation.Text = i.ToString();
                 CurrentPop = new Population(NextPop.ind);
@@ -106,7 +106,7 @@ namespace Fraser
                     CurrentPop.ind[a].Evaluate();
                     c++;
                     series.Points.AddXY(c, CurrentPop.ind[a].fitness);
-                    Robot_call.Robot_interactive(true);
+                    //Robot_call.Robot_interactive(true);
 
                 }
 

@@ -19,12 +19,12 @@ namespace Fraser
         private List<double[]> under_designed = new List<double[]>();  // sections do increase
         private List<double[]> to_disable = new List<double[]>();      // sections to disable
 
-        const double super_low_u_f = 0.1; //0-0.1 remover
-        const double low_u_f = 0.7;       //0.1 - 0.7 reduzir
-        const double ok_u_f = 0.9;        //0.9- 0.7 nao fazer grande coisa
+        const double super_low_u_f = 0.05; //0-0.05 remover
+        const double low_u_f = 0.6;       //0.05 - 0.6 reduzir
+        const double ok_u_f = 0.9;        //0.9- 0.6 nao fazer grande coisa
                                           // 0.9+ aumentar secção
 
-        const int max_bars_to_reduce = 3; // max n bars to reduce section per population
+        const int max_bars_to_reduce = 10; // max n bars to reduce section per population
         const int max_bars_to_delete = 2; // max n bars to delete per population
 
         private List<Calc_operations> Leg_ops = new List<Calc_operations>(); // lista leg calcs
@@ -601,20 +601,31 @@ namespace Fraser
             int Section_count = Sections.count;
             ///Over Designed
             ///
-            int bars_to_correct = Population.rand.Next(0, max_bars_to_reduce);
-            List<int> a = new List<int>();
 
-            while (a.Count != bars_to_correct)
+            int bars_to_correct;
+            bool need_bigger_sect = false;
+
+            if (max_bars_to_reduce <= ovr_dsgn.Count) {
+                bars_to_correct = Population.rand.Next(0, max_bars_to_reduce);
+            }else
             {
-                if (ovr_dsgn.Count != 0)
+                bars_to_correct = Population.rand.Next(0, ovr_dsgn.Count);
+            }
+
+            List<int> a = new List<int>();
+                while (a.Count != bars_to_correct)
                 {
-                    int temp = Population.rand.Next(1, ovr_dsgn.Count); // porque nunca chega ao 0 a barra
-                    double[] temp_bar = ovr_dsgn[temp];
-                    if (!a.Contains((int)temp_bar[0])) { a.Add((int)temp_bar[0]); }
+                    if (ovr_dsgn.Count != 0)
+                    {
+                        int temp = Population.rand.Next(1, ovr_dsgn.Count); // porque nunca chega ao 0 a barra
+                        double[] temp_bar = ovr_dsgn[temp];
+                        if (!a.Contains((int)temp_bar[0])) { a.Add((int)temp_bar[0]); }
+                    }
+                    else { break; }
+
                 }
 
-            }
-            for(int i = 0; i < bars_to_correct; i++)
+            for(int i = 1; i < bars_to_correct; i++)
             {
                 if (this._DNA.bars[4,a[i]-1] > 1) // se nao tem ja a menor secção possivel
                 {
@@ -635,38 +646,47 @@ namespace Fraser
                 }
                 else
                 {
+                    this.fitness += 5;
+                    need_bigger_sect = true;
                     Console.WriteLine("---------------------------");
                     Console.WriteLine("!!!NEEDS BIGGER SECTIONS!!!");
                     Console.WriteLine("---------------------------");
                 }
             }
 
-            
-            ///To Disable
-            ///
-            int bars_to_disable = Population.rand.Next(1, max_bars_to_delete);
-            List<int> b = new List<int>();
-
-            while (b.Count != bars_to_disable)
+            if (!need_bigger_sect) //so eliminar se nesta estrutura nao existir falta de secções
             {
-                if (_dsbl.Count != 0)
+                ///To Disable
+                ///
+                if (ovr_dsgn.Count >= 1) // so começar a eliminar se ja tiver reduzido tudo o que podia -> nao e bem assim.. rever
                 {
-                    int temp = Population.rand.Next(1, _dsbl.Count)-1; // para começar no 0 do array
-                    double[] temp_bar = _dsbl[temp];
-                    if (!b.Contains((int)temp_bar[0])) { b.Add((int)temp_bar[0]); }
-                }
-                else { return; }
-            }
+                    int bars_to_disable = Population.rand.Next(1, max_bars_to_delete);
+                    List<int> b = new List<int>();
 
-            for (int i = 0; i < bars_to_disable; i++)
-            {
-                if (b[i]!=0 && this._DNA.bars[3, b[i] - 1] == 1) // se pode desactivar
-                {
-                    Console.WriteLine("Delete" + b[i]);
-                    this._DNA.bars[4, b[i] - 1]--; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
+                    while (b.Count != bars_to_disable)
+                    {
+                        if (_dsbl.Count != 0)
+                        {
+                            int temp = Population.rand.Next(1, _dsbl.Count) - 1; // para começar no 0 do array
+                            double[] temp_bar = _dsbl[temp];
+                            if (!b.Contains((int)temp_bar[0])) { b.Add((int)temp_bar[0]); }
+                        }
+                        else { break; }
+                    }
+
+                    for (int i = 0; i < bars_to_disable; i++)
+                    {
+                        if (b.Count != 0)
+                        {
+                            if (b[i] != 0 && this._DNA.bars[3, b[i] - 1] == 1) // se pode desactivar e tem barras para desactivar
+                            {
+                                Console.WriteLine("Delete" + b[i]);
+                                this._DNA.bars[4, b[i] - 1]--; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
+                            }
+                        }
+                    }
                 }
             }
-
         }
 
 

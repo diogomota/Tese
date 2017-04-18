@@ -25,10 +25,10 @@ namespace Fraser
         //Constants
         //for pt mutation
         const double zero_mutation = 0;
-        const double min_mutation = 0.8;
-        const double med_mutation = 1.0;
-        const double max_mutation = 1.3;
-        const double arm_mutation = 0.2;
+        const double min_mutation = 0.2;
+        const double med_mutation = 0.2;
+        const double max_mutation = .3;
+        const double arm_mutation = 0.0;
 
         //methods
         //constructor
@@ -534,11 +534,11 @@ namespace Fraser
             {
                 for (int i = 4 + h * ring_pt; i < 4 + (h + 1) * ring_pt - 1; i++)
                 {
-                    addBar(ref bars, bar_num, i, i+1,1,0,2); //id = 2 horiz bracing
+                    addBar(ref bars, bar_num, i, i+1,0,0,2); //id = 2 horiz bracing
                     bar_num++;
                     if (i == 4 + (h + 1) * ring_pt - 2)
                     {
-                        addBar(ref bars, bar_num, i+1, 4+h*ring_pt,1,0,2);  //id = 2 horiz bracing
+                        addBar(ref bars, bar_num, i+1, 4+h*ring_pt,0,0,2);  //id = 2 horiz bracing
                         bar_num++;
                     }
                 }
