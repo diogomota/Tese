@@ -18,7 +18,7 @@ namespace Fraser
         private Population NextPop;
         private Genome BaseDNA;
         private int _individual = 0;
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -72,50 +72,50 @@ namespace Fraser
         }
 
         private void draw_Click(object sender, EventArgs e)
-        {/*
-            Robot_call.Robot_interactive(false);
-
-            Robot_call.Get_sections();
-            Robot_call.Update_pts(CurrentPop.ind[_individual]._DNA);
-
-
-            Robot_call.Update_bars(CurrentPop.ind[_individual]._DNA);
-
-            Robot_call.Addsupports();
-            CurrentPop.ind[_individual].results=Robot_call.Run_analysis();
-            Robot_call.Refresh();
-            Robot_call.Robot_interactive(true);
-            CurrentPop.ind[_individual].get_ton();
-           // Console.Write(CurrentPop.ind[_individual].results[1, 5]);
-            _individual++;
-            */
+        {
             int c = 0;
             this.Chart.Series.Clear();
             this.Chart.Titles.Add("Fitness");
             System.Windows.Forms.DataVisualization.Charting.Series series = this.Chart.Series.Add("fitness");
             series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
 
-
-            for (int i=0; i<20; i++)
+            CurrentPop = new Population(NextPop.ind);
+            for (int i=0; i<170; i++)
             {
                 Generation.Text = i.ToString();
-                CurrentPop = new Population(NextPop.ind);
-
-                for(int a = 0; a < Population.Pop_size; a++)
+                // CurrentPop = new Population(NextPop.ind);
+                if (i == 0)
                 {
-                    CurrentPop.ind[a].Evaluate();
-                    c++;
-                    series.Points.AddXY(c, CurrentPop.ind[a].fitness);
-                    //Robot_call.Robot_interactive(true);
+                    for (int a = 0; a < Population.Pop_size; a++)
+                    {
+                        CurrentPop.ind[a].Evaluate();
+                        c++;
+                        series.Points.AddXY(c, CurrentPop.ind[a].fitness);
+                        //Robot_call.Robot_interactive(true);
 
-                }
+                    }
+                }else { /*CurrentPop.ind[0].Evaluate();*/c++; series.Points.AddXY(c, CurrentPop.ind[0].fitness); }
 
                 Array.Sort(CurrentPop.ind);
-                LastPop = new Population(CurrentPop.ind);
-                NextPop = new Population(Population.Evolve(CurrentPop.ind,i));
+
+                Individual temp = Population.Evolve_single(CurrentPop.ind, i);
+                temp.Evaluate();
+                if (temp.fitness < CurrentPop.ind[0].fitness) { CurrentPop.ind[0] = temp; } else { i--; }
+                //CurrentPop.ind[0] = Population.Evolve_single(CurrentPop.ind, i).Evaluate();
+                Robot_call.Robot_interactive(true);
+                Robot_call.Refresh();
+
+                //LastPop = new Population(CurrentPop.ind);
+                //NextPop = new Population(Population.Evolve(CurrentPop.ind,i));
                 
             }
+            CurrentPop.ind[Population.Pop_size - 1].Evaluate();
+            
+
+            Robot_call.Update_bars(CurrentPop.ind[49]._DNA);
+            Robot_call.Update_pts(CurrentPop.ind[49]._DNA);
             Robot_call.Robot_interactive(true);
+            Robot_call.Refresh();
         }
 
         private void btn_get_sec_Click(object sender, EventArgs e)
@@ -135,8 +135,14 @@ namespace Fraser
 
         private void sort_Click(object sender, EventArgs e)
         {
-            Array.Sort(CurrentPop.ind); // works
-            Console.Write(Population.Select(CurrentPop.ind));
+            //Array.Sort(CurrentPop.ind); // works
+            //Console.Write(Population.Select(CurrentPop.ind));
+            Robot_call.Update_bars(CurrentPop.ind[Population.Pop_size-1-_individual]._DNA);
+            Robot_call.Update_pts(CurrentPop.ind[Population.Pop_size - 1 - _individual]._DNA);
+            Robot_call.Robot_interactive(true);
+            Robot_call.Refresh();
+            _individual++;
+
         }
 
         private void label2_Click(object sender, EventArgs e)

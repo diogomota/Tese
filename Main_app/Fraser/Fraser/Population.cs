@@ -14,6 +14,7 @@ namespace Fraser
         public static int Pop_size=0;
 
         const double pt_mutation_prob = 0.3;
+        const double sec_mutation_prob = 0.05;
 
         // constructor for first population
         public Population (int max_pop, Genome _baseDNA){
@@ -83,28 +84,32 @@ namespace Fraser
             }
             return _ind;
         }
+        public static Individual Evolve_single(Individual[] pop, int gen)
+        {
+            //Population Temp_pop = new Population();
+            Individual _ind = new Individual();
+            //_ind = Breed(Select(pop), Select(pop), gen);
+            _ind = Breed(Tournament_selection(pop), Tournament_selection(pop),gen);
+            return _ind;
+
+        }
+
+        public static Individual Tournament_selection(Individual[] pop)
+        {
+            int selection_pressure = 20; // n individuos a concorrer
+            int[] tournament = new int[20];
+            for (int i = 0; i < selection_pressure; i++)
+            {
+                tournament[i] = Population.rand.Next(Pop_size - 30, Pop_size - 1);
+            }
+            Array.Sort(tournament);
+            return pop[tournament.Last<int>()];
+        }
 
         public static Individual Breed(Individual a, Individual b,int gen) {
             Individual x = new Individual();
 
             x._DNA = a._DNA;
-            /*if (a.fitness >= b.fitness)
-            {
-                for (int i = 0; i < a._DNA.pt_cloud.Length / 5; i++) // no final fazer 1º crossover de alguns genes (pts) e so depois mutação em alguns genes do novo Genome
-                {
-                    x._DNA.pt_cloud[1, i] = (2/(gen+1))*rand.Next(-1, 1)*rand.NextDouble()*0.3+(7*a._DNA.pt_cloud[1, i] + 3*b._DNA.pt_cloud[1,i]) / 10;//0.7*(a._DNA.pt_cloud[1, i] + 0.3*b._DNA.pt_cloud[1, i]) + 0.01 * rand.NextDouble();
-                    x._DNA.pt_cloud[2, i] = (2 / (gen + 1)) *rand.Next(-1, 1) * rand.NextDouble() * 0.3+(7*a._DNA.pt_cloud[2, i] + 3*b._DNA.pt_cloud[2, i]) / 10;//0.7*(a._DNA.pt_cloud[2, i] + 0.3*b._DNA.pt_cloud[2, i]) + 0.01 * rand.NextDouble();
-                    x._DNA.pt_cloud[3, i] = (2 / (gen + 1)) * rand.Next(-1, 1) * rand.NextDouble() * 0.3+(7*a._DNA.pt_cloud[3, i] + 3*b._DNA.pt_cloud[3, i]) / 10;//0.7*(a._DNA.pt_cloud[3, i] + 0.3*b._DNA.pt_cloud[3, i]) + 0.01 * rand.NextDouble();
-                }
-            }else {
-                for (int i = 0; i < a._DNA.pt_cloud.Length / 5; i++)
-                {
-                    x._DNA.pt_cloud[1, i] = (2 / (gen + 1)) * rand.Next(-1, 1) * rand.NextDouble() * 0.3+(3*a._DNA.pt_cloud[1, i] + 7*b._DNA.pt_cloud[1, i]) / 10;//0.3 * (a._DNA.pt_cloud[1, i] + 0.7 * b._DNA.pt_cloud[1, i]) + 0.01 * rand.NextDouble();
-                    x._DNA.pt_cloud[2, i] = (2 / (gen + 1)) * rand.Next(-1, 1) * rand.NextDouble() * 0.3+(3*a._DNA.pt_cloud[2, i] + 7*b._DNA.pt_cloud[2, i]) / 10;//0.3 * (a._DNA.pt_cloud[2, i] + 0.7 * b._DNA.pt_cloud[2, i]) + 0.01 * rand.NextDouble();
-                    x._DNA.pt_cloud[3, i] = (2 / (gen + 1)) * rand.Next(-1, 1) * rand.NextDouble() * 0.3+(3*a._DNA.pt_cloud[3, i] + 7*b._DNA.pt_cloud[3, i]) / 10;//0.3 * (a._DNA.pt_cloud[3, i] + 0.7 * b._DNA.pt_cloud[3, i]) + 0.01 * rand.NextDouble();
-                }
-
-            }*/
             ///PTS
             ///
 
@@ -118,6 +123,7 @@ namespace Fraser
                 x._DNA.pt_cloud[2, i] = b._DNA.pt_cloud[2, i];
                 x._DNA.pt_cloud[3, i] = b._DNA.pt_cloud[3, i];
             }
+
             ///Mutation
             ///
             for (int i = 0; i < Genome.pt_cnt; i++)
@@ -136,12 +142,35 @@ namespace Fraser
 
             ///CrossOver
             ///
-            CrossOver_pt = Population.rand.Next(0, Genome.towerBar_cnt);
 
-            for (int i = CrossOver_pt; i < Genome.towerBar_cnt; i++)
+            CrossOver_pt = Population.rand.Next(0, Genome.towerBar_cnt);
+            int end_crossover_pt = Population.rand.Next(CrossOver_pt, Genome.towerBar_cnt);
+
+            for (int i = CrossOver_pt; i < end_crossover_pt; i++)
             {
-                x._DNA.bars[1, 4] = b._DNA.bars[1, 4];
+                x._DNA.bars[4, i] = b._DNA.bars[4, i];
             }
+            ///Mutation
+            ///
+            int cnt = 0;
+            for (int i = 0; i < Genome.towerBar_cnt; i++)
+            {
+                double _rnd = Population.rand.NextDouble();
+                if (_rnd < sec_mutation_prob && cnt<=5)
+                {
+                    if (x._DNA.bars[3, i] == 1)
+                    {
+                        x._DNA.bars[4, i] = Population.rand.Next(0, Sections.count - 1); //se pode ser descativada random de 0 ate sec count
+                        cnt++;
+                    } else
+                    {
+                        x._DNA.bars[4, i] = Population.rand.Next(1, Sections.count - 1); // se nao random de 1 ate sec count
+                        cnt++;
+                    }
+
+                }
+            }
+
 
             return x;
         }

@@ -72,7 +72,7 @@ namespace Fraser
                     //secção de braços
                 }else
                 {
-                    this._DNA.bars[4, i] = Sections.count - 1; // começar com a secção maxima
+                    this._DNA.bars[4, i] = Population.rand.Next(0,Sections.count-1); // começar com random section (antes estava =Sec.count-1)
                 }
                 
             }
@@ -115,20 +115,13 @@ namespace Fraser
             //Repair function aqui para cada lista; no disable verificar se podem ser disabled; no over designed ha limite de redução mas escolha e aleatoria
             //(ou nao... ver se deve ser assim ou entao deve ser as primeiras 3 ou 4 da lista (remover da lista caso ja tenha sido alterada?) ou add a uma temp list os n que ja sairam
 
-            this.fitness = get_ton(); // get weight
+            this.fitness += get_ton(); // get weight
             Console.WriteLine("Fitness: " + this.fitness);
-            //programar corssover de pts e secções
-            // programar mutaçoes (so de pts) ? 
-
             // analisar todas as calcOps
             // na classe calc_ops
             // com os resultados reparar as barras
             // funçao repair é nesta classe
             // calc fitness  = peso
-
-            //Robot_call.Refresh(); // é mesmo necessario ?? (fica mais rapido sem)
-
-            //call GetWeight() get tons
             //get matrix with N V MY Mz for each bar
         }
 
@@ -615,7 +608,7 @@ namespace Fraser
             List<int> a = new List<int>();
                 while (a.Count != bars_to_correct)
                 {
-                    if (ovr_dsgn.Count != 0)
+                    if (false/*ovr_dsgn.Count != 0*/)
                     {
                         int temp = Population.rand.Next(1, ovr_dsgn.Count); // porque nunca chega ao 0 a barra
                         double[] temp_bar = ovr_dsgn[temp];
@@ -625,12 +618,19 @@ namespace Fraser
 
                 }
 
-            for(int i = 1; i < bars_to_correct; i++)
+            for (int i = 1; i < bars_to_correct; i++)
             {
-                if (this._DNA.bars[4,a[i]-1] > 1) // se nao tem ja a menor secção possivel
+                double[] tmp = ovr_dsgn[i - 1];
+                /* if (this._DNA.bars[4,a[i]-1] > 1) // se nao tem ja a menor secção possivel
+                 {
+                     this._DNA.bars[4, a[i] - 1]--; //reduzir 1 
+                     Console.WriteLine("Reduziu Sec da barra" + a[i]);
+                 }*/
+                if (this._DNA.bars[4, (int)tmp[0] - 1] > 1) // se nao tem ja a menor secção possivel
                 {
-                    this._DNA.bars[4, a[i] - 1]--; //reduzir 1 
-                    Console.WriteLine("Reduziu Sec da barra" + a[i]);
+                   // this._DNA.bars[4, (int)tmp[0] - 1]--; //reduzir 1 
+                    Console.WriteLine("Reduziu Sec da barra" + (int)tmp[0]);
+
                 }
             }
 
@@ -641,12 +641,13 @@ namespace Fraser
                 double[] temp = udr_dsgn[i];
                 if (this._DNA.bars[4, (int)temp[0] - 1] != Section_count - 1) // se ainda nao estiver com a maior secção pode aumentar ( -1 porque o count começa no 0)
                 {
-                    this._DNA.bars[4, (int)temp[0] - 1]++; // corrigir
+                    //this._DNA.bars[4, (int)temp[0] - 1]++; // corrigir
                     Console.WriteLine("Aumentou Sec da barra" + temp[0]);
+                    this.fitness += 10;
                 }
                 else
                 {
-                    this.fitness += 5;
+                    this.fitness += 20;
                     need_bigger_sect = true;
                     Console.WriteLine("---------------------------");
                     Console.WriteLine("!!!NEEDS BIGGER SECTIONS!!!");
@@ -654,7 +655,7 @@ namespace Fraser
                 }
             }
 
-            if (!need_bigger_sect) //so eliminar se nesta estrutura nao existir falta de secções
+            if (true) //so eliminar se nesta estrutura nao existir falta de secções
             {
                 ///To Disable
                 ///
@@ -663,17 +664,19 @@ namespace Fraser
                     int bars_to_disable = Population.rand.Next(1, max_bars_to_delete);
                     List<int> b = new List<int>();
 
-                    while (b.Count != bars_to_disable)
-                    {
-                        if (_dsbl.Count != 0)
-                        {
-                            int temp = Population.rand.Next(1, _dsbl.Count) - 1; // para começar no 0 do array
-                            double[] temp_bar = _dsbl[temp];
-                            if (!b.Contains((int)temp_bar[0])) { b.Add((int)temp_bar[0]); }
-                        }
-                        else { break; }
-                    }
+                    if (bars_to_disable > _dsbl.Count) { bars_to_disable = _dsbl.Count; }
 
+                    /* while (b.Count != bars_to_disable)
+                     {
+                         if (_dsbl.Count != 0)
+                         {
+                             int temp = Population.rand.Next(1, _dsbl.Count) - 1; // para começar no 0 do array
+                             double[] temp_bar = _dsbl[temp];
+                             if (!b.Contains((int)temp_bar[0])) { b.Add((int)temp_bar[0]); }
+                         }
+                         else { break; }
+                     }*/
+                    Console.WriteLine("count" + _dsbl.Count);
                     for (int i = 0; i < bars_to_disable; i++)
                     {
                         if (b.Count != 0)
@@ -681,9 +684,19 @@ namespace Fraser
                             if (b[i] != 0 && this._DNA.bars[3, b[i] - 1] == 1) // se pode desactivar e tem barras para desactivar
                             {
                                 Console.WriteLine("Delete" + b[i]);
-                                this._DNA.bars[4, b[i] - 1]--; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
+                             //   this._DNA.bars[4, b[i] - 1]--; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
                             }
                         }
+                        //teste
+                        //
+                        double[] tmp = _dsbl[i];
+
+                        if ( this._DNA.bars[3, (int)tmp[0] - 1] == 1)
+                        {
+                            Console.WriteLine("Delete" + tmp[0]);
+                          //  this._DNA.bars[4, (int)tmp[0] - 1]--;
+                        }
+
                     }
                 }
             }
