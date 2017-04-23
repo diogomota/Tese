@@ -14,7 +14,7 @@ namespace Fraser
         public static int Pop_size=0;
 
         const double pt_mutation_prob = 0.3;
-        const double sec_mutation_prob = 0.05;
+        const double sec_mutation_prob = 0.1;
 
         // constructor for first population
         public Population (int max_pop, Genome _baseDNA){
@@ -96,12 +96,14 @@ namespace Fraser
 
         public static Individual Tournament_selection(Individual[] pop)
         {
-            int selection_pressure = 20; // n individuos a concorrer
-            int[] tournament = new int[20];
+            int selection_pressure = (int)Pop_size/2; // n individuos a concorrer
+            int[] tournament = new int[selection_pressure];
+
             for (int i = 0; i < selection_pressure; i++)
             {
-                tournament[i] = Population.rand.Next(Pop_size - 30, Pop_size - 1);
+                tournament[i] = Population.rand.Next(0, Pop_size - 1);
             }
+
             Array.Sort(tournament);
             return pop[tournament.Last<int>()];
         }
@@ -153,10 +155,11 @@ namespace Fraser
             ///Mutation
             ///
             int cnt = 0;
+
             for (int i = 0; i < Genome.towerBar_cnt; i++)
             {
                 double _rnd = Population.rand.NextDouble();
-                if (_rnd < sec_mutation_prob && cnt<=5)
+                if (_rnd < sec_mutation_prob)
                 {
                     if (x._DNA.bars[3, i] == 1)
                     {
@@ -170,7 +173,6 @@ namespace Fraser
 
                 }
             }
-
 
             return x;
         }

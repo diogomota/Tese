@@ -80,7 +80,7 @@ namespace Fraser
             series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
 
             CurrentPop = new Population(NextPop.ind);
-            for (int i=0; i<170; i++)
+            for (int i=0; i<450; i++)
             {
                 Generation.Text = i.ToString();
                 // CurrentPop = new Population(NextPop.ind);
@@ -109,11 +109,11 @@ namespace Fraser
                 //NextPop = new Population(Population.Evolve(CurrentPop.ind,i));
                 
             }
-            CurrentPop.ind[Population.Pop_size - 1].Evaluate();
-            
+            // CurrentPop.ind[Population.Pop_size - 1].Evaluate();
+            Console.WriteLine("LOLO");
 
-            Robot_call.Update_bars(CurrentPop.ind[49]._DNA);
-            Robot_call.Update_pts(CurrentPop.ind[49]._DNA);
+            Robot_call.Update_bars(CurrentPop.ind[Population.Pop_size-1]._DNA);
+            Robot_call.Update_pts(CurrentPop.ind[Population.Pop_size - 1]._DNA);
             Robot_call.Robot_interactive(true);
             Robot_call.Refresh();
         }
