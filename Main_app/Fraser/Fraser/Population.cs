@@ -155,7 +155,7 @@ namespace Fraser
             ///Mutation
             ///
             int cnt = 0;
-
+            
             for (int i = 0; i < Genome.towerBar_cnt; i++)
             {
                 double _rnd = Population.rand.NextDouble();
@@ -163,11 +163,22 @@ namespace Fraser
                 {
                     if (x._DNA.bars[3, i] == 1)
                     {
-                        x._DNA.bars[4, i] = Population.rand.Next(0, Sections.count - 1); //se pode ser descativada random de 0 ate sec count
+                        double sigma = Sections.count / 6;
+                        double gene_val = gaussianMutation(x._DNA.bars[4, i], sigma);
+                        gene_val = clamp(gene_val, 0, Sections.count - 1);
+                        //x._DNA.bars[4, i] = Population.rand.Next(0, Sections.count - 1); //se pode ser descativada random de 0 ate sec count
+
+                        x._DNA.bars[4, i] = (int)gene_val;
                         cnt++;
                     } else
                     {
-                        x._DNA.bars[4, i] = Population.rand.Next(1, Sections.count - 1); // se nao random de 1 ate sec count
+                        double sigma = (Sections.count-1) / 6;
+                        double gene_val = gaussianMutation(x._DNA.bars[4, i], sigma);
+                        gene_val = clamp(gene_val, 1, Sections.count - 1);
+
+                        // x._DNA.bars[4, i] = Population.rand.Next(1, Sections.count - 1); // se nao random de 1 ate sec count
+
+                        x._DNA.bars[4, i] = (int)gene_val;
                         cnt++;
                     }
 
@@ -175,6 +186,37 @@ namespace Fraser
             }
 
             return x;
+        }
+
+        /// <summary>
+        /// Gaussian Mutation
+        /// </summary>
+        /// <param name="mean"></param>
+        /// <param name="stddev"></param>
+        /// <returns></returns>
+        private static double gaussianMutation(double mean, double stddev)
+        {
+            double x1 = rand.NextDouble();
+            double x2 = rand.NextDouble();
+
+            // The method requires sampling from a uniform random of (0,1]
+            // but Random.NextDouble() returns a sample of [0,1).
+            // Thanks to Colin Green for catching this.
+            if (x1 == 0)
+                x1 = 1;
+            if (x2 == 0)
+                x2 = 1;
+
+            double y1 = Math.Sqrt(-2.0 * Math.Log(x1)) * Math.Cos(2.0 * Math.PI * x2);
+            return y1 * stddev + mean;
+        }
+        private static double clamp(double val, double min, double max)
+        {
+            if (val >= max)
+                return max;
+            if (val <= min)
+                return min;
+            return val;
         }
     }
 }
