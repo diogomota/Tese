@@ -80,7 +80,7 @@ namespace Fraser
             series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
 
             CurrentPop = new Population(NextPop.ind);
-            for (int i=0; i<450; i++)
+            for (int i=0; i<650; i++)
             {
                 Generation.Text = i.ToString();
                 // CurrentPop = new Population(NextPop.ind);
@@ -94,14 +94,15 @@ namespace Fraser
                         //Robot_call.Robot_interactive(true);
 
                     }
-                }else { /*CurrentPop.ind[0].Evaluate();*/c++; series.Points.AddXY(c, CurrentPop.ind[0].fitness); }
+                }else { /*CurrentPop.ind[0].Evaluate();*/c++; series.Points.AddXY(c, CurrentPop.ind[Population.Pop_size-1].fitness); }
 
                 Array.Sort(CurrentPop.ind);
 
                 Individual temp = Population.Evolve_single(CurrentPop.ind, i);
                 temp.Evaluate();
-                if (temp.fitness < CurrentPop.ind[0].fitness) { CurrentPop.ind[0] = temp; } else { i--; }
-                //CurrentPop.ind[0] = Population.Evolve_single(CurrentPop.ind, i).Evaluate();
+
+                //if (temp.fitness < CurrentPop.ind[0].fitness) { CurrentPop.ind[0] = temp; } else { i--; }
+                CurrentPop.ind[0] = temp; //Population.Evolve_single(CurrentPop.ind, i).Evaluate();
                 Robot_call.Robot_interactive(true);
                 Robot_call.Refresh();
 
