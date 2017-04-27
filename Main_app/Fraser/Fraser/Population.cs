@@ -14,7 +14,7 @@ namespace Fraser
         public static int Pop_size=0;
 
         const double pt_mutation_prob = 0.3;
-        const double sec_mutation_prob = 0.1;
+        const double sec_mutation_prob = 0.05;
 
         // constructor for first population
         public Population (int max_pop, Genome _baseDNA){
@@ -96,7 +96,7 @@ namespace Fraser
 
         public static Individual Tournament_selection(Individual[] pop)
         {
-            int selection_pressure = (int)Pop_size/2; // n individuos a concorrer
+            int selection_pressure = (int)Pop_size/4; // n individuos a concorrer
             int[] tournament = new int[selection_pressure];
 
             for (int i = 0; i < selection_pressure; i++)
@@ -159,25 +159,28 @@ namespace Fraser
             for (int i = 0; i < Genome.towerBar_cnt; i++)
             {
                 double _rnd = Population.rand.NextDouble();
+
                 if (_rnd < sec_mutation_prob)
                 {
                     if (x._DNA.bars[3, i] == 1)
                     {
-                        double sigma = Sections.count / 6;
+                        double sigma = Sections.count / 2;
                         double gene_val = gaussianMutation(x._DNA.bars[4, i], sigma);
                         gene_val = clamp(gene_val, 0, Sections.count - 1);
                         //x._DNA.bars[4, i] = Population.rand.Next(0, Sections.count - 1); //se pode ser descativada random de 0 ate sec count
-
+                        Console.WriteLine("atual:" + x._DNA.bars[4,i]);
+                        Console.WriteLine("novo:" + (int)gene_val);
                         x._DNA.bars[4, i] = (int)gene_val;
                         cnt++;
                     } else
                     {
-                        double sigma = (Sections.count-1) / 6;
+                        double sigma = (Sections.count-1) / 2;
                         double gene_val = gaussianMutation(x._DNA.bars[4, i], sigma);
                         gene_val = clamp(gene_val, 1, Sections.count - 1);
 
                         // x._DNA.bars[4, i] = Population.rand.Next(1, Sections.count - 1); // se nao random de 1 ate sec count
-
+                        Console.WriteLine("atual:" + x._DNA.bars[4, i]);
+                        Console.WriteLine("novo:" + gene_val);
                         x._DNA.bars[4, i] = (int)gene_val;
                         cnt++;
                     }
@@ -208,14 +211,20 @@ namespace Fraser
                 x2 = 1;
 
             double y1 = Math.Sqrt(-2.0 * Math.Log(x1)) * Math.Cos(2.0 * Math.PI * x2);
+            
             return y1 * stddev + mean;
         }
         private static double clamp(double val, double min, double max)
         {
             if (val >= max)
+            {
+                
                 return max;
-            if (val <= min)
+            }
+            if (val <= min) {
                 return min;
+            }
+
             return val;
         }
     }

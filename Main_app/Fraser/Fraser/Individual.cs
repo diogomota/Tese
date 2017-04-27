@@ -605,18 +605,18 @@ namespace Fraser
                 bars_to_correct = Population.rand.Next(0, ovr_dsgn.Count);
             }
 
-            List<int> a = new List<int>();
-                while (a.Count != bars_to_correct)
-                {
-                    if (false/*ovr_dsgn.Count != 0*/)
-                    {
-                        int temp = Population.rand.Next(1, ovr_dsgn.Count); // porque nunca chega ao 0 a barra
-                        double[] temp_bar = ovr_dsgn[temp];
-                        if (!a.Contains((int)temp_bar[0])) { a.Add((int)temp_bar[0]); }
-                    }
-                    else { break; }
+            //List<int> a = new List<int>();
+              //  while (a.Count != bars_to_correct)
+              //  {
+              //      if (false/*ovr_dsgn.Count != 0*/)
+               //     {
+               //         int temp = Population.rand.Next(1, ovr_dsgn.Count); // porque nunca chega ao 0 a barra
+                //        double[] temp_bar = ovr_dsgn[temp];
+                //        if (!a.Contains((int)temp_bar[0])) { a.Add((int)temp_bar[0]); }
+                 //   }
+                 //   else { break; }
 
-                }
+               // }
 
             for (int i = 1; i < bars_to_correct; i++)
             {
@@ -630,6 +630,7 @@ namespace Fraser
                 {
                    // this._DNA.bars[4, (int)tmp[0] - 1]--; //reduzir 1 
                     Console.WriteLine("Reduziu Sec da barra" + (int)tmp[0]);
+                    this.fitness += 5;
 
                 }
             }
@@ -643,11 +644,11 @@ namespace Fraser
                 {
                     //this._DNA.bars[4, (int)temp[0] - 1]++; // corrigir
                     Console.WriteLine("Aumentou Sec da barra" + temp[0]);
-                    this.fitness += 10;
+                    this.fitness += 5;
                 }
                 else
                 {
-                    this.fitness += 20;
+                    this.fitness += 10;
                     need_bigger_sect = true;
                     Console.WriteLine("---------------------------");
                     Console.WriteLine("!!!NEEDS BIGGER SECTIONS!!!");

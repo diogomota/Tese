@@ -107,7 +107,6 @@ namespace Fraser
                 }
 
             }
-            // robApp.Project.Structure.Bars.SetInactive("3"); funciona
         }
 
         public static void Refresh()
