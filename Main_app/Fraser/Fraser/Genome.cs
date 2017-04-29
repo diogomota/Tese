@@ -38,7 +38,7 @@ namespace Fraser
             horizd = horiz_div;
             // init matrix dim
             pt_cloud = new double[5, (int)(17*N_cabos + 4 + (4 * subdiv) * (horiz_div - 1))]; // 17*cabos para os pts dos braços
-            bars = new double[6, (int)((4 * horiz_div - 8) * (subdiv * subdiv) + (12 * horiz_div - 12) * subdiv - 8 * horiz_div + 36 * N_cabos + 20)];
+            bars = new double[6, (int)((4 * horiz_div - 8) * (subdiv * subdiv) + (12 * horiz_div - 12) * subdiv - 8 * horiz_div + 36 * N_cabos + 20 + 4*((int)(horiz_div/3)+1)+4*((int)(horiz_div/3)))];
 
 
             pt_add_tower(ref pt_cloud, Largura, Altura,horiz_div,subdiv,ref pt_cnt);
@@ -530,7 +530,7 @@ namespace Fraser
 
             // Horizontal connections
 
-            for (int h = 0; h <= horiz_div - 2; h++)
+            /*for (int h = 0; h <= horiz_div - 2; h++)
             {
                 for (int i = 4 + h * ring_pt; i < 4 + (h + 1) * ring_pt - 1; i++)
                 {
@@ -542,9 +542,81 @@ namespace Fraser
                         bar_num++;
                     }
                 }
-            }
-            // Horizontal tappered edges
+            }*/
 
+            for (int h = 0; h <= horiz_div - 2; h++)
+            {
+                for (int i = 4 + h * ring_pt; i < 4 + (h + 1) * ring_pt - 1; i++)
+                {
+                    //barras que nao podem desaparecer mas podem ter sec min
+                    if (i == (4 + h * ring_pt) || i == (4 + h * ring_pt + subdiv) || i == 4 + h * ring_pt + 2 * subdiv || i == 4 + h * ring_pt + 3 * subdiv)
+                    {
+                        addBar(ref bars, bar_num, i, i + 1, 0, 0, 2);
+                        bar_num++;
+                    }
+                    else if (i + 1 == (4 + h * ring_pt) || i + 1 == (4 + h * ring_pt + subdiv) || i + 1 == 4 + h * ring_pt + 2 * subdiv || i + 1 == 4 + h * ring_pt + 3 * subdiv)
+                    {
+                        addBar(ref bars, bar_num, i, i + 1, 0, 0, 2);
+                        bar_num++;
+                    }
+                    else
+                    {
+                        //todas as barras que podem ser otimizadas e desaparecer
+                        addBar(ref bars, bar_num, i, i + 1, 1, 0, 2);
+                        bar_num++;
+                    }
+
+                    if (i == 4 + (h + 1) * ring_pt - 2)
+                    {
+                        addBar(ref bars, bar_num, i, 4+h*ring_pt, 0, 0, 2);
+                        bar_num++;
+                    }
+                }
+            }
+
+            ///horiz tapered edges
+            ///
+            for (int h = 0; h <= (int)horiz_div/3; h++)
+            { //percorrer altura
+                for (int i = 4 + h * ring_pt + 1; i < 4 + (h + 1) * ring_pt - 1; i++)
+                {
+                    // barras que nao podem desaparecer
+                    if (i == 4 + h * ring_pt + 1)
+                    {
+                        addBar(ref bars, bar_num, i, 5 + (h + 1) * ring_pt - 2, 0, 0, 5);
+                        bar_num++;
+                    }
+                    if (i == 4 + h * ring_pt + subdiv - 1)
+                    {
+                        addBar(ref bars, bar_num, i, i + 2, 0, 0, 5);
+                        bar_num++;
+                    }
+                    if (i == 4 + h * ring_pt + 2 * subdiv - 1)
+                    {
+                        addBar(ref bars, bar_num, i, i + 2, 0, 0, 5);
+                        bar_num++;
+                    }
+                    if (i == 4 + h * ring_pt + 3 * subdiv - 1)
+                    {
+                        addBar(ref bars, bar_num, i, i + 2, 0, 0, 5);
+                        bar_num++;
+                    }
+                }
+            }
+
+            ///plane to plane triangulation
+            ///
+            for (int h = 0; h < (int)horiz_div/3 /*- 3*/; h++)
+            {
+                addBar(ref bars, bar_num, 5 + ring_pt * h, 3 + (h + 2) * ring_pt, 0, 0, 5);
+                bar_num++;
+                addBar(ref bars, bar_num, 3 + subdiv + ring_pt * h, 3 + (subdiv + 2) + ring_pt * (h + 1), 0, 0, 5);
+                bar_num++;
+                addBar(ref bars, bar_num, 5 + 2 * subdiv + ring_pt * h, 3 + 2 * subdiv + ring_pt * (h + 1), 0, 0, 5);
+                bar_num++;
+                addBar(ref bars, bar_num, 3 + 3 * subdiv + ring_pt * h, 5 + 3 * subdiv + (h + 1) * ring_pt, 0, 0, 5);
+                bar_num++;
+            }
 
             return bar_num;
         }
