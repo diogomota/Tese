@@ -543,6 +543,9 @@ namespace Fraser
                     }
                 }
             }
+            // Horizontal tappered edges
+
+
             return bar_num;
         }
         private void add_arm_bars(ref double[,] bars, ref int bar_num, List<Int32> connection_rings, int subdiv, int n_cabos, int horiz_div)

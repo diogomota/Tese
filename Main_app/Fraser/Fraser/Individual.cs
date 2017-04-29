@@ -97,9 +97,6 @@ namespace Fraser
             Bracing_calc_list();
             /////////////////////////////
 
-            // Robot_call.Robot_interactive(true);
-            //Robot_call.Refresh();
-
             this.results = Robot_call.Run_analysis();
 
             Calc_operations.EC3_Checks(0, ref Repair_instr, Leg_ops,this.results);
@@ -538,7 +535,7 @@ namespace Fraser
                 }
 
             }
-            if (bracing>=1) { return true; } else { return false; }
+            if (bracing>=2) { return true; } else { return false; }
         }
 
         private void Create_Repair_Function_Lists(List<double[]> list, ref List<double[]> ovr_dsgn, ref List<double[]> udr_dsgn, ref List<double[]> _dsbl)
