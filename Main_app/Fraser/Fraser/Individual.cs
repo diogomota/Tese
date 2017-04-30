@@ -66,7 +66,7 @@ namespace Fraser
                 } else { this._DNA.bars[4, i] = rndm.Next(1, Sections.count - 1); }*/
                 #endregion
 
-                if (this._DNA.bars[4,i] == -1)
+                if (this._DNA.bars[4,i] == -1) // barras que estao no genoma com sec -1 começam com secção minima
                 {
                     this._DNA.bars[4, i] = 0; //a primeira secção a definir será a dos braçoss
                     //secção de braços

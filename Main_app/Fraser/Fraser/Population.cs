@@ -167,6 +167,7 @@ namespace Fraser
                         double sigma = Sections.count / 2;
                         double gene_val = gaussianMutation(x._DNA.bars[4, i], sigma);
                         gene_val = clamp(gene_val, 0, Sections.count - 1);
+
                         //x._DNA.bars[4, i] = Population.rand.Next(0, Sections.count - 1); //se pode ser descativada random de 0 ate sec count
                         Console.WriteLine("atual:" + x._DNA.bars[4,i]);
                         Console.WriteLine("novo:" + (int)gene_val);
@@ -184,7 +185,7 @@ namespace Fraser
                         x._DNA.bars[4, i] = (int)gene_val;
                         cnt++;
                     }
-
+                    if(x._DNA.bars[5,i] == 5) { x._DNA.bars[4, i] = 0; } // barras trianguladas intra plane sao sempre sec minima
                 }
             }
 

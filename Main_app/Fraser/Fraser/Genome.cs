@@ -583,22 +583,22 @@ namespace Fraser
                     // barras que nao podem desaparecer
                     if (i == 4 + h * ring_pt + 1)
                     {
-                        addBar(ref bars, bar_num, i, 5 + (h + 1) * ring_pt - 2, 0, 0, 5);
+                        addBar(ref bars, bar_num, i, 5 + (h + 1) * ring_pt - 2, 0, -1, 5);
                         bar_num++;
                     }
                     if (i == 4 + h * ring_pt + subdiv - 1)
                     {
-                        addBar(ref bars, bar_num, i, i + 2, 0, 0, 5);
+                        addBar(ref bars, bar_num, i, i + 2, 0, -1, 5);
                         bar_num++;
                     }
                     if (i == 4 + h * ring_pt + 2 * subdiv - 1)
                     {
-                        addBar(ref bars, bar_num, i, i + 2, 0, 0, 5);
+                        addBar(ref bars, bar_num, i, i + 2, 0, -1, 5);
                         bar_num++;
                     }
                     if (i == 4 + h * ring_pt + 3 * subdiv - 1)
                     {
-                        addBar(ref bars, bar_num, i, i + 2, 0, 0, 5);
+                        addBar(ref bars, bar_num, i, i + 2, 0, -1, 5);
                         bar_num++;
                     }
                 }
@@ -608,13 +608,13 @@ namespace Fraser
             ///
             for (int h = 0; h < (int)horiz_div/3 /*- 3*/; h++)
             {
-                addBar(ref bars, bar_num, 5 + ring_pt * h, 3 + (h + 2) * ring_pt, 0, 0, 5);
+                addBar(ref bars, bar_num, 5 + ring_pt * h, 3 + (h + 2) * ring_pt, 0, -1, 5);
                 bar_num++;
-                addBar(ref bars, bar_num, 3 + subdiv + ring_pt * h, 3 + (subdiv + 2) + ring_pt * (h + 1), 0, 0, 5);
+                addBar(ref bars, bar_num, 3 + subdiv + ring_pt * h, 3 + (subdiv + 2) + ring_pt * (h + 1), 0, -1, 5);
                 bar_num++;
-                addBar(ref bars, bar_num, 5 + 2 * subdiv + ring_pt * h, 3 + 2 * subdiv + ring_pt * (h + 1), 0, 0, 5);
+                addBar(ref bars, bar_num, 5 + 2 * subdiv + ring_pt * h, 3 + 2 * subdiv + ring_pt * (h + 1), 0, -1, 5);
                 bar_num++;
-                addBar(ref bars, bar_num, 3 + 3 * subdiv + ring_pt * h, 5 + 3 * subdiv + (h + 1) * ring_pt, 0, 0, 5);
+                addBar(ref bars, bar_num, 3 + 3 * subdiv + ring_pt * h, 5 + 3 * subdiv + (h + 1) * ring_pt, 0, -1, 5);
                 bar_num++;
             }
 
