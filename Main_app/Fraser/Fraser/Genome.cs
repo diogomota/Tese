@@ -566,10 +566,11 @@ namespace Fraser
                         bar_num++;
                     }
 
-                    if (i == 4 + (h + 1) * ring_pt - 2)
+                    if (i == 4 + (h + 1) * ring_pt - 2/*     4 + (h + 1) * ring_pt - 2*/)
                     {
-                        addBar(ref bars, bar_num, i, 4+h*ring_pt, 0, 0, 2);
+                        addBar(ref bars, bar_num, i+1, 4+h*ring_pt, 0, 0, 2);
                         bar_num++;
+                        Console.WriteLine(bar_num);
                     }
                 }
             }

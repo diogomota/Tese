@@ -93,11 +93,11 @@ namespace Fraser
         {
             for (int i = 0; i < Genome.towerBar_cnt; i++) //apenas para as barras da torre
             {
-                if(robApp.Project.Structure.Bars.IsInactive(i+1) && geometry.bars[4,i]!= 0)
+                if(robApp.Project.Structure.Bars.IsInactive(i+1) && geometry.bars[4,i]!= -1)
                 {
                     robApp.Project.Structure.Bars.SetInactive((i + 1).ToString(), false); // activar se estiver desactivado da outra iteração
                 }
-                if (geometry.bars[4, i] == 0 && geometry.bars[3,i] == 1) // se é para desactivar e pode ser desactivado
+                if (geometry.bars[4, i] == -1 && geometry.bars[3,i] == 1) // se é para desactivar e pode ser desactivado
                 {
                    robApp.Project.Structure.Bars.SetInactive((i + 1).ToString()); // desactivar
                 }

@@ -156,7 +156,7 @@ namespace Fraser
             this.ton = new double();
             for (int i = 0; i < Genome.towerBar_cnt; i++)
             {
-                if (this._DNA.bars[4, i] != 0) // contar so as activas
+                if (this._DNA.bars[4, i] != -1) // contar so as activas
                 {
                     this.ton = this.ton + results[1, i] * Sections.Area[(int)this._DNA.bars[4, i]] * 7.849; //7.849 = ton / m3 steel
                 }
@@ -412,7 +412,7 @@ namespace Fraser
         {
             List<Calc_operations> x = new List<Calc_operations>();
             for (int i = 0; i < Genome.towerBar_cnt; i++){
-                if (this._DNA.bars[5, i] == 1 && this._DNA.bars[4,i] !=0) //if bracing && not deactivated
+                if (this._DNA.bars[5, i] == 1 && this._DNA.bars[4,i] !=-1) //if bracing && not deactivated
                 {
                    Bracing_ops.Add(new Calc_operations(i, new List<Int32>() { i }, (int)this._DNA.bars[4, i], (int)this._DNA.bars[5, i]));
                 }
@@ -432,7 +432,7 @@ namespace Fraser
                     {
                         int bar_ind = bar_start_num + (int)Genome.subd * b + c + i*4*(int)Genome.subd;
 
-                        if (this._DNA.bars[4, bar_ind - 1] != 0) { // se a barra não esta desactiva
+                        if (this._DNA.bars[4, bar_ind - 1] != -1) { // se a barra não esta desactiva
 
                             if (h_plane_braced(bar_start_num + (int)Genome.subd * b + c, new List<Int32>() { 0, 1 })) //EN 1993-3-1:2006 H.3.9 (2)
                             {
@@ -486,7 +486,7 @@ namespace Fraser
                     {
                         if(tmp.Contains((int)this._DNA.bars[5, b])) // verificar nas barras c/ id que podem ser bracing
                         {
-                            if(this._DNA.bars[4,b] != 0) //se nao esta desactivada
+                            if(this._DNA.bars[4,b] != -1) //se nao esta desactivada
                             {
                                 // se partilha nós com a barra em analise
                                 if(this._DNA.bars[1,b]==this._DNA.bars[2,i] || this._DNA.bars[2, b] == this._DNA.bars[2, i])
@@ -519,7 +519,7 @@ namespace Fraser
                     {
                         if (tmp.Contains((int)this._DNA.bars[5, b])) // verificar nas barras c/ id que podem ser bracing
                         {
-                            if (this._DNA.bars[4, b] != 0) //se nao esta desactivada
+                            if (this._DNA.bars[4, b] != -1) //se nao esta desactivada
                             {
                                 // se partilha nós com a barra em analise
                                 if (this._DNA.bars[1, b] == this._DNA.bars[2, i] || this._DNA.bars[2, b] == this._DNA.bars[2, i])

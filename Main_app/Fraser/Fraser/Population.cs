@@ -162,22 +162,22 @@ namespace Fraser
 
                 if (_rnd < sec_mutation_prob)
                 {
-                    if (x._DNA.bars[3, i] == 1)
+                    if (x._DNA.bars[3, i] == 1) // se pode ser desactivada
                     {
                         double sigma = Sections.count / 2;
                         double gene_val = gaussianMutation(x._DNA.bars[4, i], sigma);
-                        gene_val = clamp(gene_val, 0, Sections.count - 1);
+                        gene_val = clamp(gene_val, -1, Sections.count - 1); // min val = -1 ==== disable section
 
                         //x._DNA.bars[4, i] = Population.rand.Next(0, Sections.count - 1); //se pode ser descativada random de 0 ate sec count
                         Console.WriteLine("atual:" + x._DNA.bars[4,i]);
                         Console.WriteLine("novo:" + (int)gene_val);
                         x._DNA.bars[4, i] = (int)gene_val;
                         cnt++;
-                    } else
+                    } else // se nao pode ser desactivada
                     {
                         double sigma = (Sections.count-1) / 2;
                         double gene_val = gaussianMutation(x._DNA.bars[4, i], sigma);
-                        gene_val = clamp(gene_val, 1, Sections.count - 1);
+                        gene_val = clamp(gene_val, 0, Sections.count - 1); // min val=0 === min sec
 
                         // x._DNA.bars[4, i] = Population.rand.Next(1, Sections.count - 1); // se nao random de 1 ate sec count
                         Console.WriteLine("atual:" + x._DNA.bars[4, i]);
