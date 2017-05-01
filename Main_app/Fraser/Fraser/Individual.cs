@@ -70,10 +70,10 @@ namespace Fraser
                 {
                     this._DNA.bars[4, i] = 0; //a primeira secção a definir será a dos braçoss
                     //secção de braços
-                }else
+                }else if(this._DNA.bars[3,i]==1)
                 {
-                    this._DNA.bars[4, i] = Population.rand.Next(0,Sections.count-1); // começar com random section (antes estava =Sec.count-1)
-                }
+                    this._DNA.bars[4, i] = Population.rand.Next(-1,Sections.count-1); // começar com random section (antes estava =Sec.count-1)
+                }else { this._DNA.bars[4, i] = Population.rand.Next(0, Sections.count - 1); } //se nao puder desactivar de sec de 0 ate sec-1
                 
             }
             bb++;
