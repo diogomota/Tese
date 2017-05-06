@@ -41,7 +41,7 @@ namespace Fraser
                     // get max N of every bar //
                     for (int b = 0; b < calc_ops[i].next_bars.Count; b++)
                     {
-                        if (Math.Abs(results[2, calc_ops[i].next_bars[b] - 1]) > Nsd) { Nsd = results[2, calc_ops[i].next_bars[b] - 1]; }
+                        if (Math.Abs(results[2, calc_ops[i].next_bars[b] - 1]) > Math.Abs(Nsd)) { Nsd = results[2, calc_ops[i].next_bars[b] - 1]; }
                     }
                     // get total L for buckling //
                     for (int b = 0; b < calc_ops[i].next_bars.Count; b++)
@@ -71,8 +71,10 @@ namespace Fraser
                         double lambda = L / Sections.ivv[calc_ops[i].section_id]; // L/ivv
                         double _lambda = lambda / (93.9 * Math.Sqrt(235 / 275));
                         double k = 0.8 + (_lambda / 10);
+
                         if (k > 1) { k = 1; }
                         if (k < 0.9) { k = 0.9; }
+
                         double _lambda_eff = k * _lambda;
                         double fi = 0.5 * (1 + 0.34 * (_lambda - 0.2) + _lambda * _lambda);
                         double xi = 1 / (fi + Math.Sqrt(fi * fi - _lambda * _lambda));

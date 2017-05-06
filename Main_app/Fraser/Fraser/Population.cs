@@ -14,7 +14,7 @@ namespace Fraser
         public static int Pop_size=0;
 
         const double pt_mutation_prob = 0.3;
-        const double sec_mutation_prob = 0.05;
+        const double sec_mutation_prob = 0.02;
 
         // constructor for first population
         public Population (int max_pop, Genome _baseDNA){
@@ -89,14 +89,15 @@ namespace Fraser
             //Population Temp_pop = new Population();
             Individual _ind = new Individual();
             //_ind = Breed(Select(pop), Select(pop), gen);
-            _ind = Breed(Tournament_selection(pop), Tournament_selection(pop),gen);
+            _ind = Breed(Tournament_selection(pop,gen), Tournament_selection(pop,gen),gen);
             return _ind;
 
         }
 
-        public static Individual Tournament_selection(Individual[] pop)
+        public static Individual Tournament_selection(Individual[] pop,int gen)
         {
-            int selection_pressure = (int)Pop_size/4; // n individuos a concorrer
+            // int selection_pressure = (int)Pop_size/10; // n individuos a concorrer
+            int selection_pressure = (int)(Population.Pop_size * Math.Exp((gen / 1000) - 1));
             int[] tournament = new int[selection_pressure];
 
             for (int i = 0; i < selection_pressure; i++)
@@ -121,9 +122,9 @@ namespace Fraser
             int CrossOver_pt = Population.rand.Next(0, Genome.pt_cnt);
             for(int i= CrossOver_pt; i < Genome.pt_cnt; i++)
             {
-                x._DNA.pt_cloud[1, i] = b._DNA.pt_cloud[1, i];
-                x._DNA.pt_cloud[2, i] = b._DNA.pt_cloud[2, i];
-                x._DNA.pt_cloud[3, i] = b._DNA.pt_cloud[3, i];
+              //  x._DNA.pt_cloud[1, i] = b._DNA.pt_cloud[1, i];
+              //  x._DNA.pt_cloud[2, i] = b._DNA.pt_cloud[2, i];
+              //  x._DNA.pt_cloud[3, i] = b._DNA.pt_cloud[3, i];
             }
 
             ///Mutation
@@ -133,9 +134,9 @@ namespace Fraser
                 double _rnd = Population.rand.NextDouble();
                 if (_rnd < pt_mutation_prob)
                 {
-                    x._DNA.pt_cloud[1, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble())*0.25;
-                    x._DNA.pt_cloud[2, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble())*0.25;
-                    x._DNA.pt_cloud[3, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble())*0.25;
+                 //   x._DNA.pt_cloud[1, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble())*0.25;
+                 //   x._DNA.pt_cloud[2, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble())*0.25;
+                 //   x._DNA.pt_cloud[3, i] += x._DNA.pt_cloud[4, i] * (Population.rand.Next(-1, 1) * Population.rand.NextDouble())*0.25;
                 }
             }
 

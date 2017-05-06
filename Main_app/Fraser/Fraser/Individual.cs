@@ -627,7 +627,7 @@ namespace Fraser
                 {
                    // this._DNA.bars[4, (int)tmp[0] - 1]--; //reduzir 1 
                     Console.WriteLine("Reduziu Sec da barra" + (int)tmp[0]);
-                    this.fitness += 5;
+                    //this.fitness += 5;
 
                 }
             }
@@ -639,13 +639,13 @@ namespace Fraser
                 double[] temp = udr_dsgn[i];
                 if (this._DNA.bars[4, (int)temp[0] - 1] != Section_count - 1) // se ainda nao estiver com a maior secção pode aumentar ( -1 porque o count começa no 0)
                 {
-                    //this._DNA.bars[4, (int)temp[0] - 1]++; // corrigir
+                    this._DNA.bars[4, (int)temp[0] - 1]++; // corrigir
                     Console.WriteLine("Aumentou Sec da barra" + temp[0]);
-                    this.fitness += 5;
+                    //this.fitness += 10;
                 }
                 else
                 {
-                    this.fitness += 10;
+                    this.fitness += 20;
                     need_bigger_sect = true;
                     Console.WriteLine("---------------------------");
                     Console.WriteLine("!!!NEEDS BIGGER SECTIONS!!!");
