@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.GroupBox Cabos;
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.w_cabo2_int = new System.Windows.Forms.NumericUpDown();
             this.w_cabo3_int = new System.Windows.Forms.NumericUpDown();
             this.h_cabo2_int = new System.Windows.Forms.NumericUpDown();
@@ -44,19 +44,6 @@
             this.w_cabo1 = new System.Windows.Forms.Label();
             this.h_cabo1 = new System.Windows.Forms.Label();
             this.tabs = new System.Windows.Forms.TabControl();
-            this.geom_tab = new System.Windows.Forms.TabPage();
-            this.Start_geom = new System.Windows.Forms.Button();
-            this.grp_box_geom_geral = new System.Windows.Forms.GroupBox();
-            this.N_cabos = new System.Windows.Forms.Label();
-            this.Altura_int = new System.Windows.Forms.NumericUpDown();
-            this.Largura_ap = new System.Windows.Forms.Label();
-            this.Largura_ap_int = new System.Windows.Forms.NumericUpDown();
-            this.Altura = new System.Windows.Forms.Label();
-            this.n_cabos_int = new System.Windows.Forms.NumericUpDown();
-            this.horiz_div = new System.Windows.Forms.Label();
-            this.h_div_int = new System.Windows.Forms.NumericUpDown();
-            this.subdiv = new System.Windows.Forms.Label();
-            this.subdiv_int = new System.Windows.Forms.NumericUpDown();
             this.sec_def = new System.Windows.Forms.TabPage();
             this.sec_iv = new System.Windows.Forms.NumericUpDown();
             this.sec_iy = new System.Windows.Forms.NumericUpDown();
@@ -71,6 +58,19 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.geom_tab = new System.Windows.Forms.TabPage();
+            this.Start_geom = new System.Windows.Forms.Button();
+            this.grp_box_geom_geral = new System.Windows.Forms.GroupBox();
+            this.N_cabos = new System.Windows.Forms.Label();
+            this.Altura_int = new System.Windows.Forms.NumericUpDown();
+            this.Largura_ap = new System.Windows.Forms.Label();
+            this.Largura_ap_int = new System.Windows.Forms.NumericUpDown();
+            this.Altura = new System.Windows.Forms.Label();
+            this.n_cabos_int = new System.Windows.Forms.NumericUpDown();
+            this.horiz_div = new System.Windows.Forms.Label();
+            this.h_div_int = new System.Windows.Forms.NumericUpDown();
+            this.subdiv = new System.Windows.Forms.Label();
+            this.subdiv_int = new System.Windows.Forms.NumericUpDown();
             this.Evol_tab = new System.Windows.Forms.TabPage();
             this.Chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.sort = new System.Windows.Forms.Button();
@@ -78,6 +78,10 @@
             this.Population_cnt = new System.Windows.Forms.NumericUpDown();
             this.Generation = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.h_cabo4_int = new System.Windows.Forms.NumericUpDown();
+            this.w_cabo4_int = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             Cabos = new System.Windows.Forms.GroupBox();
             Cabos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.w_cabo2_int)).BeginInit();
@@ -87,6 +91,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.w_cabo1_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_cabo1_int)).BeginInit();
             this.tabs.SuspendLayout();
+            this.sec_def.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sec_iv)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sec_iy)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sec_iz)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sec_area)).BeginInit();
             this.geom_tab.SuspendLayout();
             this.grp_box_geom_geral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Altura_int)).BeginInit();
@@ -94,18 +103,19 @@
             ((System.ComponentModel.ISupportInitialize)(this.n_cabos_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_div_int)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.subdiv_int)).BeginInit();
-            this.sec_def.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_iv)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_iy)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_iz)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_area)).BeginInit();
             this.Evol_tab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Population_cnt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.h_cabo4_int)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.w_cabo4_int)).BeginInit();
             this.SuspendLayout();
             // 
             // Cabos
             // 
+            Cabos.Controls.Add(this.label9);
+            Cabos.Controls.Add(this.label8);
+            Cabos.Controls.Add(this.w_cabo4_int);
+            Cabos.Controls.Add(this.h_cabo4_int);
             Cabos.Controls.Add(this.w_cabo2_int);
             Cabos.Controls.Add(this.w_cabo3_int);
             Cabos.Controls.Add(this.h_cabo2_int);
@@ -118,9 +128,9 @@
             Cabos.Controls.Add(this.h_cabo2);
             Cabos.Controls.Add(this.w_cabo1);
             Cabos.Controls.Add(this.h_cabo1);
-            Cabos.Location = new System.Drawing.Point(247, 20);
+            Cabos.Location = new System.Drawing.Point(333, 20);
             Cabos.Name = "Cabos";
-            Cabos.Size = new System.Drawing.Size(243, 237);
+            Cabos.Size = new System.Drawing.Size(243, 297);
             Cabos.TabIndex = 11;
             Cabos.TabStop = false;
             Cabos.Text = "Cabos";
@@ -316,9 +326,174 @@
             this.tabs.Location = new System.Drawing.Point(12, 12);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(519, 327);
+            this.tabs.Size = new System.Drawing.Size(615, 394);
             this.tabs.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabs.TabIndex = 0;
+            // 
+            // sec_def
+            // 
+            this.sec_def.Controls.Add(this.sec_iv);
+            this.sec_def.Controls.Add(this.sec_iy);
+            this.sec_def.Controls.Add(this.sec_iz);
+            this.sec_def.Controls.Add(this.sec_area);
+            this.sec_def.Controls.Add(this.Sec_list);
+            this.sec_def.Controls.Add(this.label3);
+            this.sec_def.Controls.Add(this.btn_set_sec);
+            this.sec_def.Controls.Add(this.sec_name);
+            this.sec_def.Controls.Add(this.label7);
+            this.sec_def.Controls.Add(this.label6);
+            this.sec_def.Controls.Add(this.label5);
+            this.sec_def.Controls.Add(this.label4);
+            this.sec_def.Controls.Add(this.label2);
+            this.sec_def.Location = new System.Drawing.Point(4, 22);
+            this.sec_def.Name = "sec_def";
+            this.sec_def.Padding = new System.Windows.Forms.Padding(3);
+            this.sec_def.Size = new System.Drawing.Size(607, 368);
+            this.sec_def.TabIndex = 2;
+            this.sec_def.Text = "Section Definition";
+            this.sec_def.UseVisualStyleBackColor = true;
+            // 
+            // sec_iv
+            // 
+            this.sec_iv.DecimalPlaces = 12;
+            this.sec_iv.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.sec_iv.InterceptArrowKeys = false;
+            this.sec_iv.Location = new System.Drawing.Point(64, 217);
+            this.sec_iv.Name = "sec_iv";
+            this.sec_iv.Size = new System.Drawing.Size(120, 20);
+            this.sec_iv.TabIndex = 13;
+            // 
+            // sec_iy
+            // 
+            this.sec_iy.DecimalPlaces = 12;
+            this.sec_iy.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.sec_iy.InterceptArrowKeys = false;
+            this.sec_iy.Location = new System.Drawing.Point(64, 175);
+            this.sec_iy.Name = "sec_iy";
+            this.sec_iy.Size = new System.Drawing.Size(120, 20);
+            this.sec_iy.TabIndex = 12;
+            // 
+            // sec_iz
+            // 
+            this.sec_iz.DecimalPlaces = 12;
+            this.sec_iz.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.sec_iz.InterceptArrowKeys = false;
+            this.sec_iz.Location = new System.Drawing.Point(64, 131);
+            this.sec_iz.Name = "sec_iz";
+            this.sec_iz.Size = new System.Drawing.Size(120, 20);
+            this.sec_iz.TabIndex = 11;
+            // 
+            // sec_area
+            // 
+            this.sec_area.DecimalPlaces = 7;
+            this.sec_area.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.sec_area.InterceptArrowKeys = false;
+            this.sec_area.Location = new System.Drawing.Point(64, 84);
+            this.sec_area.Name = "sec_area";
+            this.sec_area.Size = new System.Drawing.Size(120, 20);
+            this.sec_area.TabIndex = 10;
+            // 
+            // Sec_list
+            // 
+            this.Sec_list.Cursor = System.Windows.Forms.Cursors.Default;
+            this.Sec_list.FormattingEnabled = true;
+            this.Sec_list.Location = new System.Drawing.Point(420, 46);
+            this.Sec_list.Name = "Sec_list";
+            this.Sec_list.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.Sec_list.Size = new System.Drawing.Size(162, 316);
+            this.Sec_list.TabIndex = 4;
+            this.Sec_list.SelectedIndexChanged += new System.EventHandler(this.Sec_list_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(417, 32);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(83, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Sections to use:";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
+            // btn_set_sec
+            // 
+            this.btn_set_sec.Location = new System.Drawing.Point(10, 283);
+            this.btn_set_sec.Name = "btn_set_sec";
+            this.btn_set_sec.Size = new System.Drawing.Size(174, 59);
+            this.btn_set_sec.TabIndex = 5;
+            this.btn_set_sec.Text = "Add Section";
+            this.btn_set_sec.UseVisualStyleBackColor = true;
+            this.btn_set_sec.Click += new System.EventHandler(this.btn_get_sec_Click);
+            // 
+            // sec_name
+            // 
+            this.sec_name.Location = new System.Drawing.Point(64, 39);
+            this.sec_name.Name = "sec_name";
+            this.sec_name.Size = new System.Drawing.Size(120, 20);
+            this.sec_name.TabIndex = 5;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(7, 131);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(38, 13);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "Iz(m4):";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 217);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(39, 13);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "Iv(m4):";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 175);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(35, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Iy(m4)";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 84);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(52, 13);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Area(m2):";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(7, 39);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Name:";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // geom_tab
             // 
@@ -328,7 +503,7 @@
             this.geom_tab.Location = new System.Drawing.Point(4, 22);
             this.geom_tab.Name = "geom_tab";
             this.geom_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.geom_tab.Size = new System.Drawing.Size(511, 301);
+            this.geom_tab.Size = new System.Drawing.Size(607, 368);
             this.geom_tab.TabIndex = 0;
             this.geom_tab.Text = "Geometry";
             this.geom_tab.UseVisualStyleBackColor = true;
@@ -336,7 +511,7 @@
             // 
             // Start_geom
             // 
-            this.Start_geom.Location = new System.Drawing.Point(397, 264);
+            this.Start_geom.Location = new System.Drawing.Point(483, 323);
             this.Start_geom.Name = "Start_geom";
             this.Start_geom.Size = new System.Drawing.Size(93, 31);
             this.Start_geom.TabIndex = 12;
@@ -347,6 +522,8 @@
             // grp_box_geom_geral
             // 
             this.grp_box_geom_geral.Controls.Add(this.N_cabos);
+            this.grp_box_geom_geral.Controls.Add(this.label1);
+            this.grp_box_geom_geral.Controls.Add(this.Population_cnt);
             this.grp_box_geom_geral.Controls.Add(this.Altura_int);
             this.grp_box_geom_geral.Controls.Add(this.Largura_ap);
             this.grp_box_geom_geral.Controls.Add(this.Largura_ap_int);
@@ -358,7 +535,7 @@
             this.grp_box_geom_geral.Controls.Add(this.subdiv_int);
             this.grp_box_geom_geral.Location = new System.Drawing.Point(17, 20);
             this.grp_box_geom_geral.Name = "grp_box_geom_geral";
-            this.grp_box_geom_geral.Size = new System.Drawing.Size(200, 237);
+            this.grp_box_geom_geral.Size = new System.Drawing.Size(226, 297);
             this.grp_box_geom_geral.TabIndex = 10;
             this.grp_box_geom_geral.TabStop = false;
             this.grp_box_geom_geral.Text = "Geral";
@@ -451,7 +628,7 @@
             0});
             this.n_cabos_int.Location = new System.Drawing.Point(125, 192);
             this.n_cabos_int.Maximum = new decimal(new int[] {
-            6,
+            8,
             0,
             0,
             0});
@@ -536,203 +713,36 @@
             0});
             this.subdiv_int.ValueChanged += new System.EventHandler(this.subdiv_int_ValueChanged);
             // 
-            // sec_def
-            // 
-            this.sec_def.Controls.Add(this.sec_iv);
-            this.sec_def.Controls.Add(this.sec_iy);
-            this.sec_def.Controls.Add(this.sec_iz);
-            this.sec_def.Controls.Add(this.sec_area);
-            this.sec_def.Controls.Add(this.Sec_list);
-            this.sec_def.Controls.Add(this.label3);
-            this.sec_def.Controls.Add(this.btn_set_sec);
-            this.sec_def.Controls.Add(this.sec_name);
-            this.sec_def.Controls.Add(this.label7);
-            this.sec_def.Controls.Add(this.label6);
-            this.sec_def.Controls.Add(this.label5);
-            this.sec_def.Controls.Add(this.label4);
-            this.sec_def.Controls.Add(this.label2);
-            this.sec_def.Location = new System.Drawing.Point(4, 22);
-            this.sec_def.Name = "sec_def";
-            this.sec_def.Padding = new System.Windows.Forms.Padding(3);
-            this.sec_def.Size = new System.Drawing.Size(511, 301);
-            this.sec_def.TabIndex = 2;
-            this.sec_def.Text = "Section Definition";
-            this.sec_def.UseVisualStyleBackColor = true;
-            // 
-            // sec_iv
-            // 
-            this.sec_iv.DecimalPlaces = 12;
-            this.sec_iv.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.sec_iv.InterceptArrowKeys = false;
-            this.sec_iv.Location = new System.Drawing.Point(64, 215);
-            this.sec_iv.Name = "sec_iv";
-            this.sec_iv.Size = new System.Drawing.Size(120, 20);
-            this.sec_iv.TabIndex = 13;
-            // 
-            // sec_iy
-            // 
-            this.sec_iy.DecimalPlaces = 12;
-            this.sec_iy.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.sec_iy.InterceptArrowKeys = false;
-            this.sec_iy.Location = new System.Drawing.Point(64, 175);
-            this.sec_iy.Name = "sec_iy";
-            this.sec_iy.Size = new System.Drawing.Size(120, 20);
-            this.sec_iy.TabIndex = 12;
-            // 
-            // sec_iz
-            // 
-            this.sec_iz.DecimalPlaces = 12;
-            this.sec_iz.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.sec_iz.InterceptArrowKeys = false;
-            this.sec_iz.Location = new System.Drawing.Point(64, 131);
-            this.sec_iz.Name = "sec_iz";
-            this.sec_iz.Size = new System.Drawing.Size(120, 20);
-            this.sec_iz.TabIndex = 11;
-            // 
-            // sec_area
-            // 
-            this.sec_area.DecimalPlaces = 7;
-            this.sec_area.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.sec_area.InterceptArrowKeys = false;
-            this.sec_area.Location = new System.Drawing.Point(64, 77);
-            this.sec_area.Name = "sec_area";
-            this.sec_area.Size = new System.Drawing.Size(120, 20);
-            this.sec_area.TabIndex = 10;
-            // 
-            // Sec_list
-            // 
-            this.Sec_list.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Sec_list.FormattingEnabled = true;
-            this.Sec_list.Location = new System.Drawing.Point(350, 44);
-            this.Sec_list.Name = "Sec_list";
-            this.Sec_list.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.Sec_list.Size = new System.Drawing.Size(130, 186);
-            this.Sec_list.TabIndex = 4;
-            this.Sec_list.SelectedIndexChanged += new System.EventHandler(this.Sec_list_SelectedIndexChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(347, 27);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(83, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Sections to use:";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
-            // 
-            // btn_set_sec
-            // 
-            this.btn_set_sec.Location = new System.Drawing.Point(190, 263);
-            this.btn_set_sec.Name = "btn_set_sec";
-            this.btn_set_sec.Size = new System.Drawing.Size(120, 23);
-            this.btn_set_sec.TabIndex = 5;
-            this.btn_set_sec.Text = "Add Section";
-            this.btn_set_sec.UseVisualStyleBackColor = true;
-            this.btn_set_sec.Click += new System.EventHandler(this.btn_get_sec_Click);
-            // 
-            // sec_name
-            // 
-            this.sec_name.Location = new System.Drawing.Point(64, 32);
-            this.sec_name.Name = "sec_name";
-            this.sec_name.Size = new System.Drawing.Size(120, 20);
-            this.sec_name.TabIndex = 5;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(7, 131);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(38, 13);
-            this.label7.TabIndex = 4;
-            this.label7.Text = "Iz(m4):";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 217);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(39, 13);
-            this.label6.TabIndex = 3;
-            this.label6.Text = "Iv(m4):";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 175);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(35, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Iy(m4)";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 84);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 13);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "Area(m2):";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 39);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Name:";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
-            // 
             // Evol_tab
             // 
             this.Evol_tab.Controls.Add(this.Chart);
             this.Evol_tab.Controls.Add(this.sort);
             this.Evol_tab.Controls.Add(this.draw);
-            this.Evol_tab.Controls.Add(this.Population_cnt);
             this.Evol_tab.Controls.Add(this.Generation);
-            this.Evol_tab.Controls.Add(this.label1);
             this.Evol_tab.Location = new System.Drawing.Point(4, 22);
             this.Evol_tab.Name = "Evol_tab";
             this.Evol_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.Evol_tab.Size = new System.Drawing.Size(511, 301);
+            this.Evol_tab.Size = new System.Drawing.Size(607, 368);
             this.Evol_tab.TabIndex = 1;
             this.Evol_tab.Text = "Evolution Settings";
             this.Evol_tab.UseVisualStyleBackColor = true;
             // 
             // Chart
             // 
-            chartArea1.Name = "ChartArea1";
-            this.Chart.ChartAreas.Add(chartArea1);
-            this.Chart.Location = new System.Drawing.Point(135, 19);
+            chartArea3.Name = "ChartArea1";
+            this.Chart.ChartAreas.Add(chartArea3);
+            this.Chart.Location = new System.Drawing.Point(147, 19);
             this.Chart.Name = "Chart";
-            series1.ChartArea = "ChartArea1";
-            series1.Name = "Series1";
-            this.Chart.Series.Add(series1);
-            this.Chart.Size = new System.Drawing.Size(370, 205);
+            series3.ChartArea = "ChartArea1";
+            series3.Name = "Series1";
+            this.Chart.Series.Add(series3);
+            this.Chart.Size = new System.Drawing.Size(454, 266);
             this.Chart.TabIndex = 8;
             this.Chart.Text = "chart1";
             // 
             // sort
             // 
-            this.sort.Location = new System.Drawing.Point(433, 243);
+            this.sort.Location = new System.Drawing.Point(526, 339);
             this.sort.Name = "sort";
             this.sort.Size = new System.Drawing.Size(75, 23);
             this.sort.TabIndex = 7;
@@ -742,9 +752,9 @@
             // 
             // draw
             // 
-            this.draw.Location = new System.Drawing.Point(257, 243);
+            this.draw.Location = new System.Drawing.Point(355, 339);
             this.draw.Name = "draw";
-            this.draw.Size = new System.Drawing.Size(136, 52);
+            this.draw.Size = new System.Drawing.Size(136, 23);
             this.draw.TabIndex = 3;
             this.draw.Text = "DRAW";
             this.draw.UseVisualStyleBackColor = true;
@@ -752,7 +762,7 @@
             // 
             // Population_cnt
             // 
-            this.Population_cnt.Location = new System.Drawing.Point(72, 186);
+            this.Population_cnt.Location = new System.Drawing.Point(125, 249);
             this.Population_cnt.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -775,7 +785,7 @@
             // Generation
             // 
             this.Generation.AutoSize = true;
-            this.Generation.Location = new System.Drawing.Point(6, 230);
+            this.Generation.Location = new System.Drawing.Point(6, 297);
             this.Generation.Name = "Generation";
             this.Generation.Size = new System.Drawing.Size(90, 13);
             this.Generation.TabIndex = 1;
@@ -784,17 +794,79 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 188);
+            this.label1.Location = new System.Drawing.Point(6, 251);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 13);
+            this.label1.Size = new System.Drawing.Size(81, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Population:";
+            this.label1.Text = "Population size:";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // h_cabo4_int
+            // 
+            this.h_cabo4_int.BackColor = System.Drawing.SystemColors.Window;
+            this.h_cabo4_int.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.h_cabo4_int.Location = new System.Drawing.Point(150, 235);
+            this.h_cabo4_int.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.h_cabo4_int.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.h_cabo4_int.Name = "h_cabo4_int";
+            this.h_cabo4_int.Size = new System.Drawing.Size(54, 20);
+            this.h_cabo4_int.TabIndex = 20;
+            this.h_cabo4_int.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            // 
+            // w_cabo4_int
+            // 
+            this.w_cabo4_int.BackColor = System.Drawing.SystemColors.Window;
+            this.w_cabo4_int.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.w_cabo4_int.Location = new System.Drawing.Point(150, 271);
+            this.w_cabo4_int.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.w_cabo4_int.Name = "w_cabo4_int";
+            this.w_cabo4_int.Size = new System.Drawing.Size(54, 20);
+            this.w_cabo4_int.TabIndex = 21;
+            this.w_cabo4_int.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 237);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(92, 13);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Altura cabos 7/8 :";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(7, 273);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(102, 13);
+            this.label9.TabIndex = 23;
+            this.label9.Text = "Distância ao centro:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(543, 351);
+            this.ClientSize = new System.Drawing.Size(639, 418);
             this.Controls.Add(this.tabs);
             this.Name = "Form1";
             this.Text = "Fraser";
@@ -808,6 +880,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.w_cabo1_int)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_cabo1_int)).EndInit();
             this.tabs.ResumeLayout(false);
+            this.sec_def.ResumeLayout(false);
+            this.sec_def.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sec_iv)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sec_iy)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sec_iz)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sec_area)).EndInit();
             this.geom_tab.ResumeLayout(false);
             this.grp_box_geom_geral.ResumeLayout(false);
             this.grp_box_geom_geral.PerformLayout();
@@ -816,16 +894,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.n_cabos_int)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.h_div_int)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.subdiv_int)).EndInit();
-            this.sec_def.ResumeLayout(false);
-            this.sec_def.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_iv)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_iy)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_iz)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_area)).EndInit();
             this.Evol_tab.ResumeLayout(false);
             this.Evol_tab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Chart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Population_cnt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.h_cabo4_int)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.w_cabo4_int)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -879,6 +953,10 @@
         private System.Windows.Forms.NumericUpDown sec_iv;
         private System.Windows.Forms.NumericUpDown sec_iy;
         private System.Windows.Forms.NumericUpDown sec_iz;
+        private System.Windows.Forms.NumericUpDown h_cabo4_int;
+        private System.Windows.Forms.NumericUpDown w_cabo4_int;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
     }
 }
 

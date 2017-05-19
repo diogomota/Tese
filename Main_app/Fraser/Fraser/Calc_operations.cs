@@ -69,23 +69,23 @@ namespace Fraser
 
                         //buckling check
                         double lambda = L / Sections.ivv[calc_ops[i].section_id]; // L/ivv
-                        double _lambda = lambda / (93.9 * Math.Sqrt(235 / 275));
-                        double k = 0.8 + (_lambda / 10);
+                        double _lambda = lambda / (93.9 * Math.Sqrt(235.0 / 275.0));
+                        double k = 0.8 + (_lambda / 10.0);
 
                         if (k > 1) { k = 1; }
                         if (k < 0.9) { k = 0.9; }
 
                         double _lambda_eff = k * _lambda;
                         double fi = 0.5 * (1 + 0.34 * (_lambda - 0.2) + _lambda * _lambda);
-                        double xi = 1 / (fi + Math.Sqrt(fi * fi - _lambda * _lambda));
+                        double xi = 1.0 / (fi + Math.Sqrt(fi * fi - _lambda * _lambda));
                         double Nb_rd = xi * Sections.Area[calc_ops[i].section_id] * 275000;
                         double b_uf = Nsd / Nb_rd;
 
-                        if (u_f < b_uf) { u_f = b_uf; }
-
+                        
+                        u_f = Math.Max(Math.Abs(u_f), Math.Abs(b_uf));
                         for (int y = 0; y < calc_ops[i].next_bars.Count; y++)
                         {
-                            repair_instructions.Add(new double[] { calc_ops[i].next_bars[y], Math.Abs(u_f) }); // add to repair list (each individual bar)
+                            repair_instructions.Add(new double[] { calc_ops[i].next_bars[y], Math.Abs(u_f) }); // add to repair list (each individual bar) no valor do robot (+1)
                         }
                     }
                 }
@@ -121,9 +121,9 @@ namespace Fraser
 
                         //buckling check
                         double lambda = L / Sections.ivv[calc_ops[i].section_id]; // L/ivv
-                        double _lambda = lambda / (93.9 * Math.Sqrt(235 / 275));
+                        double _lambda = lambda / (93.9 * Math.Sqrt(235.0 / 275.0));
                         double k = 0.7 + (0.35 / _lambda);
-
+                        
                         /*if (k > 1) { k = 1; }
                         if (k < 0.9) { k = 0.9; }*/    // nao ha limite para o K ???
 
@@ -133,7 +133,7 @@ namespace Fraser
                         double Nb_rd = xi * Sections.Area[calc_ops[i].section_id] * 275000;
                         double b_uf = Nsd / Nb_rd;
 
-                        if (u_f < b_uf) { u_f = b_uf; }
+                        u_f = Math.Max(Math.Abs(u_f), Math.Abs(b_uf));
 
                         for (int y = 0; y < calc_ops[i].next_bars.Count; y++)
                         {
@@ -185,18 +185,21 @@ namespace Fraser
 
                         //buckling check
                         double lambda = L / Sections.ivv[calc_ops[i].section_id]; // L/ivv
-                        double _lambda = lambda / (93.9 * Math.Sqrt(235 / 275));
-                        double k = 0.8 + (_lambda / 10);
-                        if (k > 1) { k = 1; }
-                        if (k < 0.9) { k = 0.9; }
+                        double _lambda = lambda / (93.9 * Math.Sqrt(235.0 / 275.0));
+                        //previous
+                        // double k = 0.8 + (_lambda / 10.0);           
+                        //if (k > 1) { k = 1; }
+                        //if (k < 0.9) { k = 0.9; }
+                        //end
+                        double k = 0.7 + (0.35 / _lambda); //table g.2 ivv
                         double _lambda_eff = k * _lambda;
                         double fi = 0.5 * (1 + 0.34 * (_lambda - 0.2) + _lambda * _lambda);
-                        double xi = 1 / (fi + Math.Sqrt(fi * fi - _lambda * _lambda));
+                        double xi = 1.0 / (fi + Math.Sqrt(fi * fi - _lambda * _lambda));
                         double Nb_rd = xi * Sections.Area[calc_ops[i].section_id] * 275000;
                         double b_uf = Nsd / Nb_rd;
 
-                        if (u_f < b_uf) { u_f = b_uf; }
-
+                        
+                        u_f = Math.Max(Math.Abs(u_f), Math.Abs(b_uf));
                         for (int y = 0; y < calc_ops[i].next_bars.Count; y++)
                         {
                             repair_instructions.Add(new double[] { calc_ops[i].next_bars[y], Math.Abs(u_f) }); // add to repair list (each individual bar)

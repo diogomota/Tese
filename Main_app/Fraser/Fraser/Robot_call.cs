@@ -22,7 +22,7 @@ namespace Fraser
             if (robApp == null)
             {
                 robApp = new RobotApplication();
-                robApp.Project.New(IRobotProjectType.I_PT_TRUSS_3D);
+                robApp.Project.New(IRobotProjectType.I_PT_FRAME_3D);
                 if (robApp.Visible == 0) { robApp.Interactive = 1; robApp.Visible = 1; }
                 instances = 1;
             }
@@ -170,17 +170,19 @@ namespace Fraser
             robApp.Project.CalcEngine.Calculate();
             results = robApp.Project.Structure.Results.Bars.Forces;
             double[,] a = new double[6, Genome.towerBar_cnt];
-            for (int i = 0; i < Genome.towerBar_cnt; i++)
-            {
-                IRobotBar current_bar = (IRobotBar)robApp.Project.Structure.Bars.Get(i + 1);
-                a[0, i] = i + 1;
-                a[1, i] = current_bar.Length;
-                a[2, i] = Max(results.Value(i + 1, 1, 0).FX, results.Value(i + 1, 1, 0.5).FX, results.Value(i + 1, 1, 1).FX)/1000; //converter N para Kn
-                a[3, i] = Max(results.Value(i + 1, 1, 0).MY, results.Value(i + 1, 1, 0.5).MY, results.Value(i + 1, 1, 1).MY)/1000; //N/m -> kN/m
-                a[4, i] = Max(results.Value(i + 1, 1, 0).MZ, results.Value(i + 1, 1, 0.5).MZ, results.Value(i + 1, 1, 1).MZ)/1000;
-                a[5, i] = 1; //remover(era para o V)
-            }
-
+           // for (int k = 0; k < 4; k++) //para 5 casos de carga
+           // {
+                for (int i = 0; i < Genome.towerBar_cnt; i++)
+                {
+                    IRobotBar current_bar = (IRobotBar)robApp.Project.Structure.Bars.Get(i + 1);
+                    a[0, i] = i + 1;
+                    a[1, i] = current_bar.Length;
+                    a[2, i] = Max(results.Value(i + 1, 1, 0).FX * -1.0, results.Value(i + 1, 1, 0.5).FX * -1.0, results.Value(i + 1, 1, 1).FX * -1.0) / 1000; //converter N para Kn *-1 porque comp = + no robot
+                    a[3, i] = Max(results.Value(i + 1, 1, 0).MY, results.Value(i + 1, 1, 0.5).MY, results.Value(i + 1, 1, 1).MY) / 1000; //N/m -> kN/m
+                    a[4, i] = Max(results.Value(i + 1, 1, 0).MZ, results.Value(i + 1, 1, 0.5).MZ, results.Value(i + 1, 1, 1).MZ) / 1000;
+                    a[5, i] = 1; //remover(era para o V)
+                }
+          //  }
             return a; //[rbt_bar_num,Lenght,Fx,My,Mz]
         }
         private static double Max(double start, double middle, double end){

@@ -19,10 +19,10 @@ namespace Fraser
         private List<double[]> under_designed = new List<double[]>();  // sections do increase
         private List<double[]> to_disable = new List<double[]>();      // sections to disable
 
-        const double super_low_u_f = 0.05; //0-0.05 remover
-        const double low_u_f = 0.6;       //0.05 - 0.6 reduzir
-        const double ok_u_f = 0.9;        //0.9- 0.6 nao fazer grande coisa
-                                          // 0.9+ aumentar secção
+        const double super_low_u_f = 0.05; //0 - 0.05 remover
+        const double low_u_f = 0.4;        //0.05 - 0.4 reduzir
+        const double ok_u_f = 0.9;         //0.9 - 0.4 nao fazer grande coisa
+                                           //0.9 + aumentar secção
 
         const int max_bars_to_reduce = 10; // max n bars to reduce section per population
         const int max_bars_to_delete = 2; // max n bars to delete per population
@@ -72,8 +72,8 @@ namespace Fraser
                     //secção de braços
                 }else if(this._DNA.bars[3,i]==1)
                 {
-                    this._DNA.bars[4, i] = Population.rand.Next(-1,Sections.count-1); // começar com random section (antes estava =Sec.count-1)
-                }else { this._DNA.bars[4, i] = Population.rand.Next(0, Sections.count - 1); } //se nao puder desactivar de sec de 0 ate sec-1
+                    this._DNA.bars[4, i] = /* Population.rand.Next(Sections.count - 2, Sections.count-1);*/  Sections.count-1; // começar com random section (antes estava =Sec.count-1)
+                }else { this._DNA.bars[4, i] =  /*Population.rand.Next(Sections.count - 2, Sections.count - 1);*/Sections.count-1; } //se nao puder desactivar de sec de 0 ate sec-1
                 
             }
             bb++;
@@ -98,6 +98,9 @@ namespace Fraser
             /////////////////////////////
 
             this.results = Robot_call.Run_analysis();
+
+            Robot_call.Refresh();
+            Robot_call.Robot_interactive(true);
 
             Calc_operations.EC3_Checks(0, ref Repair_instr, Leg_ops,this.results);
             Calc_operations.EC3_Checks(1, ref Repair_instr, Bracing_ops, this.results);
@@ -124,6 +127,7 @@ namespace Fraser
 
         public double calc_fitess()
         {
+            // NOT Used //
             double sum = new double();
             int cnt = 0;
             int totalPenalty = 0;
@@ -557,19 +561,19 @@ namespace Fraser
             for (int i =0; i < list.Count; i++)
             {
                 //se baixo U/f lista de remover
-                if (u_f[i] <= super_low_u_f)
+                if (u_f[i] <= super_low_u_f+0.34)
                 {
-                    if (this._DNA.bars[4, (int)bar_number[i] - 1] == 1 && this._DNA.bars[3, (int)bar_number[i] - 1] == 1) // se pode ser desactivada + nao tem sec minima
+                    if (this._DNA.bars[4, (int)bar_number[i] - 1] == 0 && this._DNA.bars[3, (int)bar_number[i] - 1] == 1) // se pode ser desactivada + nao tem sec minima
                     {
                         _dsbl.Add(new double[] { bar_number[i], u_f[i] });
-                    }else
+                    }else if(this._DNA.bars[4, (int)bar_number[i] - 1] >0) //se ainda n tem sec max
                     {
                         ovr_dsgn.Add(new double[] { bar_number[i], u_f[i] }); // mandar para a lista da barras a reduzir
                     }
 
                 }
                 //se medio U/f lista de reduzir secção
-                if (u_f[i]>super_low_u_f && u_f[i] <= low_u_f)
+                if (u_f[i]>super_low_u_f+0.34 && u_f[i] <= low_u_f)
                 {
                     ovr_dsgn.Add(new double[] { bar_number[i], u_f[i] });
                 }
@@ -596,7 +600,7 @@ namespace Fraser
             bool need_bigger_sect = false;
 
             if (max_bars_to_reduce <= ovr_dsgn.Count) {
-                bars_to_correct = Population.rand.Next(0, max_bars_to_reduce);
+                bars_to_correct = Population.rand.Next(2, max_bars_to_reduce);
             }else
             {
                 bars_to_correct = Population.rand.Next(0, ovr_dsgn.Count);
@@ -606,14 +610,14 @@ namespace Fraser
               //  while (a.Count != bars_to_correct)
               //  {
               //      if (false/*ovr_dsgn.Count != 0*/)
-               //     {
-               //         int temp = Population.rand.Next(1, ovr_dsgn.Count); // porque nunca chega ao 0 a barra
-                //        double[] temp_bar = ovr_dsgn[temp];
-                //        if (!a.Contains((int)temp_bar[0])) { a.Add((int)temp_bar[0]); }
-                 //   }
-                 //   else { break; }
-
-               // }
+              //     {
+              //         int temp = Population.rand.Next(1, ovr_dsgn.Count); // porque nunca chega ao 0 a barra
+              //        double[] temp_bar = ovr_dsgn[temp];
+              //        if (!a.Contains((int)temp_bar[0])) { a.Add((int)temp_bar[0]); }
+              //   }
+              //   else { break; }
+              // }
+            //
 
             for (int i = 1; i < bars_to_correct; i++)
             {
@@ -623,13 +627,14 @@ namespace Fraser
                      this._DNA.bars[4, a[i] - 1]--; //reduzir 1 
                      Console.WriteLine("Reduziu Sec da barra" + a[i]);
                  }*/
-                if (this._DNA.bars[4, (int)tmp[0] - 1] > 1) // se nao tem ja a menor secção possivel
+                if (this._DNA.bars[4, (int)tmp[0] - 1] > 0) // se nao tem ja a menor secção possivel
                 {
-                   // this._DNA.bars[4, (int)tmp[0] - 1]--; //reduzir 1 
+                   this._DNA.bars[4, (int)tmp[0] - 1]--; //reduzir 1 
                     Console.WriteLine("Reduziu Sec da barra" + (int)tmp[0]);
                     //this.fitness += 5;
 
                 }
+                else {  }
             }
 
             ///Under Designed
@@ -642,10 +647,13 @@ namespace Fraser
                     this._DNA.bars[4, (int)temp[0] - 1]++; // corrigir
                     Console.WriteLine("Aumentou Sec da barra" + temp[0]);
                     //this.fitness += 10;
+                    //this.fitness += Math.Log(0.1 + temp[1]) * 15;
+                    //PENALIZAÇÂO EM FUNÇAO DE U/F AQUI!!!!
                 }
                 else
                 {
-                    this.fitness += 20;
+                    this.fitness += 0.25;// Math.Log(0.1 + temp[1]) * 15;
+
                     need_bigger_sect = true;
                     Console.WriteLine("---------------------------");
                     Console.WriteLine("!!!NEEDS BIGGER SECTIONS!!!");
@@ -664,7 +672,8 @@ namespace Fraser
 
                     if (bars_to_disable > _dsbl.Count) { bars_to_disable = _dsbl.Count; }
 
-                    /* while (b.Count != bars_to_disable)
+                    /**/
+                      while (b.Count != bars_to_disable)
                      {
                          if (_dsbl.Count != 0)
                          {
@@ -673,7 +682,7 @@ namespace Fraser
                              if (!b.Contains((int)temp_bar[0])) { b.Add((int)temp_bar[0]); }
                          }
                          else { break; }
-                     }*/
+                     }/**/
                     Console.WriteLine("count" + _dsbl.Count);
                     for (int i = 0; i < bars_to_disable; i++)
                     {
@@ -682,9 +691,10 @@ namespace Fraser
                             if (b[i] != 0 && this._DNA.bars[3, b[i] - 1] == 1) // se pode desactivar e tem barras para desactivar
                             {
                                 Console.WriteLine("Delete" + b[i]);
-                             //   this._DNA.bars[4, b[i] - 1]--; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
+                              /**/this._DNA.bars[4, b[i] - 1]--; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
                             }
                         }
+                        /*
                         //teste
                         //
                         double[] tmp = _dsbl[i];
@@ -693,7 +703,7 @@ namespace Fraser
                         {
                             Console.WriteLine("Delete" + tmp[0]);
                           //  this._DNA.bars[4, (int)tmp[0] - 1]--;
-                        }
+                        }*/
 
                     }
                 }

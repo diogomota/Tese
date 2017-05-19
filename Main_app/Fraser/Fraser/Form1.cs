@@ -52,23 +52,21 @@ namespace Fraser
            // if (robApp.Visible == 0) { robApp.Interactive = 1;robApp.Visible = 1; }
             
             //create []hcabos
-            int[] h_cabos = new int[3] {(int)h_cabo1_int.Value, (int)h_cabo2_int.Value, (int)h_cabo3_int.Value };
+            int[] h_cabos = new int[4] {(int)h_cabo1_int.Value, (int)h_cabo2_int.Value, (int)h_cabo3_int.Value, (int)h_cabo4_int.Value };
             //create []dist_centro
-            double[] dist_centro = new double[3] { (double)w_cabo1_int.Value, (double)w_cabo2_int.Value, (double)w_cabo3_int.Value };
+            double[] dist_centro = new double[4] { (double)w_cabo1_int.Value, (double)w_cabo2_int.Value, (double)w_cabo3_int.Value,(double)w_cabo4_int.Value };
 
             if( BaseDNA != null || CurrentPop != null) { BaseDNA = null; CurrentPop = null; }
 
             BaseDNA = new Fraser.Genome((double)Largura_ap_int.Value,(int)Altura_int.Value,(double)h_div_int.Value,(double)subdiv_int.Value,(int)n_cabos_int.Value,h_cabos,dist_centro);
             
-             //display the init structure (for user comfirmation + add forces)
+             //display the init structure (for user confirmation + add forces)
             Robot_call.Start_pts(BaseDNA);
             Robot_call.Start_bars(BaseDNA);
             Robot_call.Refresh();
 
             // create initial population
             NextPop = new Population((int)Population_cnt.Value, BaseDNA);
-
-
         }
 
         private void draw_Click(object sender, EventArgs e)
@@ -79,8 +77,10 @@ namespace Fraser
             System.Windows.Forms.DataVisualization.Charting.Series series = this.Chart.Series.Add("fitness");
             series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
 
+            double best = 0.0;
+            int count = 0;
             CurrentPop = new Population(NextPop.ind);
-            for (int i=0; i<2000; i++)
+            for (int i=0; i<200; i++)
             {
                 Generation.Text = i.ToString();
                 // CurrentPop = new Population(NextPop.ind);
@@ -93,7 +93,7 @@ namespace Fraser
                         series.Points.AddXY(c, CurrentPop.ind[a].fitness);
                         //Robot_call.Robot_interactive(true);
 
-                    }
+                    } best = CurrentPop.ind[19].fitness;
                 }else { /*CurrentPop.ind[0].Evaluate();*/
                     c++;
                     series.Points.AddXY(c, CurrentPop.ind[0].fitness);
@@ -101,11 +101,14 @@ namespace Fraser
 
                 Array.Sort(CurrentPop.ind);
 
+                if(best == CurrentPop.ind[Population.Pop_size-1].fitness) { count++; }else { best = CurrentPop.ind[Population.Pop_size - 1].fitness; count = 0; }
+                if(count > 200) { break; }
+
                 Individual temp = Population.Evolve_single(CurrentPop.ind, i);
                 temp.Evaluate();
 
-                //if (temp.fitness < CurrentPop.ind[0].fitness) { CurrentPop.ind[0] = temp; } else {  }
-               CurrentPop.ind[0] = temp; //Population.Evolve_single(CurrentPop.ind, i).Evaluate();
+                if (temp.fitness < CurrentPop.ind[0].fitness) { CurrentPop.ind[0] = temp; } else { CurrentPop.ind[0] = temp; }
+               //CurrentPop.ind[0] = temp; //Population.Evolve_single(CurrentPop.ind, i).Evaluate();
                 Robot_call.Robot_interactive(true);
                 Robot_call.Refresh();
 
@@ -140,7 +143,7 @@ namespace Fraser
         {
             //Array.Sort(CurrentPop.ind); // works
             //Console.Write(Population.Select(CurrentPop.ind));
-            Robot_call.Update_bars(CurrentPop.ind[Population.Pop_size-1-_individual]._DNA);
+            Robot_call.Update_bars(CurrentPop.ind[Population.Pop_size - 1 - _individual]._DNA);
             Robot_call.Update_pts(CurrentPop.ind[Population.Pop_size - 1 - _individual]._DNA);
             Robot_call.Robot_interactive(true);
             Robot_call.Refresh();
@@ -164,6 +167,11 @@ namespace Fraser
         }
 
         private void Sec_list_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }

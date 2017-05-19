@@ -284,7 +284,7 @@ namespace Fraser
                     {
                         if (j == 4)
                         {
-                            addBar(ref bars, bar_num, 0, j, 0, 0,0);//cantos nao sao desactivados / id =0 leg
+                            addBar(ref bars, bar_num, 0, j, 0, 0,0);//cantos nao sao desactivados / id = 0 leg
                             bar_num++;
                         }
                         else { 
@@ -343,7 +343,7 @@ namespace Fraser
                             bar_num++;
                         }else
                         {
-                            addBar(ref bars, bar_num, 3, j, 1, 0,1); // id =1 bracing
+                            addBar(ref bars, bar_num, 3, j, 1, 0,1); // id = 1 bracing
                             bar_num++;
                         }
                     }
@@ -361,22 +361,21 @@ namespace Fraser
             //init and end pts
             for (int h = 0; h <= horiz_div - 3; h++)
             {
-
                 // Lado +XX
                 for (int i = 4 + ring_pt * h; i < 4 + ring_pt * (h + 1); i++)
                 {//init coord.
-                 //lados
+                 //lados 
                     if (i == 4 + ring_pt * h)
                     {//cantos
                         for (int j = 4 + ring_pt * (h + 1); j <= subdiv + 4 + ring_pt * (h + 1) - 1; j++)
-                        { //-1 para nao conectar a diagonal oposta
+                        { // -1 para nao conectar a diagonal oposta
                             if (j  == 4 + ring_pt * (h + 1))
                             {
                                 addBar(ref bars, bar_num, i, j, 0, 0,0); // barras dos cantos nao podem ser desactivadas / id=0 leg
                                 bar_num++;
                             }else
                             {
-                                addBar(ref bars, bar_num, i, j, 1, 0,1);  // id =1 bracing
+                                addBar(ref bars, bar_num, i, j, 1, 0,1);  // id = 1 bracing
                                 bar_num++;
                             }
                         }
@@ -401,7 +400,7 @@ namespace Fraser
                         }
                     }
                 }
-                // Lado +YY
+                 // Lado +YY
                 for (int i = 4 + subdiv + ring_pt * h; i < 4 + subdiv + ring_pt * (h + 1); i++)
                 {//init coord.
 
@@ -412,7 +411,7 @@ namespace Fraser
                         {
                             if (j == subdiv + 4 + ring_pt * (h + 1))
                             {
-                                addBar(ref bars, bar_num, i, j, 0, 0,0);// barras de canto nao podem ser desactivadas / id=0 leg
+                                addBar(ref bars, bar_num, i, j, 0, 0,0); // barras de canto nao podem ser desactivadas / id=0 leg
                                 bar_num++;
                             }else
                             {
@@ -507,7 +506,7 @@ namespace Fraser
                             { //exceto lado oposto
                                 addBar(ref bars, bar_num, 4+ring_pt*h, j,1,0,1); //id = 1 bracing
                                 bar_num++;
-                            } //conect first corner w/ side -YY
+                            } //connect first corner w/ side -YY
 
                         }
                     }
@@ -796,9 +795,9 @@ namespace Fraser
             return nearest;
         }
 
-        //for faster pt add
+        //auxiliary functios for faster pt and bar add
 
-        private void addPt (ref double[,] matrix ,int pt_number, double x, double y, double z,double h_max){
+        private void addPt(ref double[,] matrix ,int pt_number, double x, double y, double z,double h_max){
             double relative_h = z / h_max;
 
                 matrix[0, pt_number] = pt_number;

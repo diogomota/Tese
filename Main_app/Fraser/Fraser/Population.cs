@@ -10,14 +10,15 @@ namespace Fraser
     {
         public Individual[] ind;
         //public List<Individual> ind;
-        static public Random rand = new Random(System.DateTime.Now.Second*System.DateTime.Now.Millisecond); //o random seeder so se inicia uma vez para a população
-        public static int Pop_size=0;
+        static public Random rand = new Random(System.DateTime.Now.Second*System.DateTime.Now.Millisecond); //init random seeder only on the first call to population class
+        public static int Pop_size = 0;
 
-        const double pt_mutation_prob = 0.3;
-        const double sec_mutation_prob = 0.02;
+        const double pt_mutation_prob = 0.15;
+        const double sec_mutation_prob = 0.01;
 
         // constructor for first population
         public Population (int max_pop, Genome _baseDNA){
+
             if (Pop_size == 0) { Pop_size = max_pop; }
 
             this.ind = new Individual[max_pop];
@@ -40,6 +41,7 @@ namespace Fraser
 
         public static Individual Select(Individual[] pop)
         {
+            //NOT USED//
             int i=-1;
             double total_fitness = new double();
             // get total fitness for roulette wheel selection
@@ -53,7 +55,6 @@ namespace Fraser
             double previous_fit = 0.0;
             double current_fit = 0.0;
 
-            // check to see if tournament selection is a better option for minimization problem!!!!!!!
 
             //the selection
 
@@ -73,9 +74,9 @@ namespace Fraser
 
             return pop[i];
         }
-
         public static Individual[] Evolve(Individual[] pop,int gen)
-        {
+        { 
+            //NOT USED//
             //Population Temp_pop = new Population();
             Individual[] _ind = new Individual[Pop_size];
             for(int i =0; i < Pop_size; i++)
@@ -84,6 +85,7 @@ namespace Fraser
             }
             return _ind;
         }
+
         public static Individual Evolve_single(Individual[] pop, int gen)
         {
             //Population Temp_pop = new Population();
@@ -96,13 +98,12 @@ namespace Fraser
 
         public static Individual Tournament_selection(Individual[] pop,int gen)
         {
-            // int selection_pressure = (int)Pop_size/10; // n individuos a concorrer
-            int selection_pressure = (int)(Population.Pop_size * Math.Exp((gen / 1000) - 1));
+            int selection_pressure = (int)Pop_size/5; // changes the selection pressure
             int[] tournament = new int[selection_pressure];
 
             for (int i = 0; i < selection_pressure; i++)
             {
-                tournament[i] = Population.rand.Next(0, Pop_size - 1);
+                tournament[i] = Population.rand.Next((int)(Pop_size/5), Pop_size - 1);
             }
 
             Array.Sort(tournament);
@@ -122,9 +123,9 @@ namespace Fraser
             int CrossOver_pt = Population.rand.Next(0, Genome.pt_cnt);
             for(int i= CrossOver_pt; i < Genome.pt_cnt; i++)
             {
-              //  x._DNA.pt_cloud[1, i] = b._DNA.pt_cloud[1, i];
-              //  x._DNA.pt_cloud[2, i] = b._DNA.pt_cloud[2, i];
-              //  x._DNA.pt_cloud[3, i] = b._DNA.pt_cloud[3, i];
+                x._DNA.pt_cloud[1, i] = b._DNA.pt_cloud[1, i];
+                x._DNA.pt_cloud[2, i] = b._DNA.pt_cloud[2, i];
+                x._DNA.pt_cloud[3, i] = b._DNA.pt_cloud[3, i];
             }
 
             ///Mutation
@@ -161,26 +162,26 @@ namespace Fraser
             {
                 double _rnd = Population.rand.NextDouble();
 
-                if (_rnd < sec_mutation_prob)
+                if (false/*_rnd < sec_mutation_prob*/)
                 {
-                    if (x._DNA.bars[3, i] == 1) // se pode ser desactivada
+                    if (x._DNA.bars[3, i] == 1 && x._DNA.bars[4, i]==0) // se pode ser desactivada
                     {
-                        double sigma = Sections.count / 2;
+                        double sigma = (Sections.count+1) / 1.5;
                         double gene_val = gaussianMutation(x._DNA.bars[4, i], sigma);
                         gene_val = clamp(gene_val, -1, Sections.count - 1); // min val = -1 ==== disable section
 
-                        //x._DNA.bars[4, i] = Population.rand.Next(0, Sections.count - 1); //se pode ser descativada random de 0 ate sec count
+                        
                         Console.WriteLine("atual:" + x._DNA.bars[4,i]);
                         Console.WriteLine("novo:" + (int)gene_val);
                         x._DNA.bars[4, i] = (int)gene_val;
                         cnt++;
                     } else // se nao pode ser desactivada
                     {
-                        double sigma = (Sections.count-1) / 2;
+                        double sigma = (Sections.count+1) / 1.5;
                         double gene_val = gaussianMutation(x._DNA.bars[4, i], sigma);
                         gene_val = clamp(gene_val, 0, Sections.count - 1); // min val=0 === min sec
 
-                        // x._DNA.bars[4, i] = Population.rand.Next(1, Sections.count - 1); // se nao random de 1 ate sec count
+                        
                         Console.WriteLine("atual:" + x._DNA.bars[4, i]);
                         Console.WriteLine("novo:" + gene_val);
                         x._DNA.bars[4, i] = (int)gene_val;
@@ -212,7 +213,7 @@ namespace Fraser
             if (x2 == 0)
                 x2 = 1;
 
-            double y1 = Math.Sqrt(-2.0 * Math.Log(x1)) * Math.Cos(2.0 * Math.PI * x2);
+            double y1 = Math.Sqrt(-2.0 * Math.Log(x1)) * Math.Cos(2.0 * Math.PI * x2); // aproxima uma distr normal (confirmado no excel)
             
             return y1 * stddev + mean;
         }
@@ -220,13 +221,11 @@ namespace Fraser
         {
             if (val >= max)
             {
-                
                 return max;
             }
             if (val <= min) {
                 return min;
             }
-
             return val;
         }
     }
