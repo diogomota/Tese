@@ -12,6 +12,7 @@ namespace Fraser
         List<Int32> next_bars;
         int section_id;
         int bar_id;
+        const double Young = 355000.0;
 
         public Calc_operations(int start,List<Int32> barlist,int s_id,int b_id)
         {

@@ -168,21 +168,43 @@ namespace Fraser
         public static double[,] Run_analysis()
         {
             robApp.Project.CalcEngine.Calculate();
+            
             results = robApp.Project.Structure.Results.Bars.Forces;
             double[,] a = new double[6, Genome.towerBar_cnt];
            // for (int k = 0; k < 4; k++) //para 5 casos de carga
            // {
                 for (int i = 0; i < Genome.towerBar_cnt; i++)
                 {
+               
                     IRobotBar current_bar = (IRobotBar)robApp.Project.Structure.Bars.Get(i + 1);
                     a[0, i] = i + 1;
                     a[1, i] = current_bar.Length;
+
                     a[2, i] = Max(results.Value(i + 1, 1, 0).FX * -1.0, results.Value(i + 1, 1, 0.5).FX * -1.0, results.Value(i + 1, 1, 1).FX * -1.0) / 1000; //converter N para Kn *-1 porque comp = + no robot
-                    a[3, i] = Max(results.Value(i + 1, 1, 0).MY, results.Value(i + 1, 1, 0.5).MY, results.Value(i + 1, 1, 1).MY) / 1000; //N/m -> kN/m
-                    a[4, i] = Max(results.Value(i + 1, 1, 0).MZ, results.Value(i + 1, 1, 0.5).MZ, results.Value(i + 1, 1, 1).MZ) / 1000;
-                    a[5, i] = 1; //remover(era para o V)
-                }
-          //  }
+
+                // a[3, i] = Max(results.Value(i + 1, 1, 0).MY, results.Value(i + 1, 1, 0.5).MY, results.Value(i + 1, 1, 1).MY) / 1000; //N/m -> kN/m
+                // a[4, i] = Max(results.Value(i + 1, 1, 0).MZ, results.Value(i + 1, 1, 0.5).MZ, results.Value(i + 1, 1, 1).MZ) / 1000;
+                //a[5, i] = 1; //remover(era para o V)
+                // para comparar multiplos load cases
+                for (int k = 2; k < 5; k++) {
+                        double temp = Max(results.Value(i + 1, k, 0).FX * -1.0, results.Value(i + 1, k, 0.5).FX * -1.0, results.Value(i + 1, k, 1).FX * -1.0) / 1000;
+
+                        if (a[2, i] < 0 && temp <0) // se a verificação e de buckling
+                        {
+                            a[2, i] = Math.Min(a[2, i], temp);
+                        }else if(a[2,i]<0 && temp>0)
+                        {
+                            if (temp * 0.4 > Math.Abs(a[2, i])) { a[2, i] = temp; } // so se força de traçao for muito maior é que substitui força de comp
+                        }else if(a[2,i]>0 && temp < 0)
+                        {
+                            if (Math.Abs(temp) > 0.4 * a[2, i]) { a[2, i] = temp; } // so se a F tração for muito grande é que nao é subst por comp
+                        }else if(a[2,i]>0 && temp > 0)
+                        {
+                            a[2, i] = Math.Max(temp, a[2, i]);
+                        }
+                    }
+            }
+
             return a; //[rbt_bar_num,Lenght,Fx,My,Mz]
         }
         private static double Max(double start, double middle, double end){
