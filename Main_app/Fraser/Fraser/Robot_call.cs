@@ -22,6 +22,7 @@ namespace Fraser
             if (robApp == null)
             {
                 robApp = new RobotApplication();
+       
                 robApp.Project.New(IRobotProjectType.I_PT_FRAME_3D);
                 if (robApp.Visible == 0) { robApp.Interactive = 1; robApp.Visible = 1; }
                 instances = 1;
@@ -60,7 +61,7 @@ namespace Fraser
             for (int i = 0; i < Genome.pt_cnt; i++)
             {
                 robApp.Project.Structure.Nodes.Create((int)geometry.pt_cloud[0, i] + 1, geometry.pt_cloud[1, i], geometry.pt_cloud[2, i], geometry.pt_cloud[3, i]);
-            }//+1 porque robot nao aceita pt 0
+            } // +1 porque robot nao aceita pt 0
 
         }
 

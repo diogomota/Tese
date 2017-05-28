@@ -21,11 +21,11 @@ namespace Fraser
 
         const double super_low_u_f = 0.05; //0 - 0.05 remover
         const double low_u_f = 0.4;        //0.05 - 0.4 reduzir
-        const double ok_u_f = 0.9;         //0.9 - 0.4 nao fazer grande coisa
+        const double ok_u_f = 1.0;         //0.9 - 0.4 nao fazer grande coisa
                                            //0.9 + aumentar secção
 
-        const int max_bars_to_reduce = 50; // max n bars to reduce section per population
-        const int max_bars_to_delete = 10; // max n bars to delete per population
+        const int max_bars_to_reduce = 10; // max n bars to reduce section per population
+        const int max_bars_to_delete = 5; // max n bars to delete per population
 
         private List<Calc_operations> Leg_ops = new List<Calc_operations>(); // lista leg calcs
         private List<Calc_operations> Bracing_ops = new List<Calc_operations>(); // list bracing calcs
@@ -44,7 +44,6 @@ namespace Fraser
             _DNA = new Genome(); // create new Genome
 
             //if the following is not done the same matrix is always changing (need to create copies):
-
             _DNA.pt_cloud = (double[,])_baseDNA.pt_cloud.Clone(); // copy by value the pt cloud[]
             _DNA.bars = (double[,])_baseDNA.bars.Clone(); //copy by value the bars[]
 

@@ -154,6 +154,7 @@ namespace Fraser
             {
                 x._DNA.bars[4, i] = b._DNA.bars[4, i];
             }
+
             ///Mutation
             ///
             int cnt = 0;
@@ -162,7 +163,7 @@ namespace Fraser
             {
                 double _rnd = Population.rand.NextDouble();
 
-                if (false/*_rnd < sec_mutation_prob*/)
+                if (/*false*/_rnd < sec_mutation_prob)
                 {
                     if (x._DNA.bars[3, i] == 1 && x._DNA.bars[4, i]==0) // se pode ser desactivada
                     {

@@ -108,9 +108,9 @@ namespace Fraser
                 temp.Evaluate();
 
                 if (temp.fitness < CurrentPop.ind[0].fitness) { CurrentPop.ind[0] = temp; } else { CurrentPop.ind[0] = temp; }
-               //CurrentPop.ind[0] = temp; //Population.Evolve_single(CurrentPop.ind, i).Evaluate();
-                Robot_call.Robot_interactive(true);
-                Robot_call.Refresh();
+                //CurrentPop.ind[0] = temp; //Population.Evolve_single(CurrentPop.ind, i).Evaluate();
+                //Robot_call.Robot_interactive(true);
+                //Robot_call.Refresh();
 
                 //LastPop = new Population(CurrentPop.ind);
                 //NextPop = new Population(Population.Evolve(CurrentPop.ind,i));
