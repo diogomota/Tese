@@ -71,8 +71,8 @@ namespace Fraser
                     //secção de braços
                 }else if(this._DNA.bars[3,i]==1)
                 {
-                    this._DNA.bars[4, i] = /* Population.rand.Next(Sections.count - 2, Sections.count-1);*/  Sections.count-1; // começar com random section (antes estava =Sec.count-1)
-                }else { this._DNA.bars[4, i] =  /*Population.rand.Next(Sections.count - 2, Sections.count - 1);*/Sections.count-1; } //se nao puder desactivar de sec de 0 ate sec-1
+                    this._DNA.bars[4, i] = /* Population.rand.Next(Sections.count - 2, Sections.count-1);*/  Sections.count-2; // começar com random section (antes estava =Sec.count-1)
+                }else { this._DNA.bars[4, i] =  /*Population.rand.Next(Sections.count - 2, Sections.count - 1);*/Sections.count-2; } //se nao puder desactivar de sec de 0 ate sec-1
                 
             }
             bb++;

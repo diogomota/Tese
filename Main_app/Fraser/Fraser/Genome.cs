@@ -90,9 +90,9 @@ namespace Fraser
 
             for (h = 1; h <= horiz_div - 1; h++)
             { // ring loop
-
-                double scale_factor = (1 - (h / horiz_div));
-                double step = h * tilt;
+                double new_h = (-0.04 * h * h + 1.35 * h + 0.7);
+                double scale_factor = (1 - (new_h / horiz_div));
+                double step = new_h * tilt;
 
                 if (!reverse)
                 { // x++ y++
@@ -100,7 +100,7 @@ namespace Fraser
                     for (x = 0; x <= subdiv; x++)
                     {
 
-                        addPt(ref pt, pt_num, step + x * (Largura / subdiv) * scale_factor, step, h * ring_z_step,(double)Altura);
+                        addPt(ref pt, pt_num, step + x * (Largura / subdiv) * scale_factor, step, new_h * ring_z_step,(double)Altura);
                         pt_num++;
 
                         if (x == subdiv)
@@ -108,7 +108,7 @@ namespace Fraser
 
                             for (y = 1; y <= subdiv; y++)
                             {
-                                addPt(ref pt, pt_num, Largura - step, step + y * (Largura / subdiv) * scale_factor, h * ring_z_step, (double)Altura);
+                                addPt(ref pt, pt_num, Largura - step, step + y * (Largura / subdiv) * scale_factor, new_h * ring_z_step, (double)Altura);
                                 pt_num++;
 
                                 if (x == subdiv && y == subdiv) { reverse = true; } // start backwards loop
@@ -122,14 +122,14 @@ namespace Fraser
                 { // x-- y--
                     for (x = (int)subdiv - 1; x >= 0; x--)
                     {
-                        addPt(ref pt, pt_num, step + x * (Largura / subdiv) * scale_factor, Largura - step, h * ring_z_step, (double)Altura);
+                        addPt(ref pt, pt_num, step + x * (Largura / subdiv) * scale_factor, Largura - step, new_h * ring_z_step, (double)Altura);
                         pt_num++;
 
                         if (x == 0)
                         {
                             for (y = (int)subdiv - 1; y >= 1; y--)
                             {
-                                addPt(ref pt, pt_num, step, step + y * (Largura / subdiv) * scale_factor, h * ring_z_step, (double)Altura);
+                                addPt(ref pt, pt_num, step, step + y * (Largura / subdiv) * scale_factor, new_h * ring_z_step, (double)Altura);
                                 pt_num++;
 
 
@@ -164,15 +164,19 @@ namespace Fraser
 
                 int init_h = find_nearest(h_cabos[n], horiz_div, ring_z_step); //encontrar os horiz ring + perto
                 con_ring_set.Add(init_h);
-                double arm_lenght = Math.Abs(dist_centro[n] - (Largura * 0.5 - init_h * tilt));
+
+                double new_init_h = (-0.04 * init_h * init_h + 1.35 * init_h + 0.7);
+                double new_init_hplusOne = (-0.04 * (init_h+1) * (init_h+1) + 1.35 * (init_h+1) + 0.7);
+
+                double arm_lenght = Math.Abs(dist_centro[n] - (Largura * 0.5 - new_init_h * tilt));
 
                 //lower arm angle
-                double XY_m = (Largura * 0.5 - init_h * tilt) / arm_lenght; //inclinação da reta Y=mx em XY
-                double XZ_m = (h_cabos[n] - init_h * ring_z_step) / arm_lenght; //inclinação da reta Z=mx em XZ
+                double XY_m = (Largura * 0.5 - new_init_h * tilt) / arm_lenght; //inclinação da reta Y=mx em XY
+                double XZ_m = (h_cabos[n] - new_init_h * ring_z_step) / arm_lenght; //inclinação da reta Z=mx em XZ
 
                 //upper arm angle
-                double XY_m_upp = (Largura * 0.5 - (init_h + 1) * tilt) / arm_lenght;
-                double XZ_m_upp = (h_cabos[n] - (init_h + 1) * ring_z_step) / arm_lenght;
+                double XY_m_upp = (Largura * 0.5 - new_init_hplusOne * tilt) / arm_lenght;
+                double XZ_m_upp = (h_cabos[n] - new_init_hplusOne * ring_z_step) / arm_lenght;
 
 
                 //############//
@@ -183,7 +187,7 @@ namespace Fraser
                 for (int _subdiv = 1; _subdiv <= 5; _subdiv++)
                 { // criar variavel se necessario controlo sobre o refinamento do braço
 
-                    double _x = (Largura - init_h * tilt) + (arm_lenght / 5) * _subdiv;
+                    double _x = (Largura - new_init_h * tilt) + (arm_lenght / 5) * _subdiv;
 
                     if (_subdiv == 5)
                     {
@@ -191,32 +195,32 @@ namespace Fraser
                         pt_cnt++;
                         break;
                     }
-                    addArmPt(ref pt, pt_cnt, _x, init_h * tilt + XY_m * (_x - (Largura - init_h * tilt)), init_h * ring_z_step + XZ_m * (_x - (Largura - init_h * tilt)),arm_mutation); // 1st lower arm
+                    addArmPt(ref pt, pt_cnt, _x, new_init_h * tilt + XY_m * (_x - (Largura - new_init_h * tilt)), new_init_h * ring_z_step + XZ_m * (_x - (Largura - new_init_h * tilt)),arm_mutation); // 1st lower arm
                     pt_cnt++;
                 }
 
                 //2nd lower arm
                 for (int _subdiv = 1; _subdiv < 5; _subdiv++)
                 { // nao "<=" para nao criar 2 pts de convergencia
-                    double _x = (Largura - init_h * tilt) + (arm_lenght / 5) * _subdiv;
-                    addArmPt(ref pt, pt_cnt, _x, Largura - init_h * tilt - XY_m * (_x - (Largura - init_h * tilt)), init_h * ring_z_step + XZ_m * (_x - (Largura - init_h * tilt)), arm_mutation);
+                    double _x = (Largura - new_init_h * tilt) + (arm_lenght / 5) * _subdiv;
+                    addArmPt(ref pt, pt_cnt, _x, Largura - new_init_h * tilt - XY_m * (_x - (Largura - new_init_h * tilt)), new_init_h * ring_z_step + XZ_m * (_x - (Largura - new_init_h * tilt)), arm_mutation);
                     pt_cnt++;
                 }
 
                 //1st upper arm
                 for (int _subdiv = 1; _subdiv < 5; _subdiv++)
                 { // criar variavel se necessario controlo sobre o refinamento do braço
-                    double _x = (Largura - init_h * tilt) + (arm_lenght / 5) * _subdiv;
+                    double _x = (Largura - new_init_h * tilt) + (arm_lenght / 5) * _subdiv;
 
-                    addArmPt(ref pt, pt_cnt, _x, (init_h + 1) * tilt + XY_m_upp * (_x - (Largura - init_h * tilt)), (init_h + 1) * ring_z_step + XZ_m_upp * (_x - (Largura - init_h * tilt)), arm_mutation);
+                    addArmPt(ref pt, pt_cnt, _x, new_init_hplusOne * tilt + XY_m_upp * (_x - (Largura - new_init_h * tilt)), new_init_hplusOne * ring_z_step + XZ_m_upp * (_x - (Largura - new_init_h * tilt)), arm_mutation);
                     pt_cnt++;
                 }
                 //2nd upper arm
                 for (int _subdiv = 1; _subdiv < 5; _subdiv++)
                 { // nao "<=" para nao criar 2 pts de convergencia
-                    double _x = (Largura - init_h * tilt) + (arm_lenght / 5) * _subdiv;
+                    double _x = (Largura - new_init_h * tilt) + (arm_lenght / 5) * _subdiv;
 
-                    addArmPt(ref pt, pt_cnt, _x, Largura - (init_h + 1) * tilt - XY_m_upp * (_x - (Largura - init_h * tilt)), (init_h + 1) * ring_z_step + XZ_m_upp * (_x - (Largura - init_h * tilt)), arm_mutation);
+                    addArmPt(ref pt, pt_cnt, _x, Largura - new_init_hplusOne * tilt - XY_m_upp * (_x - (Largura - new_init_h * tilt)), new_init_hplusOne * ring_z_step + XZ_m_upp * (_x - (Largura - new_init_h * tilt)), arm_mutation);
                     pt_cnt++;
                 }
 
@@ -229,7 +233,7 @@ namespace Fraser
                 for (int _subdiv = 1; _subdiv <= 5; _subdiv++)
                 { // criar variavel se necessario controlo sobre o refinamento do braço
 
-                    double _x = (init_h * tilt) - (arm_lenght / 5) * _subdiv;
+                    double _x = (new_init_h * tilt) - (arm_lenght / 5) * _subdiv;
 
                     if (_subdiv == 5)
                     {
@@ -238,33 +242,33 @@ namespace Fraser
                         break;
                     }
 
-                    addArmPt(ref pt, pt_cnt, _x, init_h * tilt - XY_m * (_x - init_h * tilt), init_h * ring_z_step - XZ_m * (_x - init_h * tilt), arm_mutation);//1st lower arm
+                    addArmPt(ref pt, pt_cnt, _x, new_init_h * tilt - XY_m * (_x - new_init_h * tilt), new_init_h * ring_z_step - XZ_m * (_x - new_init_h * tilt), arm_mutation);//1st lower arm
                     pt_cnt++;
                 }
 
                 //2nd lower arm
                 for (int _subdiv = 1; _subdiv < 5; _subdiv++)
                 { // nao "<=" para nao criar 2 pts de convergencia
-                    double _x = (init_h * tilt) - (arm_lenght / 5) * _subdiv;
+                    double _x = (new_init_h * tilt) - (arm_lenght / 5) * _subdiv;
 
-                    addArmPt(ref pt, pt_cnt, _x, Largura - init_h * tilt + XY_m * (_x - init_h * tilt), init_h * ring_z_step - XZ_m * (_x - init_h * tilt), arm_mutation);
+                    addArmPt(ref pt, pt_cnt, _x, Largura - new_init_h * tilt + XY_m * (_x - new_init_h * tilt), new_init_h * ring_z_step - XZ_m * (_x - new_init_h * tilt), arm_mutation);
                     pt_cnt++;
                 }
 
                 //1st upper arm
                 for (int _subdiv = 1; _subdiv < 5; _subdiv++)
                 { // criar variavel se necessario controlo sobre o refinamento do braço
-                    double _x = (init_h * tilt) - (arm_lenght / 5) * _subdiv;
+                    double _x = (new_init_h * tilt) - (arm_lenght / 5) * _subdiv;
 
-                    addArmPt(ref pt, pt_cnt, _x, (init_h + 1) * tilt - XY_m_upp * (_x - init_h * tilt), (init_h + 1) * ring_z_step - XZ_m_upp * (_x - init_h * tilt), arm_mutation);
+                    addArmPt(ref pt, pt_cnt, _x, new_init_hplusOne * tilt - XY_m_upp * (_x - new_init_h * tilt), new_init_hplusOne * ring_z_step - XZ_m_upp * (_x - new_init_h * tilt), arm_mutation);
                     pt_cnt++;
                 }
                 //2nd upper arm
                 for (int _subdiv = 1; _subdiv < 5; _subdiv++)
                 { // nao "<=" para nao criar 2 pts de convergencia
-                    double _x = (init_h * tilt) - (arm_lenght / 5) * _subdiv;
+                    double _x = (new_init_h * tilt) - (arm_lenght / 5) * _subdiv;
 
-                    addArmPt(ref pt, pt_cnt, _x, Largura - (init_h + 1) * tilt + XY_m_upp * (_x - init_h * tilt), (init_h + 1) * ring_z_step - XZ_m_upp * (_x - init_h * tilt), arm_mutation);
+                    addArmPt(ref pt, pt_cnt, _x, Largura - new_init_hplusOne * tilt + XY_m_upp * (_x - new_init_h * tilt), new_init_hplusOne * ring_z_step - XZ_m_upp * (_x - new_init_h * tilt), arm_mutation);
                     pt_cnt++;
                 }
             }
@@ -785,9 +789,9 @@ namespace Fraser
 
             for (int h = 1; h <= horiz_div - 2; h++)
             {
-                if (dist > Math.Abs(altura - h * ring_z_step))
+                if (dist > Math.Abs(altura - (-0.04 * h * h + 1.35 * h + 0.7) * ring_z_step))
                 {
-                    dist = Math.Abs(altura - h * ring_z_step);
+                    dist = Math.Abs(altura - (-0.04 * h * h + 1.35 * h + 0.7) * ring_z_step);
                     nearest = h;
                 }
             }
