@@ -98,12 +98,12 @@ namespace Fraser
 
         public static Individual Tournament_selection(Individual[] pop,int gen)
         {
-            int selection_pressure = (int)Pop_size/5; // changes the selection pressure
+            int selection_pressure = (int)Pop_size/3; // changes the selection pressure
             int[] tournament = new int[selection_pressure];
 
             for (int i = 0; i < selection_pressure; i++)
             {
-                tournament[i] = Population.rand.Next((int)(Pop_size/5), Pop_size - 1);
+                tournament[i] = Population.rand.Next((int)(Pop_size/3), Pop_size - 1);
             }
 
             Array.Sort(tournament);

@@ -19,13 +19,13 @@ namespace Fraser
         private List<double[]> under_designed = new List<double[]>();  // sections do increase
         private List<double[]> to_disable = new List<double[]>();      // sections to disable
 
-        const double super_low_u_f = 0.05; //0 - 0.05 remover
-        const double low_u_f = 0.4;        //0.05 - 0.4 reduzir
+        const double super_low_u_f = 0.1; //0 - 0.05 remover
+        const double low_u_f = 0.7;        //0.05 - 0.4 reduzir
         const double ok_u_f = 1.0;         //0.9 - 0.4 nao fazer grande coisa
                                            //0.9 + aumentar secção
 
-        const int max_bars_to_reduce = 10; // max n bars to reduce section per population
-        const int max_bars_to_delete = 5; // max n bars to delete per population
+        const int max_bars_to_reduce = 50; // max n bars to reduce section per population
+        const int max_bars_to_delete = 10; // max n bars to delete per population
 
         private List<Calc_operations> Leg_ops = new List<Calc_operations>(); // lista leg calcs
         private List<Calc_operations> Bracing_ops = new List<Calc_operations>(); // list bracing calcs
@@ -98,9 +98,9 @@ namespace Fraser
 
             this.results = Robot_call.Run_analysis();
 
-            Robot_call.Refresh();
-            Robot_call.Robot_interactive(true);
-
+            // Robot_call.Refresh();
+            // Robot_call.Robot_interactive(true);
+            Robot_call.Robot_interactive(false);
             Calc_operations.EC3_Checks(0, ref Repair_instr, Leg_ops,this.results);
             Calc_operations.EC3_Checks(1, ref Repair_instr, Bracing_ops, this.results);
             Calc_operations.EC3_Checks(2, ref Repair_instr, Horiz_ops_plane_bracing, this.results);
@@ -560,7 +560,7 @@ namespace Fraser
             for (int i =0; i < list.Count; i++)
             {
                 //se baixo U/f lista de remover
-                if (u_f[i] <= super_low_u_f+0.34)
+                if (u_f[i] <= super_low_u_f)
                 {
                     if (this._DNA.bars[4, (int)bar_number[i] - 1] == 0 && this._DNA.bars[3, (int)bar_number[i] - 1] == 1) // se pode ser desactivada + nao tem sec minima
                     {
@@ -572,7 +572,7 @@ namespace Fraser
 
                 }
                 //se medio U/f lista de reduzir secção
-                if (u_f[i]>super_low_u_f+0.34 && u_f[i] <= low_u_f)
+                if (u_f[i]>super_low_u_f && u_f[i] <= low_u_f)
                 {
                     ovr_dsgn.Add(new double[] { bar_number[i], u_f[i] });
                 }
@@ -598,8 +598,8 @@ namespace Fraser
             int bars_to_correct;
             bool need_bigger_sect = false;
 
-            if (max_bars_to_reduce <= ovr_dsgn.Count) {
-                bars_to_correct = Population.rand.Next(2, max_bars_to_reduce);
+            if (max_bars_to_reduce+15 <= ovr_dsgn.Count) {
+                bars_to_correct = Population.rand.Next(6, max_bars_to_reduce+10);
             }else
             {
                 bars_to_correct = Population.rand.Next(0, ovr_dsgn.Count);
@@ -666,13 +666,13 @@ namespace Fraser
                 ///
                 if (ovr_dsgn.Count >= 1) // so começar a eliminar se ja tiver reduzido tudo o que podia -> nao e bem assim.. rever
                 {
-                    int bars_to_disable = Population.rand.Next(1, max_bars_to_delete);
+                    int bars_to_disable = Population.rand.Next(2, max_bars_to_delete);
                     List<int> b = new List<int>();
 
                     if (bars_to_disable > _dsbl.Count) { bars_to_disable = _dsbl.Count; }
 
-                    /*
-                      while (b.Count != bars_to_disable)
+                   
+                   /*   while (b.Count != bars_to_disable)
                      {
                          if (_dsbl.Count != 0)
                          {
@@ -690,7 +690,7 @@ namespace Fraser
                             if (b[i] != 0 && this._DNA.bars[3, b[i] - 1] == 1) // se pode desactivar e tem barras para desactivar
                             {
                                 Console.WriteLine("Delete" + b[i]);
-                              //this._DNA.bars[4, b[i] - 1]--; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
+                             // this._DNA.bars[4, b[i] - 1]--; //reduzir 1 (neste ponto ja todos os elementos da lista têm secção minima, basta reduzir (--)
                             }
                         }
                         
@@ -703,7 +703,7 @@ namespace Fraser
                             Console.WriteLine("Delete" + tmp[0]);
                             this._DNA.bars[4, (int)tmp[0] - 1]--;
                         }
-
+                        
                     }
                 }
             }
