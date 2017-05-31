@@ -80,7 +80,7 @@ namespace Fraser
             double best = 0.0;
             int count = 0;
             CurrentPop = new Population(NextPop.ind);
-            for (int i=0; i<1200; i++)
+            for (int i=0; i<928; i++)
             {
                 Generation.Text = i.ToString();
                 // CurrentPop = new Population(NextPop.ind);
@@ -93,7 +93,7 @@ namespace Fraser
                         series.Points.AddXY(c, CurrentPop.ind[a].fitness);
                         //Robot_call.Robot_interactive(true);
 
-                    } best = CurrentPop.ind[19].fitness;
+                    } best = CurrentPop.ind[4].fitness;
                 }else { /*CurrentPop.ind[0].Evaluate();*/
                     c++;
                     series.Points.AddXY(c, CurrentPop.ind[0].fitness);

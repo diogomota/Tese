@@ -24,8 +24,8 @@ namespace Fraser
         const double ok_u_f = 1.0;         //0.9 - 0.4 nao fazer grande coisa
                                            //0.9 + aumentar secção
 
-        const int max_bars_to_reduce = 50; // max n bars to reduce section per population
-        const int max_bars_to_delete = 10; // max n bars to delete per population
+        const int max_bars_to_reduce = 60; // max n bars to reduce section per population
+        const int max_bars_to_delete = 20; // max n bars to delete per population
 
         private List<Calc_operations> Leg_ops = new List<Calc_operations>(); // lista leg calcs
         private List<Calc_operations> Bracing_ops = new List<Calc_operations>(); // list bracing calcs
@@ -101,6 +101,8 @@ namespace Fraser
             // Robot_call.Refresh();
             // Robot_call.Robot_interactive(true);
             Robot_call.Robot_interactive(false);
+            Robot_call.Robot_interactive(true);
+            Robot_call.Refresh();
             Calc_operations.EC3_Checks(0, ref Repair_instr, Leg_ops,this.results);
             Calc_operations.EC3_Checks(1, ref Repair_instr, Bracing_ops, this.results);
             Calc_operations.EC3_Checks(2, ref Repair_instr, Horiz_ops_plane_bracing, this.results);
@@ -417,7 +419,7 @@ namespace Fraser
             for (int i = 0; i < Genome.towerBar_cnt; i++){
                 if (this._DNA.bars[5, i] == 1 && this._DNA.bars[4,i] !=-1) //if bracing && not deactivated
                 {
-                   Bracing_ops.Add(new Calc_operations(i, new List<Int32>() { i }, (int)this._DNA.bars[4, i], (int)this._DNA.bars[5, i]));
+                   Bracing_ops.Add(new Calc_operations(i+1, new List<Int32>() { i+1 }, (int)this._DNA.bars[4, i], (int)this._DNA.bars[5, i]));
                 }
             }
         }
@@ -565,14 +567,14 @@ namespace Fraser
                     if (this._DNA.bars[4, (int)bar_number[i] - 1] == 0 && this._DNA.bars[3, (int)bar_number[i] - 1] == 1) // se pode ser desactivada + nao tem sec minima
                     {
                         _dsbl.Add(new double[] { bar_number[i], u_f[i] });
-                    }else if(this._DNA.bars[4, (int)bar_number[i] - 1] >0) //se ainda n tem sec max
+                    }else if(this._DNA.bars[4, (int)bar_number[i] - 1] >0 && this._DNA.bars[3, (int)bar_number[i] - 1] == 1) //se ainda n tem sec max
                     {
                         ovr_dsgn.Add(new double[] { bar_number[i], u_f[i] }); // mandar para a lista da barras a reduzir
                     }
 
                 }
                 //se medio U/f lista de reduzir secção
-                if (u_f[i]>super_low_u_f && u_f[i] <= low_u_f)
+                if (u_f[i]>super_low_u_f && u_f[i] <= low_u_f-0.1 && this._DNA.bars[3,(int)bar_number[i]-1] != 0 && this._DNA.bars[4, (int)bar_number[i] - 1] > 0)
                 {
                     ovr_dsgn.Add(new double[] { bar_number[i], u_f[i] });
                 }
@@ -598,8 +600,8 @@ namespace Fraser
             int bars_to_correct;
             bool need_bigger_sect = false;
 
-            if (max_bars_to_reduce+15 <= ovr_dsgn.Count) {
-                bars_to_correct = Population.rand.Next(6, max_bars_to_reduce+10);
+            if (max_bars_to_reduce <= ovr_dsgn.Count) {
+                bars_to_correct = Population.rand.Next(2, ovr_dsgn.Count/10);
             }else
             {
                 bars_to_correct = Population.rand.Next(0, ovr_dsgn.Count);
@@ -651,7 +653,7 @@ namespace Fraser
                 }
                 else
                 {
-                    this.fitness += 0.25;// Math.Log(0.1 + temp[1]) * 15;
+                    this.fitness += 0.15;// Math.Log(0.1 + temp[1]) * 15;
 
                     need_bigger_sect = true;
                     Console.WriteLine("---------------------------");
@@ -666,7 +668,7 @@ namespace Fraser
                 ///
                 if (ovr_dsgn.Count >= 1) // so começar a eliminar se ja tiver reduzido tudo o que podia -> nao e bem assim.. rever
                 {
-                    int bars_to_disable = Population.rand.Next(2, max_bars_to_delete);
+                    int bars_to_disable = Population.rand.Next(5, max_bars_to_delete);
                     List<int> b = new List<int>();
 
                     if (bars_to_disable > _dsbl.Count) { bars_to_disable = _dsbl.Count; }

@@ -29,7 +29,7 @@ namespace Fraser
         public static void EC3_Checks(int id, ref List<double[]> repair_instructions, List<Calc_operations> calc_ops,double[,] results)
         {
 
-            ///     Leg Calcs
+            ///     Leg Calcs         ///
             /// BS EN 1993-1-1:2005   /// 
             /// BS EN 1993-3-1.2006   ///
             ///######################///
