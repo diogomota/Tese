@@ -103,7 +103,7 @@ namespace Fraser
 
             for (int i = 0; i < selection_pressure; i++)
             {
-                //tournament[i] = Population.rand.Next((int)(Pop_size/3), Pop_size - 1);
+                tournament[i] = Population.rand.Next((int)(Pop_size/3), Pop_size - 1);
             }
 
             Array.Sort(tournament);
